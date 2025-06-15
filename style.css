@@ -1,0 +1,105 @@
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    background-color: rgb(245, 234, 234);
+    color: rgb(19, 18, 18);
+  
+}
+
+header{
+    background-color: rgb(12, 12, 12);
+    color: rgb(236, 230, 230);
+    padding: 20px;
+}
+
+main {
+    padding: 40px 20px;
+}
+a {
+    display:inline-block;
+    background-color: rgb(34, 171, 212);
+    color:#ffffff;
+    padding: 10px 20px;
+    margin: 10px;
+    text-decoration:none;
+    border-radius: 8px;
+}
+a:hover{
+    background-color:#0b2866;
+}
+#recepte{
+    display: flex;
+    background-color: color-mix(in srgb, color percentage, color percentage);
+    color: #ffffff;
+    padding: 10px 20px;
+    margin: 10px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+#recept haver {
+    background-color:#0b2866;
+}
+ .menu {
+      margin-bottom: 20px;
+    }
+
+    .menu button {
+      margin: 5px;
+      padding: 10px 20px;
+      background-color: #333;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .categoria {
+      margin-bottom: 30px;
+    }
+
+    .categoria ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .categoria ul li {
+      margin-bottom: 8px;
+    }
+
+    .categoria ul button {
+      background-color: #eee;
+      padding: 8px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+    }
+
+    .receita {
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .receita ul {
+      padding-left: 20px;
+    }
+
+    .receita h4 {
+      margin-top: 20px;
+    }
+    
+    /* Esconde o menu lateral em dispositivos pequenos ou inicialmente */
+.seitenmenü {
+  display: none;
+  flex-direction: column;
+  background-color: #f5f5f5;
+  padding: 10px;
+}
+
+/* Quando a classe 'aberto' for ativada pelo JavaScript */
+.seitenmenü.aberto {
+  display: flex;
+}
