@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Motivationsspruch</title>
+  <style>
+    body {
+      background-color: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: sans-serif;
+    }
+    .spruch {
+      font-size: 2rem;
+      color: #333;
+      text-align: center;
+      padding: 1rem;
+      max-width: 90%;
+    }
+  </style>
+</head>
+<body>
+  <div class="spruch" id="spruchContainer">
+    Lade Spruch...
+  </div>
+
+  <script>
+    const sprueche = [
+      "Es ist nicht Hunger, es ist nur Gewohnheit.",
+      "Du bist stärker als dein innerer Schweinehund.",
+      "Jeder Schritt zählt – auch die kleinen.",
+      "Dein Ziel ist näher, als du denkst.",
+      "Iss, um deinen Körper zu nähren, nicht um deine Gefühle zu beruhigen.",
+      "Trinke Wasser – oft ist es Durst, nicht Hunger.",
+      "Die Veränderung beginnt mit dir.",
+      "Du brauchst keine Diät, du brauchst Liebe zu dir selbst.",
+      "Das ist keine Phase – das ist dein neues Ich.",
+      "Du wirst dich für deine Ausdauer bedanken.",
+      "Wenn es schwer wird, bist du auf dem richtigen Weg.",
+      "Geduld bringt dich weiter als Perfektion.",
+      "Ein Rückschlag ist kein Ende.",
+      "Bewegung hilft auch deiner Seele.",
+      "Warte nicht auf Motivation – handle jetzt.",
+      "Du verdienst es, dich wohl in deiner Haut zu fühlen.",
+      "Mach weiter – deine Gesundheit ist es wert.",
+      "Ein Spaziergang kann Wunder wirken.",
+      "Atme tief durch – du schaffst das.",
+      "Lass Essen nicht dein Trost sein.",
+      "Disziplin ist Selbstliebe in Aktion.",
+      "Dein Körper verändert sich – bleib dran.",
+      "Du bist nicht allein – viele kämpfen mit dir.",
+      "Das ist kein Verzicht – das ist Selbstfürsorge.",
+      "Dein Wunschgewicht beginnt im Kopf.",
+      "Vertraue dem Prozess.",
+      "Heute ein bisschen besser als gestern.",
+      "Du machst das für dich – nicht für andere.",
+      "Wasser, Schlaf und Liebe – die beste Diät.",
+      "Bald passt du wieder in deine Lieblingsjeans."
+    ];
+
+    const zufaelligerSpruch = sprueche[Math.floor(Math.random() * sprueche.length)];
+    document.getElementById('spruchContainer').innerText = zufaelligerSpruch;
+  </script>
+</body>
+<footer>
+  &copy;Ich schaffe es. Erstellt Valeria Vontobel
+</footer>
+<script src="script.js"></script>
+</html>

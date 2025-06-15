@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rezepte – Woche 1</title>
+  <link rel="stylesheet" href="style.css">
+   <link rel="icon" href="#" type="image/x-icon">
+</head>
+<body>
+  <header>
+    
+  <button class="buttontoggle">☰</button> 
+    <nav class="menu-topo" id="topMenu">
+
+      <ul class="seitenmenü">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Recepte.html">Recepte</a></li>
+        <li><a href="speiseplan.html">Speiseplan</a></li>
+        <li><a href="Eikaufsliste.html">Eikaufsliste</a></li>
+      </ul>
+    </nav>
+   </header>
+  <h1>Rezepte</h1>
+   
+    <div class="menu">
+  <button onclick="mostrarCategoria('fruehstueck')">Frühstück</button>
+  <button onclick="mostrarCategoria('Mittagessen')">Mittagessen</button>
+  <button onclick="mostrarCategoria('Snack')">Snack</button>
+  <button onclick="mostrarCategoria('Abendessen')">Abendessen</button>
+</div>
+
+
+  <div id="fruehstueck" class="categoria">
+  <ul>
+    <li><button onclick="mostrarReceita('Kaffee')">Kaffee</button></li>
+    <li><button onclick="mostrarReceita('pizzaOmelette')">Pizza-Omelette</button></li>
+    <li><button onclick="mostrarReceita('spiegeleiAvocado')">Spiegeleier mit Avocado</button></li>
+    <li><button onclick="mostrarReceita('Omelett')">Omelett</button></li>
+    <li><button onclick="mostrarReceita('Bacon')">Bacon & Ei Muffins</button></li>
+    <li><button onclick="mostrarReceita('Müsli')">Müsli</button></li>
+  </ul>
+</div>
+       
+
+
+<div id="Kaffee" class="receita" style="display: none;">
+  <h3>Kaffee</h3>
+  <h4>Zutaten</h4>
+  <ul>
+    <li>250ml Kaffee</li>
+    <li>15g Butter</li>
+    <li>15ml Kokosöl</li>
+  </ul>
+  <h4>Schritte</h4>
+  <ul>
+    <li>Gebe die Butter und das Kokosöl in deinen heißen Kaffee.</li>
+    <li>Mixe alles mit einem Milchaufschäumer.</li>
+    <li>Genieße mit einer leichten Schaumschicht.</li>
+  </ul>
+</div>
+
+
+       <!-- Receita: Omelett -->
+<div id="Omelett" class="receita" style="display: none;">
+  <h3>Omelett</h3>
+  <h4>Zutaten</h4>
+  <ul>
+    <li>2 Portionen</li>
+    <li>6 Eier</li>
+    <li>Zucchini</li>
+    <li>100g Champignons</li>
+    <li>1/2 TL Salz</li>
+    <li>2 EL Olivenöl</li>
+  </ul>
+</div>
+
+<!-- Receita: Keto Bacon & Ei Muffins -->
+<div id="Bacon" class="receita" style="display: none;">
+  <h3> Bacon & Ei Muffins</h3>
+  <h4>Zutaten</h4>
+  <ul>
+    <li>12 Bacon-Scheiben</li>
+    <li>6 Eier</li>
+  </ul>
+  <h4>Schritte</h4>
+  <ul>
+    <li>Heize deinen Ofen auf 200°C (Ober- und Unterhitze) vor.</li>
+    <li>Lege jeweils zwei Scheiben Bacon um den Rand der Muffinform-Mulden.</li>
+    <li>Backe den Bacon in der Muffinform für etwa 10–12 Minuten vor.</li>
+    <li>Hole den Bacon aus dem Ofen und reduziere die Hitze auf 160°C.</li>
+    <li>Schlage jeweils ein Ei in jedes Bacon-Körbchen.</li>
+    <li>Backe die Eier für etwa 10–15 Minuten bei 160°C.</li>
+  </ul>
+</div>
+
+<!-- Receita: Müsli -->
+<div id="Müsli" class="receita" style="display: none;">
+  <h3>Müsli</h3>
+  <h4>Zutaten</h4>
+  <ul>
+    <li>100g geschälte Hanfsamen</li>
+    <li>100g gehobelte Mandeln</li>
+    <li>50g Kokoschips</li>
+    <li>30g gehackte Haselnüsse</li>
+  </ul>
+  <h4>Schritte</h4>
+  <ul>
+    <li>Alle Zutaten in einer Schüssel vermengen und in ein Vorratsglas geben.</li>
+    <li>Mit Naturjoghurt oder ungesüßter Mandelmilch servieren.</li>
+  </ul>
+</div>
+
+<!-- Receita: Pizza-Omelette -->
+<div id="pizzaOmelette" class="receita" style="display: none;">
+  <h3>Keto Pizza-Omelette</h3>
+  <h4>Zutaten Omelette</h4>
+  <ul>
+    <li>4 Eier</li>
+    <li>25ml Milch</li>
+    <li>1 EL Butter</li>
+    <li>1/8 TL Salz</li>
+  </ul>
+  <h4>Zutaten Sauce</h4>
+  <ul>
+    <li>150g gehackte Tomaten</li>
+    <li>1/2 TL gehackter Basilikum</li>
+    <li>1/4 TL Oregano</li>
+    <li>1/4 TL Salz</li>
+    <li>1/8 TL Knoblauchpulver</li>
+    <li>1 Prise Pfeffer</li>
+  </ul>
+  <h4>Zubereitung</h4>
+  <ul>
+    <li>Sauce in einem Topf 10–15 Minuten bei mittlerer Hitze köcheln lassen.</li>
+    <li>Omelette vorbereiten, Ei in die Pfanne geben, 7–10 Minuten mit Deckel stocken lassen.</li>
+    <li>Pizza-Sauce auf das Omelette geben, Mozzarella und Salami darüber verteilen.</li>
+    <li>Deckel schließen, weitere 5–8 Minuten erhitzen bis der Käse geschmolzen ist.</li>
+    <li>In 8 Stücke schneiden und warm servieren.</li>
+  </ul>
+</div>
+
+<!-- Receita: Spiegeleier mit Avocado -->
+<div id="spiegeleiAvocado" class="receita" style="display: none;">
+  <h3>Spiegeleier mit Avocado</h3>
+  <h4>Zutaten</h4>
+  <ul>
+    <li>3 Eier</li>
+    <li>1/2 Avocado</li>
+    <li>1 TL Butter zum Anbraten</li>
+    <li>1 TL gehackter Schnittlauch (optional)</li>
+    <li>1 Prise Salz</li>
+    <li>1 Prise Pfeffer</li>
+  </ul>
+  <h4>Schritte</h4>
+  <ul>
+    <li>Butter in der Pfanne zerlassen und Eier hineinschlagen.</li>
+    <li>Bei mittlerer Hitze braten, währenddessen die Avocado halbieren und entkernen.</li>
+    <li>Avocado auf einem Teller anrichten, Eier dazugeben und mit Salz, Pfeffer, Schnittlauch würzen.</li>
+  </ul>
+</div>
+
+<div id="Mittagessen" class="categoria" style="display: none;">
+  <h2>Mittagessen</h2>
+  <ul>
+    <li><button onclick="mostrarReceita('thunfischAuflauf')">Keto Thunfisch-Auflauf</button></li>
+    <li><button onclick="mostrarReceita('hackfleischWeisskohl')">Low Carb Hackfleisch-Weißkohl-Pfanne</button></li>
+    <li><button onclick="mostrarReceita('ketoBurger')">Keto Burger</button></li>
+    <li><button onclick="mostrarReceita('rindBrokkoli')">Asiatisches Keto Rinder-Brokkoli-Blech</button></li>
+    <li><button onclick="mostrarReceita('flammkuchen')">Keto Flammkuchen</button></li>
+    <li><button onclick="mostrarReceita('gefülltePaprikas')">Gefüllte Keto Paprikas</button></li>
+  </ul>
+</div>
+
+<div id="thunfischAuflauf" class="receita" style="display: none;">
+  <h3> Thunfisch-Auflauf</h3>
+  <ul>
+    <li>450g Thunfisch in Wasser</li>
+    <li>1 Stange Lauch</li>
+    <li>300g Champignons</li>
+    <li>200g Crème Fraîche</li>
+    <li>100g geriebener Parmesan</li>
+    <li>100ml Sahne</li>
+    <li>100g geriebener Käse zum Überbacken</li>
+    <li>1/2 Zwiebel</li>
+    <li>1 EL Butter</li>
+    <li>1 TL Paprikapulver</li>
+    <li>1/2 TL Salz</li>
+    <li>1/4 TL Pfeffer</li>
+    <li><strong>Schritte:</strong></li>
+    <li>Zwiebel und Champignons würfeln, Lauch in Streifen schneiden.</li>
+    <li>Butter in Pfanne zerlassen, Zwiebel glasig anbraten, Champignons und Lauch hinzufügen und 10 Min. anbraten.</li>
+    <li>Thunfisch abgießen, mit restlichen Zutaten in die Pfanne geben, gut mischen und in Auflaufform geben.</li>
+    <li>Mit Käse bestreuen und 10–15 Min. im Ofen backen, bis der Käse goldbraun ist.</li>
+  </ul>
+</div>
+
+<div id="hackfleischWeisskohl" class="receita" style="display: none;">
+  <h3>Low Carb Hackfleisch-Weißkohl-Pfanne</h3>
+  <ul>
+    <li>1/4 Weißkohl</li>
+    <li>500g Hackfleisch</li>
+    <li>250ml Wasser</li>
+    <li>200g Crème Fraîche</li>
+    <li>1 Zwiebel</li>
+    <li>1 Knoblauchzehe</li>
+    <li>1 EL Tomatenmark</li>
+    <li>1 EL Butter</li>
+    <li>1 TL Salz</li>
+    <li>1/2 TL Paprikapulver</li>
+    <li>1/4 TL Pfeffer</li>
+    <li><strong>Schritte:</strong></li>
+    <li>Zwiebel und Knoblauch hacken, Weißkohl in Streifen schneiden.</li>
+    <li>Butter in Pfanne zerlassen, Zwiebel glasig anbraten, dann Knoblauch zugeben.</li>
+    <li>Hackfleisch 5-6 Min. anbraten, bis kein Rosa mehr sichtbar.</li>
+    <li>Tomatenmark und Gewürze zugeben, 1-2 Min. umrühren.</li>
+    <li>Weißkohl zugeben und 8-10 Min. anbraten.</li>
+    <li>Wasser zugeben und 20 Min. mit Deckel köcheln lassen.</li>
+    <li>Crème Fraîche einrühren und servieren.</li>
+  </ul>
+</div>
+
+<div id="ketoBurger" class="receita" style="display: none;">
+  <h3> Burger</h3>
+  <ul>
+    <li><strong>Zutaten für die Burger:</strong></li>
+    <li>4 TK-Burger-Patty (je 200g)</li>
+    <li>4 Eier</li>
+    <li>4 große Salatblätter</li>
+    <li>8 Scheiben Tomate</li>
+    <li>16 Scheiben Burgergurken</li>
+    <li>4 Scheiben Käse</li>
+    <li>1 rote Zwiebel</li>
+    <li><strong>Zutaten für die Burger Sauce:</strong></li>
+    <li>50g Mayonnaise</li>
+    <li>10g zuckerfreier Ketchup</li>
+    <li>1 TL Senf</li>
+    <li>1/2 TL Apfelessig</li>
+    <li>1/4 TL Salz</li>
+    <li>1/8 TL Paprikapulver</li>
+    <li>1/8 TL Knoblauchpulver</li>
+    <li>1/8 TL Zwiebelpulver</li>
+    <li>1 Prise Pfeffer</li>
+    <li><strong>Schritte:</strong></li>
+    <li>Alle Zutaten für die Sauce vermengen.</li>
+    <li>Tomaten, Gurken und Zwiebel schneiden.</li>
+    <li>TK-Patties je 5 Min. pro Seite in Pfanne braten, Käse darauf schmelzen lassen.</li>
+    <li>Eier in zweiter Pfanne braten.</li>
+    <li>Salatblatt mit allen Zutaten belegen und servieren.</li>
+  </ul>
+</div>
+<div id="rindBrokkoli" class="receita" style="display: none;">
+  <h3>Asiatisches  Rinder-Brokkoli-Blech</h3>
+  <ul>
+    <li>320g Rinder-Minutensteaks</li>
+    <li>1 Kopf Brokkoli</li>
+    <li>1 Zwiebel</li>
+    <li>2 Knoblauchzehen</li>
+    <li>10g Ingwer</li>
+    <li>4 EL Olivenöl</li>
+    <li>3 EL Soja Sauce</li>
+    <li>1/8 TL Pfeffer</li>
+    <li>30g Lauchzwiebeln</li>
+    <li>2 TL Sesam</li>
+    <li>2 TL Sesam-Öl (optional)</li>
+    <li><strong>Schritte:</strong></li>
+    <li>Brokkoli und Zwiebel schneiden, Ingwer hacken und alles mischen.</li>
+    <li>Knoblauch mit Öl, Soja Sauce und Pfeffer mischen, 2/3 über das Gemüse geben und 15 Min. im Ofen vorgaren.</li>
+    <li>Steaks in Streifen schneiden, mit restlicher Sauce marinieren.</li>
+    <li>Nach 15 Min. Fleisch auf das Gemüse geben und weitere 5 Min. garen.</li>
+    <li>Mit Lauchzwiebeln, Sesam und Sesam-Öl servieren.</li>
+  </ul>
+</div>
+
+<div id="flammkuchen" class="receita" style="display: none;">
+  <h3> Flammkuchen</h3>
+  <ul>
+    <li><strong>Teig:</strong></li>
+    <li>170g geriebener Mozzarella</li>
+    <li>80g Frischkäse</li>
+    <li>40g Kokosmehl</li>
+    <li>30g Mandelmehl</li>
+    <li>2 Eigelb</li>
+    <li>1/2 TL Xanthan</li>
+    <li>1/4 TL Salz</li>
+    <li><strong>Belag:</strong></li>
+    <li>150g Crème Fraîche</li>
+    <li>90g Schinkenwürfel</li>
+    <li>1 Zwiebel</li>
+    <li><strong>Schritte:</strong></li>
+    <li>Käse schmelzen, trockene Zutaten mischen, dann alles verkneten.</li>
+    <li>Eigelb einarbeiten, Teig ausrollen, vorbacken (10 Min. bei 180°C).</li>
+    <li>Zwiebel schneiden, Teig belegen mit Crème Fraîche, Zwiebel und Schinkenwürfeln.</li>
+    <li>Weitere 10 Min. backen und frisch servieren.</li>
+  </ul>
+</div>
+
+<div id="gefülltePaprikas" class="receita" style="display: none;">
+  <h3>Gefüllte  Paprikas</h3>
+  <ul>
+    <li>500g Hackfleisch</li>
+    <li>6 Paprikas</li>
+    <li>200g gehackte Tomaten</li>
+    <li>200g Champignons</li>
+    <li>100g Fetakäse</li>
+    <li>100g geriebener Käse</li>
+    <li>1 Knoblauchzehe</li>
+    <li>1/2 Zwiebel</li>
+    <li>1 EL Butter</li>
+    <li>1 TL Salz</li>
+    <li>1 TL Oregano</li>
+    <li>1/2 TL Paprikapulver</li>
+    <li>1/4 TL Pfeffer</li>
+    <li><strong>Schritte:</strong></li>
+    <li>Paprika aushöhlen, Stielreste würfeln, Ofen auf 200°C vorheizen.</li>
+    <li>Zwiebel und Knoblauch würfeln, Champignons schneiden.</li>
+    <li>Paprika in Auflaufform, 30 Min. vorgaren.</li>
+    <li>Butter in Pfanne, Zwiebel & Knoblauch anbraten, Hackfleisch zugeben und garen.</li>
+    <li>Paprika & Champignons zugeben und weiterbraten.</li>
+    <li>Tomaten, Fetakäse & Gewürze zugeben, 10 Min. köcheln lassen.</li>
+    <li>Paprika aus Ofen, mit Mischung füllen, mit Käse bestreuen und 15 Min. backen.</li>
+  </ul>
+</div>
+<div id="Abendessen" class="categoria" style="display: none;">
+  <h2>Abendessen – Rezepte</h2>
+  <ul>
+    <li><button onclick="mostrarReceita('phillyCheesesteakPfanne')">Keto Philly Cheesesteak-Pfanne</button></li>
+    <li><button onclick="mostrarReceita('basilikumHahnchenPasta')">Keto Basilikum-Hähnchen-Pasta</button></li>
+    <li><button onclick="mostrarReceita('cevapciciDjuvecReis')">Keto Cevapcici mit Djuvec-Reis</button></li>
+    <li><button onclick="mostrarReceita('mediterraneHahnchenGemuse')">Mediterrane Hähnchen-Gemüse-Pfanne</button></li>
+    <li><button onclick="mostrarReceita('asiatischeSteakPfanne')">Asiatische Keto Steak-Pfanne</button></li>
+  </ul>
+</div>
+
+<div id="phillyCheesesteakPfanne" class="receita" style="display: none;">
+  <h3> Philly Cheesesteak-Pfanne</h3>
+  <ul>
+    <li>300g Rib-Eye-Steak</li>
+    <li>1 TL Butterschmalz</li>
+    <li>300g braune Champignons</li>
+    <li>100g Bergkäse</li>
+    <li>2 grüne Paprikas</li>
+    <li>½ Zwiebel</li>
+    <li>2 Knoblauchzehen</li>
+    <li>1 EL Butter</li>
+    <li>½ TL Salz</li>
+    <li>½ TL Paprikapulver</li>
+    <li>⅛ TL Pfeffer</li>
+    <li><strong>Schritte:</strong></li>
+    <li>Champignons je nach Größe schneiden, Paprika in Streifen schneiden und in eine große Pfanne geben.</li>
+    <li>Zwiebel und Knoblauch fein würfeln, Steak in Streifen schneiden, Käse reiben und beiseite stellen.</li>
+    <li>Butter in der Pfanne mit Champignons und Paprika zerlassen, 10 Min. anbraten.</li>
+    <li>Zwiebel und Knoblauch hinzufügen und 3-4 Min. glasig anbraten. Gemüse herausnehmen.</li>
+    <li>Butterschmalz in der Pfanne erhitzen, Steakstreifen 1-2 Min. braten.</li>
+    <li>Gemüse zurück in die Pfanne geben, Käse und Gewürze unterrühren, bis der Käse geschmolzen ist.</li>
+  </ul>
+</div>
+
+<div id="basilikumHahnchenPasta" class="receita" style="display: none;">
+  <h3> Basilikum-Hähnchen-Pasta</h3>
+  <ul>
+    <li>400g Hähnchen-Innenfilet</li>
+    <li>200g Shirataki-Nudeln</li>
+    <li>150g Cocktailtomaten</li>
+    <li>100g geriebener Parmesan</li>
+    <li>50ml Sahne</li>
+    <li>½ Zwiebel</li>
+    <li>20 Blätter frischer Basilikum</li>
+    <li>1 EL Butter</li>
+    <li>1 EL Zitronensaft</li>
+    <li>½ TL Salz</li>
+    <li>¼ TL Pfeffer</li>
+    <li><strong>Schritte:</strong></li>
+    <li>Zwiebel würfeln, Cocktailtomaten halbieren, Hähnchen würfeln.</li>
+    <li>Butter in Pfanne zerlassen, Zwiebel 3-4 Min. anbraten.</li>
+    <li>Hähnchen dazugeben, 5-6 Min. braten.</li>
+    <li>Tomaten hinzufügen, 5 Min. mitbraten.</li>
+    <li>Parmesan, Sahne, Basilikum, Zitronensaft und Gewürze unterrühren.</li>
+    <li>Shirataki-Nudeln abspülen, abtropfen lassen und unterheben.</li>
+  </ul>
+</div>
+
+<div id="cevapciciDjuvecReis" class="receita" style="display: none;">
+  <h3> Cevapcici mit Djuvec-Reis</h3>
+  <ul>
+    <li>500g Blumenkohl</li>
+    <li>100g Cocktailtomaten</li>
+    <li>70g gefrorene Erbsen</li>
+    <li>½ rote Paprika</li>
+    <li>½ Zwiebel</li>
+    <li>1 Knoblauchzehe</li>
+    <li>3 EL Butter</li>
+    <li>3 EL Ajvar</li>
+    <li>1 TL Paprikapulver</li>
+    <li>¾ TL Salz</li>
+    <li>¼ TL Pfeffer</li>
+    <li>400g Cevapcici</li>
+    <li>½ EL Butterschmalz</li>
+    <li><strong>Schritte:</strong></li>
+    <li>Blumenkohl raspeln, wie Reis.</li>
+    <li>Gemüse klein schneiden, Knoblauch pressen, mit Butter anbraten.</li>
+    <li>Erbsen, Ajvar und Paprikapulver zugeben, 1-2 Min. anbraten.</li>
+    <li>Blumenkohlreis, Salz & Pfeffer dazugeben, 5-7 Min. garen.</li>
+    <li>Cevapcici separat mit Butterschmalz 6-7 Min. braten.</li>
+  </ul>
+</div>
+
+<div id="mediterraneHahnchenGemuse" class="receita" style="display: none;">
+  <h3>Mediterrane Hähnchen-Gemüse-Pfanne</h3>
+  <ul>
+    <li>400g Hähnchen-Innenfilet</li>
+    <li>250g Zucchini</li>
+    <li>150g Cocktailtomaten</li>
+    <li>100g Oliven</li>
+    <li>1 rote Zwiebel</li>
+    <li>1 Knoblauchzehe</li>
+    <li>1 EL Pesto Calabrese</li>
+    <li>1 EL Butter</li>
+    <li>½ TL Salz</li>
+    <li>⅛ TL Pfeffer</li>
+    <li><strong>Schritte:</strong></li>
+    <li>Zwiebel in Spalten, Hähnchen würfeln, Knoblauch hacken.</li>
+    <li>Tomaten halbieren, Zucchini würfeln.</li>
+    <li>Butter mit Hähnchen erhitzen, 6-7 Min. anbraten.</li>
+    <li>Oliven, Tomaten und Zucchini dazugeben, 7-8 Min. mitbraten.</li>
+    <li>Pesto und Gewürze einrühren.</li>
+  </ul>
+</div>
+
+<div id="asiatischeSteakPfanne" class="receita" style="display: none;">
+  <h3>Asiatische  Steak-Pfanne</h3>
+  <ul>
+    <li>320g Rinder-Minutensteaks</li>
+    <li>250g Zuckerschoten</li>
+    <li>10g Ingwer</li>
+    <li>1 rote Zwiebel</li>
+    <li>1 Knoblauchzehe</li>
+    <li>2 EL Kokosöl</li>
+    <li>1 EL Soja Sauce</li>
+    <li>¼ TL Salz</li>
+    <li>⅛ TL Pfeffer</li>
+    <li><strong>Schritte:</strong></li>
+    <li>Knoblauch und Ingwer hacken, Zwiebel in Spalten schneiden.</li>
+    <li>Zuckerschoten vorbereiten, Steak in Streifen schneiden.</li>
+    <li>Kokosöl mit Gewürzen 3-4 Min. anbraten.</li>
+    <li>Soja-Sauce und Zuckerschoten zugeben, 4-5 Min. dünsten.</li>
+    <li>Steak zugeben, 3-4 Min. braten.</li>
+    <li>Mit Salz & Pfeffer würzen.</li>
+  </ul>
+</div>
+<div id="Snack" class="categoria" style="display: none;">
+  <ul>
+    <li><button onclick="mostrarReceita('Käsechips')">Käsechips</button></li>
+    <li><button onclick="mostrarReceita('Nussmischung')">Pikante Nussmischung</button></li>
+    <li><button onclick="mostrarReceita('MiniPizzen')">Mini Salami Pizzen</button></li>
+    <li><button onclick="mostrarReceita('EierLeberwurst')">Gekochte Eier mit Leberwurst</button></li>
+    <li><button onclick="mostrarReceita('SchinkenRolls')">Omelette-Schinken-Röllchen</button></li>
+    <li><button onclick="mostrarReceita('FetaOliven')">Feta-Oliven-Häppchen</button></li>
+    <li><button onclick="mostrarReceita('MozzarellaSpiesse')">Tomaten-Mozzarella-Spieße</button></li>
+    <li><button onclick="mostrarReceita('SchweinebratenHappen')">Schweinebraten-Gürkchen-Happen</button></li>
+  </ul>
+
+  <div id="Käsechips" class="receita" style="display: none;">
+    <h3> Käsechips</h3>
+    <ul>
+      <li>70g geriebener Käse deiner Wahl</li>
+      <li>Gewürze: Paprika-, Knoblauch-, Chilipulver (optional)</li>
+    </ul>
+    <ol>
+      <li>Backofen auf 180°C vorheizen.</li>
+      <li>Käsehäufchen auf Backpapier mit Abstand verteilen.</li>
+      <li>Optional mit Gewürzen bestreuen.</li>
+      <li>Ca. 7 Minuten backen und abkühlen lassen.</li>
+    </ol>
+  </div>
+
+  <div id="Nussmischung" class="receita" style="display: none;">
+    <h3>Pikante Nussmischung</h3>
+    <ul>
+      <li>150g Mandeln, 150g Erdnüsse, 50g Pekannüsse, 50g Macadamia</li>
+      <li>1 Eiklar, 1 EL Erythrit, Salz, Paprika-, Zwiebelpulver, Chiliflocken</li>
+    </ul>
+    <ol>
+      <li>Ofen auf 200°C vorheizen.</li>
+      <li>Eiklar steif schlagen.</li>
+      <li>Nüsse mit Gewürzen mischen und unterheben.</li>
+      <li>Auf Backblech verteilen und 7–8 Min. backen.</li>
+      <li>Abkühlen lassen.</li>
+    </ol>
+  </div>
+
+  <div id="MiniPizzen" class="receita" style="display: none;">
+    <h3>Mini Salami Pizzen</h3>
+    <p><strong>Teig:</strong> Mozzarella, Frischkäse, Kokos- & Mandelmehl, Eigelb, Xanthan, Salz</p>
+    <p><strong>Sauce:</strong> Tomaten, Basilikum, Oregano, Salz, Pfeffer</p>
+    <p><strong>Belag:</strong> Mozzarella, Mini-Salami</p>
+    <ol>
+      <li>Sauce 10–15 Min. köcheln.</li>
+      <li>Käse schmelzen, mit trockenen Zutaten & Eigelb kneten.</li>
+      <li>Teig ausrollen, ausstechen, 7 Min. backen.</li>
+      <li>Belegen und 7 Min. weiter backen.</li>
+    </ol>
+  </div>
+
+  <div id="EierLeberwurst" class="receita" style="display: none;">
+    <h3>Gekochte Eier mit Leberwurst</h3>
+    <ul>
+      <li>2 Eier</li>
+      <li>40g Leberwurst</li>
+      <li>Schnittlauch (optional)</li>
+    </ul>
+    <ol>
+      <li>Eier 13–15 Min. hart kochen und abkühlen lassen.</li>
+      <li>Halbieren, mit Leberwurst bestreichen.</li>
+    </ol>
+  </div>
+
+  <div id="SchinkenRolls" class="receita" style="display: none;">
+    <h3>Omelette-Schinken-Röllchen</h3>
+    <ul>
+      <li>2 Eier, 60g Kochschinken, ½ TL Butter, ½ TL Sambal Oelek</li>
+    </ul>
+    <ol>
+      <li>Eier in Butter stocken lassen.</li>
+      <li>Schinken darauflegen, mit Sambal bestreichen und rollen.</li>
+    </ol>
+  </div>
+
+  <div id="FetaOliven" class="receita" style="display: none;">
+    <h3>Feta-Oliven-Häppchen</h3>
+    <ul>
+      <li>100g Feta, 80g Oliven, 1 Knoblauchzehe, 1 TL Olivenöl</li>
+      <li>Oregano, Thymian, Salz</li>
+    </ul>
+    <ol>
+      <li>Feta würfeln, Knoblauch pressen, alles mischen.</li>
+      <li>Mit Zahnstocher: Olive + Feta aufspießen.</li>
+    </ol>
+  </div>
+
+  <div id="MozzarellaSpiesse" class="receita" style="display: none;">
+    <h3>Tomaten-Mozzarella-Spieße</h3>
+    <ul>
+      <li>125g Mini Mozzarella, 100g Cocktailtomaten, Olivenöl, Oregano, Basilikum, Salz, Pfeffer, frischer Basilikum</li>
+    </ul>
+    <ol>
+      <li>Zutaten (außer frischen Basilikum) mischen.</li>
+      <li>Auf Zahnstocher aufspießen: Mozzarella, Basilikum, Tomate.</li>
+    </ol>
+  </div>
+
+  <div id="SchweinebratenHappen" class="receita" style="display: none;">
+    <h3>Schweinebraten-Gürkchen-Happen</h3>
+    <ul>
+      <li>50g Schweinebraten-Scheiben, 10g mittelscharfer Senf, 4 kleine Gewürzgurken</li>
+    </ul>
+    <ol>
+      <li>Schweinebraten mit Senf bestreichen und falten.</li>
+      <li>Gurke + Braten aufspießen.</li>
+    </ol>
+  </div>
+</div>
+
+
+
+  
+
+
+
+  <a href="index.html">Zurück zur Startseite</a>
+<footer>
+  &copy;Ich schaffe es. Erstellt Valeria Vontobel
+</footer>
+<script src="script.js"></script>
+  
+ 
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wasserzufuhr – Ich schaffe es</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 2rem;
+      background-color: #f0f8ff;
+    }
+
+    h1 {
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: #444;
+      margin-bottom: 2rem;
+    }
+
+    .glasses {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .glass {
+      width: 60px;
+      height: 100px;
+      border: 2px solid #0077cc;
+      border-radius: 8px;
+      background-color: white;
+      cursor: pointer;
+      position: relative;
+      transition: background-color 0.3s;
+    }
+
+    .glass.filled {
+      background-color: #0077cc;
+    }
+
+    .glass::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 1.5rem;
+    }
+
+    #counter {
+      font-size: 1.2rem;
+      margin-top: 1rem;
+      color: #333;
+    }
+
+    a {
+      display: block;
+      margin-top: 2rem;
+      color: #0077cc;
+      text-decoration: none;
+    }
+
+    footer {
+      margin-top: 4rem;
+      font-size: 0.9rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h1>Wasserzufuhr</h1>
+  <p>Trinke täglich mindestens 8 Gläser Wasser!</p>
+
+  <div class="glasses" id="glasses-container">
+    <!-- 8 Gläser -->
+    <div class="glass"></div>
+    <div class="glass"></div>
+    <div class="glass"></div>
+    <div class="glass"></div>
+    <div class="glass"></div>
+    <div class="glass"></div>
+    <div class="glass"></div>
+    <div class="glass"></div>
+  </div>
+
+  <div id="counter">0 / 8 Gläser getrunken</div>
+
+  <a href="index.html">Zurück zur Startseite</a>
+
+  <footer>
+    &copy; Ich schaffe es – erstellt von Valeria Vontobel
+  </footer>
+
+  <script>
+    const glasses = document.querySelectorAll('.glass');
+    const counter = document.getElementById('counter');
+
+    glasses.forEach((glass, index) => {
+      glass.addEventListener('click', () => {
+        glasses.forEach((g, i) => {
+          g.classList.toggle('filled', i <= index);
+        });
+        counter.textContent = `${index + 1} / 8 Gläser getrunken`;
+      });
+    });
+  </script>
+</body>
+</html>
