@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regras da Dieta Keto</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #fdfdfd;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            text-align: center;
+        }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 90%;
+            max-width: 700px;
+        }
+        th, td {
+            border: 1px solid #bbb;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #eee;
+        }
+        .botao-voltar {
+            display: block;
+            width: fit-content;
+            margin: 40px auto;
+            background-color: #000;
+            color: #fff;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+        .botao-voltar:hover {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body><h1>Regras da Dieta Keto</h1>
+
+<h2>O que é a Dieta Cetogênica?</h2>
+<p>
+    A dieta cetogênica (ou Keto) é um plano alimentar com alto teor de gordura, baixo carboidrato e proteína moderada.
+    O objetivo é entrar em cetose, um estado onde o corpo queima gordura como principal fonte de energia, em vez de carboidratos.
+</p>
+
+<h2>Origem</h2>
+<p>
+    Criada nos anos 1920 pelo Dr. Russell Wilder na Clínica Mayo, foi desenvolvida como tratamento para epilepsia em crianças.
+    A dieta simula os efeitos do jejum, reduzindo significativamente as crises em muitos casos.
+</p>
+
+<h2>Benefícios</h2>
+<ul>
+    <li>Redução de crises epilépticas</li>
+    <li>Emagrecimento rápido e controle de apetite</li>
+    <li>Melhora de níveis de glicose e triglicerídeos</li>
+    <li>Potencial terapêutico para Alzheimer, Parkinson, enxaqueca e outros</li>
+</ul>
+
+<h2>Riscos e efeitos colaterais</h2>
+<ul>
+    <li>Gripe keto: náusea, fadiga, constipação</li>
+    <li>Colesterol e triglicérides elevados</li>
+    <li>Risco de pedras nos rins</li>
+    <li>Perda de massa muscular</li>
+    <li>Deficiência de vitaminas e fibras</li>
+</ul>
+
+<h2>O que pode e o que não pode</h2>
+<table>
+    <tr>
+        <th>✅ Pode Comer</th>
+        <th>❌ Não Pode Comer</th>
+    </tr>
+    <tr>
+        <td>Ovos, carne, frango, peixe</td>
+        <td>Pão, massas, arroz, batata</td>
+    </tr>
+    <tr>
+        <td>Queijos, creme de leite, manteiga</td>
+        <td>Açúcar, doces, refrigerante</td>
+    </tr>
+    <tr>
+        <td>Abacate, coco, azeite</td>
+        <td>Frutas (exceto morango e abacate)</td>
+    </tr>
+    <tr>
+        <td>Folhas verdes, brócolis, couve-flor</td>
+        <td>Feijão, lentilha, grão-de-bico</td>
+    </tr>
+    <tr>
+        <td>Café, chá, água</td>
+        <td>Suco de frutas, leite comum</td>
+    </tr>
+</table>
+
+<h2>Recomendações</h2>
+<ul>
+    <li>Consulte um profissional antes de iniciar</li>
+    <li>Prefira gorduras saudáveis como azeite, abacate e castanhas</li>
+    <li>Monitore exames e sinais do corpo</li>
+    <li>Evite seguir por longos períodos sem acompanhamento</li>
+</ul>
+
+<a href="index.html" class="botao-voltar">⬅️ Voltar ao Menu Principal</a>
+
+</body>
+</html>
