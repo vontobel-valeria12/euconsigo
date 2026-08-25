@@ -1,287 +1,330 @@
 <!DOCTYPE html>
 <html lang="de-CH">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <meta
     name="description"
-    content="Berechne deinen BMI und entscheide, wie du deine Entwicklung weiterverfolgen möchtest."
-  />
+    content="Verfolge deine Ernährung, deine Fortschritte und entwickle gesunde Gewohnheiten, die zu deinem Alltag passen."
+  >
 
   <title>Mein Fortschritt</title>
 
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
+
 
 <body>
 
-  <header class="site-header">
-    <div class="container header-content">
+  <main class="onboarding">
 
-      <a href="index.html" class="brand" aria-label="Mein Fortschritt Startseite">
-        <span class="brand-mark">M</span>
-        <span class="brand-text">Mein Fortschritt</span>
+    <!-- LOGO -->
+
+    <header class="onboarding-header">
+
+      <a
+        href="index.html"
+        class="brand"
+        aria-label="Mein Fortschritt"
+      >
+
+        <span class="brand-icon">
+          M
+        </span>
+
+        <span class="brand-name">
+          Mein Fortschritt
+        </span>
+
       </a>
 
-      <a href="login.html" class="login-link">
-        Anmelden
-      </a>
-
-    </div>
-  </header>
+    </header>
 
 
-  <main>
+    <!-- SLIDER -->
 
-    <section class="bmi-hero">
+    <section class="slider" id="slider">
 
-      <div class="container">
-
-        <div class="hero-intro">
-
-          <span class="eyebrow">
-            Dein Ausgangspunkt
-          </span>
-
-          <h1>
-            Wo stehst du heute?
-          </h1>
-
-          <p>
-            Berechne deinen BMI und entscheide danach, wie du deine
-            Entwicklung weiterverfolgen möchtest.
-          </p>
-
-        </div>
+      <div class="slides" id="slides">
 
 
-        <div class="bmi-card">
+        <!-- SLIDE 1 -->
 
-          <div class="bmi-card-header">
-
-            <span class="calculator-label">
-              BMI-Rechner
-            </span>
-
-            <h2>
-              Deine Angaben
-            </h2>
-
-            <p>
-              Trage dein aktuelles Gewicht und deine Körpergrösse ein.
-            </p>
-
-          </div>
-
-
-          <form id="bmi-form">
-
-            <div class="form-grid">
-
-              <div class="form-group">
-
-                <label for="weight">
-                  Gewicht
-                </label>
-
-                <div class="input-with-unit">
-
-                  <input
-                    type="number"
-                    id="weight"
-                    name="weight"
-                    min="20"
-                    max="350"
-                    step="0.1"
-                    placeholder="z. B. 82.5"
-                    required
-                  />
-
-                  <span>kg</span>
-
-                </div>
-
-              </div>
-
-
-              <div class="form-group">
-
-                <label for="height">
-                  Körpergrösse
-                </label>
-
-                <div class="input-with-unit">
-
-                  <input
-                    type="number"
-                    id="height"
-                    name="height"
-                    min="100"
-                    max="250"
-                    step="1"
-                    placeholder="z. B. 167"
-                    required
-                  />
-
-                  <span>cm</span>
-
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <button type="submit" class="primary-button">
-              BMI berechnen
-            </button>
-
-          </form>
-
-        </div>
-
-
-        <!-- RESULTAT -->
-
-        <section
-          class="result-section"
-          id="result-section"
-          aria-live="polite"
-          hidden
+        <article
+          class="slide active"
+          data-slide="0"
         >
 
-          <div class="result-card">
+          <div class="slide-visual">
 
-            <span class="result-eyebrow">
-              Dein Ergebnis
-            </span>
-
-            <div class="result-value">
-              <span id="bmi-value">0.0</span>
-            </div>
-
-            <h2 id="bmi-category">
-              BMI
-            </h2>
-
-            <p id="bmi-message"></p>
+            <img
+              src="images/welcome.jpg"
+              alt="Gesunde Frau im Alltag"
+            >
 
           </div>
 
 
-          <div class="next-step">
+          <div class="slide-content">
 
-            <span class="eyebrow">
-              Dein nächster Schritt
+            <span class="welcome">
+              Herzlich willkommen bei Mein Fortschritt
             </span>
 
-            <h2>
-              Wie möchtest du weitermachen?
-            </h2>
+            <h1>
+              Bereit für deinen nächsten Schritt?
+            </h1>
 
             <p>
-              Verfolge deine Entwicklung selbst oder entscheide dich
-              für eine persönliche Begleitung.
+              Beginne damit, deine Entwicklung zu verfolgen.
+              Einfach, übersichtlich und in deinem eigenen Tempo.
             </p>
 
           </div>
 
+        </article>
 
-          <!-- PLÄNE -->
 
-          <div class="plans-grid">
 
-            <article class="plan-card free-plan">
+        <!-- SLIDE 2 -->
 
-              <div class="plan-top">
+        <article
+          class="slide"
+          data-slide="1"
+        >
 
-                <span class="plan-label">
-                  Kostenlos
+          <div class="slide-visual dashboard-preview">
+
+            <div class="app-preview">
+
+              <div class="preview-header">
+
+                <span>Heute</span>
+
+                <span class="preview-profile">
+                  LS
                 </span>
 
-                <h3>
-                  Selbst verfolgen
-                </h3>
-
-                <p>
-                  Behalte dein Gewicht, deinen BMI und deine Entwicklung
-                  selbst im Blick.
-                </p>
-
               </div>
 
 
-              <ul class="plan-features">
-                <li>Persönliches Konto</li>
-                <li>Startgewicht erfassen</li>
-                <li>Zielgewicht festlegen</li>
-                <li>Gewicht täglich eintragen</li>
-                <li>BMI-Verlauf</li>
-                <li>Fortschrittsdiagramm</li>
-                <li>Gewichtsverlauf</li>
-              </ul>
+              <div class="calorie-preview">
 
-
-              <a href="register.html?plan=free" class="plan-button free-button">
-                Kostenlos starten
-              </a>
-
-            </article>
-
-
-            <article class="plan-card premium-plan">
-
-              <div class="premium-badge">
-                Persönliche Begleitung
-              </div>
-
-              <div class="plan-top">
-
-                <span class="plan-label">
-                  Premium
+                <span class="preview-small">
+                  Kalorien verbleibend
                 </span>
 
-                <h3>
-                  Nicht alleine weitermachen
-                </h3>
+                <strong>
+                  620
+                </strong>
 
-                <p>
-                  Erhalte persönliche Unterstützung durch eine echte
-                  Ernährungsberaterin oder einen Ernährungsberater.
-                </p>
+                <span>
+                  kcal
+                </span>
 
               </div>
 
 
-              <ul class="plan-features">
-                <li>Alle Funktionen des kostenlosen Plans</li>
-                <li>Persönliche Ernährungsberatung</li>
-                <li>Individuelle Ziele</li>
-                <li>Wöchentlicher Rückblick</li>
-                <li>Persönliche Analyse</li>
-                <li>Begleitung deiner Entwicklung</li>
-              </ul>
+              <div class="calorie-details">
+
+                <div>
+                  <span>Ziel</span>
+                  <strong>1'850</strong>
+                </div>
+
+                <div>
+                  <span>Nahrungsmittel</span>
+                  <strong>1'430</strong>
+                </div>
+
+                <div>
+                  <span>Training</span>
+                  <strong>+200</strong>
+                </div>
+
+              </div>
 
 
-              <a
-                href="premium.html"
-                class="plan-button premium-button"
-              >
-                Begleitung kennenlernen
-              </a>
+              <div class="preview-progress">
 
-            </article>
+                <div class="preview-progress-bar">
+                  <span></span>
+                </div>
+
+              </div>
+
+            </div>
 
           </div>
 
 
-          <p class="bmi-note">
-            Der BMI ist ein allgemeiner Orientierungswert und ersetzt keine
-            medizinische oder individuelle ernährungsbezogene Beurteilung.
-          </p>
+          <div class="slide-content">
 
-        </section>
+            <span class="slide-number">
+              01
+            </span>
+
+            <h2>
+              Verstehe deinen Alltag besser.
+            </h2>
+
+            <p>
+              Entdecke, wie Ernährung und Bewegung
+              deine tägliche Entwicklung beeinflussen.
+            </p>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- SLIDE 3 -->
+
+        <article
+          class="slide"
+          data-slide="2"
+        >
+
+          <div class="slide-visual">
+
+            <img
+              src="images/healthy-food.jpg"
+              alt="Gesunde und ausgewogene Mahlzeit"
+            >
+
+          </div>
+
+
+          <div class="slide-content">
+
+            <span class="slide-number">
+              02
+            </span>
+
+            <h2>
+              Kleine Entscheidungen verändern viel.
+            </h2>
+
+            <p>
+              Entwickle bewusste Essgewohnheiten,
+              die wirklich zu deinem Alltag passen.
+            </p>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- SLIDE 4 -->
+
+        <article
+          class="slide"
+          data-slide="3"
+        >
+
+          <div class="slide-visual">
+
+            <img
+              src="images/nutritionist.jpg"
+              alt="Persönliche Ernährungsberatung"
+            >
+
+            <span class="premium-label">
+              Premium
+            </span>
+
+          </div>
+
+
+          <div class="slide-content">
+
+            <span class="slide-number">
+              03
+            </span>
+
+            <h2>
+              Du musst deinen Weg nicht alleine gehen.
+            </h2>
+
+            <p>
+              Mit Premium erhältst du persönliche
+              Begleitung durch eine echte Ernährungsfachperson.
+            </p>
+
+          </div>
+
+        </article>
+
+
+      </div>
+
+
+
+      <!-- SLIDER NAVIGATION -->
+
+      <button
+        class="slider-arrow slider-arrow-left"
+        id="previous-slide"
+        type="button"
+        aria-label="Vorherige Seite"
+      >
+        ‹
+      </button>
+
+
+      <button
+        class="slider-arrow slider-arrow-right"
+        id="next-slide"
+        type="button"
+        aria-label="Nächste Seite"
+      >
+        ›
+      </button>
+
+
+
+      <!-- DOTS -->
+
+      <div
+        class="slider-dots"
+        aria-label="Seitennavigation"
+      >
+
+        <button
+          class="slider-dot active"
+          type="button"
+          data-slide="0"
+          aria-label="Seite 1"
+        ></button>
+
+        <button
+          class="slider-dot"
+          type="button"
+          data-slide="1"
+          aria-label="Seite 2"
+        ></button>
+
+        <button
+          class="slider-dot"
+          type="button"
+          data-slide="2"
+          aria-label="Seite 3"
+        ></button>
+
+        <button
+          class="slider-dot"
+          type="button"
+          data-slide="3"
+          aria-label="Seite 4"
+        ></button>
 
       </div>
 
@@ -290,28 +333,27 @@
   </main>
 
 
-  <footer class="site-footer">
 
-    <div class="container footer-content">
+  <!-- AÇÕES FIXAS -->
 
-      <div>
+  <footer class="onboarding-actions">
 
-        <strong>
-          Mein Fortschritt
-        </strong>
+    <div class="action-container">
 
-        <p>
-          Deine Entwicklung. Dein Weg. Deine Entscheidung.
-        </p>
-
-      </div>
+      <a
+        href="start.html"
+        class="button button-primary"
+      >
+        Kostenlos einrichten
+      </a>
 
 
-      <div class="footer-links">
-        <a href="#">Datenschutz</a>
-        <a href="#">AGB</a>
-        <a href="#">Kontakt</a>
-      </div>
+      <a
+        href="login.html"
+        class="button button-secondary"
+      >
+        Anmelden
+      </a>
 
     </div>
 
@@ -321,4 +363,5 @@
   <script src="script.js"></script>
 
 </body>
+
 </html>
