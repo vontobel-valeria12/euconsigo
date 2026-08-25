@@ -1,1131 +1,368 @@
-:root {
-  --white: #ffffff;
-  --off-white: #fbfaf6;
-  --beige: #efe7da;
-  --beige-soft: #f5f0e8;
-  --brown: #8a725d;
-  --brown-dark: #5d4a3b;
+const bmiForm = document.getElementById("imc-form");
+const weightInput = document.getElementById("weight");
+const heightInput = document.getElementById("height");
 
-  --green: #bfd8c3;
-  --green-soft: #e8f2e8;
-  --green-dark: #5f7f67;
+const bmiResult = document.getElementById("imc-result");
+const bmiValue = document.getElementById("imc-value");
+const bmiCategory = document.getElementById("imc-category");
+const bmiMessage = document.getElementById("imc-message");
 
-  --black: #171717;
-  --text-soft: #5d5d58;
-  --line: rgba(23, 23, 23, 0.1);
+const foodSearchInput = document.getElementById("food-search");
+const foodSearchButton = document.getElementById("food-search-button");
+const foodTableBody = document.getElementById("food-table-body");
+const foodEmptyState = document.getElementById("food-empty-state");
 
-  --radius-small: 14px;
-  --radius-medium: 24px;
-  --radius-large: 38px;
 
-  --shadow-soft: 0 18px 50px rgba(69, 57, 47, 0.08);
+/* --------------------------------------------------
+   BMI RECHNER
+-------------------------------------------------- */
+
+bmiForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  const weight = parseFloat(weightInput.value);
+  const heightCm = parseFloat(heightInput.value);
+
+  if (!weight || !heightCm) {
+    return;
+  }
+
+  const heightM = heightCm / 100;
+  const bmi = weight / (heightM * heightM);
+
+  let category = "";
+  let message = "";
+
+  if (bmi < 18.5) {
+    category = "Untergewicht";
+    message = "Dein BMI liegt unter dem üblichen Normalbereich.";
+  } else if (bmi < 25) {
+    category = "Normalgewicht";
+    message = "Dein BMI liegt im üblichen Normalbereich.";
+  } else if (bmi < 30) {
+    category = "Übergewicht";
+    message = "Dein BMI liegt über dem üblichen Normalbereich.";
+  } else if (bmi < 35) {
+    category = "Adipositas Grad I";
+    message = "Dein BMI liegt im Bereich Adipositas Grad I.";
+  } else if (bmi < 40) {
+    category = "Adipositas Grad II";
+    message = "Dein BMI liegt im Bereich Adipositas Grad II.";
+  } else {
+    category = "Adipositas Grad III";
+    message = "Dein BMI liegt im Bereich Adipositas Grad III.";
+  }
+
+  bmiValue.textContent = bmi.toFixed(1);
+  bmiCategory.textContent = category;
+  bmiMessage.textContent = message;
+
+  bmiResult.hidden = false;
+
+  bmiResult.scrollIntoView({
+    behavior: "smooth",
+    block: "nearest"
+  });
+});
+
+
+/* --------------------------------------------------
+   LEBENSMITTEL DATENBANK
+-------------------------------------------------- */
+
+const foods = [
+  {
+    name: "Banane",
+    amount: "100 g",
+    calories: 89,
+    protein: 1.1,
+    carbs: 22.8,
+    fat: 0.3
+  },
+  {
+    name: "Apfel",
+    amount: "100 g",
+    calories: 52,
+    protein: 0.3,
+    carbs: 13.8,
+    fat: 0.2
+  },
+  {
+    name: "Birne",
+    amount: "100 g",
+    calories: 57,
+    protein: 0.4,
+    carbs: 15.2,
+    fat: 0.1
+  },
+  {
+    name: "Orange",
+    amount: "100 g",
+    calories: 47,
+    protein: 0.9,
+    carbs: 11.8,
+    fat: 0.1
+  },
+  {
+    name: "Erdbeeren",
+    amount: "100 g",
+    calories: 32,
+    protein: 0.7,
+    carbs: 7.7,
+    fat: 0.3
+  },
+  {
+    name: "Avocado",
+    amount: "100 g",
+    calories: 160,
+    protein: 2.0,
+    carbs: 8.5,
+    fat: 14.7
+  },
+  {
+    name: "Ei, gekocht",
+    amount: "1 Stück",
+    calories: 78,
+    protein: 6.3,
+    carbs: 0.6,
+    fat: 5.3
+  },
+  {
+    name: "Pouletbrust, gebraten",
+    amount: "100 g",
+    calories: 165,
+    protein: 31.0,
+    carbs: 0,
+    fat: 3.6
+  },
+  {
+    name: "Rindfleisch, mager",
+    amount: "100 g",
+    calories: 200,
+    protein: 26.0,
+    carbs: 0,
+    fat: 10.0
+  },
+  {
+    name: "Lachs",
+    amount: "100 g",
+    calories: 208,
+    protein: 20.0,
+    carbs: 0,
+    fat: 13.0
+  },
+  {
+    name: "Thunfisch",
+    amount: "100 g",
+    calories: 132,
+    protein: 29.0,
+    carbs: 0,
+    fat: 1.0
+  },
+  {
+    name: "Weisser Reis, gekocht",
+    amount: "100 g",
+    calories: 130,
+    protein: 2.7,
+    carbs: 28.2,
+    fat: 0.3
+  },
+  {
+    name: "Vollkornreis, gekocht",
+    amount: "100 g",
+    calories: 123,
+    protein: 2.7,
+    carbs: 25.6,
+    fat: 1.0
+  },
+  {
+    name: "Kartoffeln, gekocht",
+    amount: "100 g",
+    calories: 87,
+    protein: 1.9,
+    carbs: 20.1,
+    fat: 0.1
+  },
+  {
+    name: "Süsskartoffel",
+    amount: "100 g",
+    calories: 86,
+    protein: 1.6,
+    carbs: 20.1,
+    fat: 0.1
+  },
+  {
+    name: "Haferflocken",
+    amount: "100 g",
+    calories: 372,
+    protein: 13.5,
+    carbs: 58.7,
+    fat: 7.0
+  },
+  {
+    name: "Vollkornbrot",
+    amount: "100 g",
+    calories: 247,
+    protein: 9.0,
+    carbs: 41.0,
+    fat: 4.2
+  },
+  {
+    name: "Nature Joghurt",
+    amount: "100 g",
+    calories: 61,
+    protein: 3.5,
+    carbs: 4.7,
+    fat: 3.3
+  },
+  {
+    name: "Magerquark",
+    amount: "100 g",
+    calories: 67,
+    protein: 12.0,
+    carbs: 4.0,
+    fat: 0.2
+  },
+  {
+    name: "Milch, 1.5 %",
+    amount: "100 ml",
+    calories: 47,
+    protein: 3.4,
+    carbs: 4.9,
+    fat: 1.5
+  },
+  {
+    name: "Mandeln",
+    amount: "100 g",
+    calories: 579,
+    protein: 21.2,
+    carbs: 21.6,
+    fat: 49.9
+  },
+  {
+    name: "Brokkoli",
+    amount: "100 g",
+    calories: 34,
+    protein: 2.8,
+    carbs: 6.6,
+    fat: 0.4
+  },
+  {
+    name: "Karotten",
+    amount: "100 g",
+    calories: 41,
+    protein: 0.9,
+    carbs: 9.6,
+    fat: 0.2
+  },
+  {
+    name: "Tomaten",
+    amount: "100 g",
+    calories: 18,
+    protein: 0.9,
+    carbs: 3.9,
+    fat: 0.2
+  },
+  {
+    name: "Gurke",
+    amount: "100 g",
+    calories: 15,
+    protein: 0.7,
+    carbs: 3.6,
+    fat: 0.1
+  }
+];
+
+
+/* --------------------------------------------------
+   TABELLE ERSTELLEN
+-------------------------------------------------- */
+
+function renderFoods(foodList) {
+  foodTableBody.innerHTML = "";
+
+  if (foodList.length === 0) {
+    foodEmptyState.hidden = false;
+    return;
+  }
+
+  foodEmptyState.hidden = true;
+
+  foodList.forEach(function (food) {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${food.name}</td>
+      <td>${food.amount}</td>
+      <td><strong>${food.calories} kcal</strong></td>
+      <td>${formatNumber(food.protein)} g</td>
+      <td>${formatNumber(food.carbs)} g</td>
+      <td>${formatNumber(food.fat)} g</td>
+    `;
+
+    foodTableBody.appendChild(row);
+  });
 }
 
 
 /* --------------------------------------------------
-   RESET
+   LEBENSMITTEL SUCHEN
 -------------------------------------------------- */
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+function searchFoods() {
+  const query = normalizeText(foodSearchInput.value.trim());
+
+  if (!query) {
+    renderFoods(foods);
+    return;
+  }
+
+  const results = foods.filter(function (food) {
+    return normalizeText(food.name).includes(query);
+  });
+
+  renderFoods(results);
 }
 
 
-html {
-  scroll-behavior: smooth;
+foodSearchButton.addEventListener("click", searchFoods);
+
+
+foodSearchInput.addEventListener("input", function () {
+  searchFoods();
+});
+
+
+foodSearchInput.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    searchFoods();
+  }
+});
+
+
+/* --------------------------------------------------
+   HILFSFUNKTIONEN
+-------------------------------------------------- */
+
+function normalizeText(text) {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 }
 
 
-body {
-  min-height: 100vh;
-  font-family:
-    Inter,
-    "Helvetica Neue",
-    Helvetica,
-    Arial,
-    sans-serif;
-
-  color: var(--black);
-  background:
-    linear-gradient(
-      180deg,
-      #ffffff 0%,
-      #fbfaf6 45%,
-      #f6f2eb 100%
-    );
-
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-
-button,
-input {
-  font: inherit;
-}
-
-
-button {
-  cursor: pointer;
-}
-
-
-.container {
-  width: min(1180px, calc(100% - 48px));
-  margin-inline: auto;
+function formatNumber(number) {
+  return number.toLocaleString("de-CH", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1
+  });
 }
 
 
 /* --------------------------------------------------
-   FUNDO ABSTRATO
+   START
 -------------------------------------------------- */
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -3;
-  pointer-events: none;
-
-  background:
-    linear-gradient(
-      to right,
-      transparent 0%,
-      rgba(138, 114, 93, 0.08) 18%,
-      transparent 18.4%,
-      transparent 30%,
-      rgba(191, 216, 195, 0.12) 30.4%,
-      transparent 31%,
-      transparent 46%,
-      rgba(138, 114, 93, 0.06) 46.4%,
-      transparent 47%,
-      transparent 61%,
-      rgba(191, 216, 195, 0.1) 61.4%,
-      transparent 62%,
-      transparent 77%,
-      rgba(138, 114, 93, 0.07) 77.4%,
-      transparent 78%
-    );
-}
-
-
-body::after {
-  content: "";
-  position: fixed;
-
-  width: 620px;
-  height: 1200px;
-
-  top: -110px;
-  right: -80px;
-
-  z-index: -2;
-  pointer-events: none;
-
-  background:
-    repeating-linear-gradient(
-      90deg,
-      rgba(105, 83, 66, 0.22) 0px,
-      rgba(105, 83, 66, 0.22) 1px,
-      transparent 1px,
-      transparent 16px
-    );
-
-  clip-path: polygon(
-    7% 0%,
-    100% 0%,
-    85% 10%,
-    74% 20%,
-    66% 30%,
-    60% 40%,
-    57% 50%,
-    59% 60%,
-    66% 70%,
-    76% 80%,
-    88% 90%,
-    100% 100%,
-    12% 100%,
-    20% 90%,
-    29% 80%,
-    36% 70%,
-    41% 60%,
-    44% 50%,
-    40% 40%,
-    34% 30%,
-    26% 20%,
-    17% 10%
-  );
-
-  opacity: 0.42;
-}
-
-
-.hero-calculator::before {
-  content: "";
-  position: absolute;
-
-  width: 470px;
-  height: 900px;
-
-  top: -110px;
-  left: -180px;
-
-  background:
-    repeating-linear-gradient(
-      90deg,
-      rgba(142, 171, 145, 0.28) 0px,
-      rgba(142, 171, 145, 0.28) 1px,
-      transparent 1px,
-      transparent 14px
-    );
-
-  clip-path: polygon(
-    5% 0%,
-    94% 0%,
-    80% 12%,
-    69% 24%,
-    62% 36%,
-    58% 50%,
-    62% 64%,
-    70% 76%,
-    82% 88%,
-    96% 100%,
-    8% 100%,
-    19% 88%,
-    30% 76%,
-    38% 64%,
-    42% 50%,
-    38% 36%,
-    29% 24%,
-    17% 12%
-  );
-
-  opacity: 0.32;
-  pointer-events: none;
-}
-
-
-/* --------------------------------------------------
-   HEADER
--------------------------------------------------- */
-
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-
-  border-bottom: 1px solid rgba(93, 74, 59, 0.08);
-}
-
-
-.header-content {
-  min-height: 82px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 30px;
-}
-
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-
-.brand-mark {
-  width: 42px;
-  height: 42px;
-
-  display: grid;
-  place-items: center;
-
-  border-radius: 50%;
-
-  background: var(--green);
-  color: var(--black);
-
-  font-size: 18px;
-}
-
-
-.brand-text {
-  font-size: 18px;
-}
-
-
-.main-nav {
-  display: flex;
-  align-items: center;
-  gap: 34px;
-}
-
-
-.main-nav a {
-  font-size: 14px;
-  font-weight: 500;
-  color: #30302e;
-
-  transition:
-    color 0.25s ease,
-    transform 0.25s ease;
-}
-
-
-.main-nav a:hover {
-  color: var(--green-dark);
-  transform: translateY(-1px);
-}
-
-
-.login-link {
-  padding: 11px 19px;
-
-  border: 1px solid rgba(23, 23, 23, 0.16);
-  border-radius: 999px;
-
-  font-size: 14px;
-  font-weight: 600;
-
-  transition: 0.25s ease;
-}
-
-
-.login-link:hover {
-  background: var(--black);
-  color: white;
-  border-color: var(--black);
-}
-
-
-/* --------------------------------------------------
-   HERO + CALCULADORA
--------------------------------------------------- */
-
-.hero-calculator {
-  position: relative;
-  overflow: hidden;
-
-  min-height: 720px;
-
-  padding: 110px 0 100px;
-}
-
-
-.calculator-layout {
-  display: grid;
-
-  grid-template-columns:
-    minmax(0, 0.9fr)
-    minmax(420px, 0.75fr);
-
-  align-items: center;
-
-  gap: 100px;
-}
-
-
-.calculator-intro {
-  max-width: 580px;
-}
-
-
-.eyebrow {
-  display: inline-block;
-
-  margin-bottom: 22px;
-
-  color: var(--green-dark);
-
-  font-size: 13px;
-  font-weight: 700;
-
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-
-.calculator-intro h1 {
-  max-width: 650px;
-
-  font-size: clamp(48px, 6vw, 80px);
-  line-height: 0.99;
-
-  font-weight: 600;
-  letter-spacing: -0.055em;
-
-  margin-bottom: 28px;
-}
-
-
-.calculator-intro p {
-  max-width: 530px;
-
-  font-size: 18px;
-  line-height: 1.75;
-
-  color: var(--text-soft);
-}
-
-
-/* --------------------------------------------------
-   CARD CALCULADORA
--------------------------------------------------- */
-
-.calculator-card {
-  position: relative;
-
-  padding: 42px;
-
-  border-radius: var(--radius-large);
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.96),
-      rgba(245, 240, 232, 0.92)
-    );
-
-  border: 1px solid rgba(138, 114, 93, 0.14);
-
-  box-shadow:
-    0 35px 90px rgba(79, 63, 51, 0.12);
-
-  backdrop-filter: blur(15px);
-}
-
-
-.calculator-card::before {
-  content: "";
-
-  position: absolute;
-
-  width: 160px;
-  height: 160px;
-
-  top: -50px;
-  right: -50px;
-
-  border-radius: 50%;
-
-  background: var(--green-soft);
-
-  z-index: -1;
-}
-
-
-.calculator-card-header {
-  margin-bottom: 34px;
-}
-
-
-.calculator-label {
-  color: var(--brown);
-
-  font-size: 12px;
-  font-weight: 700;
-
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-
-.calculator-card h2 {
-  margin-top: 8px;
-
-  font-size: 34px;
-  font-weight: 600;
-
-  letter-spacing: -0.035em;
-}
-
-
-.calculator-card-header p {
-  margin-top: 8px;
-
-  color: var(--text-soft);
-  font-size: 15px;
-}
-
-
-/* --------------------------------------------------
-   FORM
--------------------------------------------------- */
-
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-
-  gap: 18px;
-
-  margin-bottom: 20px;
-}
-
-
-.form-group label {
-  display: block;
-
-  margin-bottom: 9px;
-
-  font-size: 13px;
-  font-weight: 600;
-}
-
-
-.input-with-unit {
-  position: relative;
-}
-
-
-.input-with-unit input {
-  width: 100%;
-
-  padding: 17px 58px 17px 17px;
-
-  border-radius: var(--radius-small);
-
-  border: 1px solid rgba(23, 23, 23, 0.12);
-
-  background: rgba(255, 255, 255, 0.85);
-
-  outline: none;
-
-  font-size: 16px;
-  color: var(--black);
-
-  transition:
-    border-color 0.25s ease,
-    box-shadow 0.25s ease,
-    background 0.25s ease;
-}
-
-
-.input-with-unit input:focus {
-  border-color: var(--green-dark);
-
-  box-shadow:
-    0 0 0 4px rgba(191, 216, 195, 0.28);
-
-  background: white;
-}
-
-
-.input-with-unit span {
-  position: absolute;
-
-  right: 16px;
-  top: 50%;
-
-  transform: translateY(-50%);
-
-  color: #77736c;
-
-  font-size: 13px;
-  font-weight: 600;
-}
-
-
-.primary-button {
-  width: 100%;
-
-  padding: 17px 24px;
-
-  border: none;
-  border-radius: var(--radius-small);
-
-  background: var(--black);
-  color: white;
-
-  font-size: 15px;
-  font-weight: 650;
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
-}
-
-
-.primary-button:hover {
-  transform: translateY(-2px);
-
-  background: var(--brown-dark);
-
-  box-shadow:
-    0 12px 30px rgba(72, 57, 45, 0.18);
-}
-
-
-/* --------------------------------------------------
-   RESULTADO IMC
--------------------------------------------------- */
-
-.imc-result {
-  margin-top: 26px;
-  padding: 22px;
-
-  display: grid;
-  grid-template-columns: auto 1fr;
-
-  gap: 28px;
-  align-items: center;
-
-  border-radius: 20px;
-
-  background: var(--green-soft);
-
-  border: 1px solid rgba(95, 127, 103, 0.12);
-}
-
-
-.result-main {
-  padding-right: 25px;
-  border-right: 1px solid rgba(23, 23, 23, 0.11);
-}
-
-
-.result-label {
-  display: block;
-
-  font-size: 12px;
-  color: var(--text-soft);
-
-  margin-bottom: 3px;
-}
-
-
-.result-main strong {
-  font-size: 38px;
-  font-weight: 600;
-
-  letter-spacing: -0.04em;
-}
-
-
-.result-info strong {
-  font-size: 15px;
-}
-
-
-.result-info p {
-  margin-top: 4px;
-
-  font-size: 13px;
-  color: var(--text-soft);
-}
-
-
-/* --------------------------------------------------
-   PREMIUM
--------------------------------------------------- */
-
-.premium-banner {
-  padding: 30px 0 90px;
-}
-
-
-.premium-content {
-  display: grid;
-
-  grid-template-columns: 1.4fr auto;
-
-  align-items: center;
-
-  gap: 50px;
-
-  padding: 50px 56px;
-
-  border-radius: 34px;
-
-  background:
-    linear-gradient(
-      120deg,
-      #dce9dd,
-      #edf2e8 48%,
-      #eee4d8
-    );
-
-  border: 1px solid rgba(95, 127, 103, 0.12);
-
-  box-shadow: var(--shadow-soft);
-}
-
-
-.premium-tag {
-  display: inline-block;
-
-  margin-bottom: 12px;
-
-  padding: 6px 11px;
-
-  border-radius: 999px;
-
-  background: rgba(255, 255, 255, 0.7);
-
-  font-size: 11px;
-  font-weight: 700;
-
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-
-.premium-text h2 {
-  font-size: 34px;
-  font-weight: 600;
-
-  letter-spacing: -0.035em;
-
-  margin-bottom: 12px;
-}
-
-
-.premium-text p {
-  max-width: 670px;
-
-  color: #50534f;
-  line-height: 1.7;
-}
-
-
-.premium-action {
-  display: flex;
-  flex-direction: column;
-
-  align-items: center;
-  gap: 10px;
-}
-
-
-.premium-button {
-  display: inline-flex;
-
-  align-items: center;
-  justify-content: center;
-
-  min-width: 220px;
-
-  padding: 15px 22px;
-
-  border-radius: 999px;
-
-  background: var(--black);
-  color: white;
-
-  font-size: 14px;
-  font-weight: 650;
-
-  transition: 0.25s ease;
-}
-
-
-.premium-button:hover {
-  transform: translateY(-2px);
-
-  background: var(--green-dark);
-}
-
-
-.premium-note {
-  font-size: 11px;
-  color: #676963;
-}
-
-
-/* --------------------------------------------------
-   ALIMENTOS
--------------------------------------------------- */
-
-.food-section {
-  padding: 100px 0 120px;
-}
-
-
-.section-heading {
-  max-width: 720px;
-
-  margin-bottom: 48px;
-}
-
-
-.section-heading h2 {
-  font-size: clamp(38px, 5vw, 58px);
-
-  line-height: 1.05;
-
-  font-weight: 600;
-  letter-spacing: -0.045em;
-}
-
-
-.section-heading p {
-  margin-top: 18px;
-
-  color: var(--text-soft);
-  font-size: 17px;
-}
-
-
-.food-search-card {
-  padding: 28px;
-
-  margin-bottom: 28px;
-
-  border-radius: 24px;
-
-  background: rgba(255, 255, 255, 0.86);
-
-  border: 1px solid rgba(138, 114, 93, 0.12);
-
-  box-shadow: var(--shadow-soft);
-}
-
-
-.food-search label {
-  display: block;
-
-  margin-bottom: 10px;
-
-  font-size: 13px;
-  font-weight: 600;
-}
-
-
-.search-field {
-  display: grid;
-
-  grid-template-columns: 1fr auto;
-
-  gap: 10px;
-}
-
-
-.search-field input {
-  min-height: 54px;
-
-  padding: 0 18px;
-
-  border-radius: 14px;
-
-  border: 1px solid rgba(23, 23, 23, 0.12);
-
-  background: white;
-
-  outline: none;
-
-  transition: 0.2s ease;
-}
-
-
-.search-field input:focus {
-  border-color: var(--green-dark);
-
-  box-shadow:
-    0 0 0 4px rgba(191, 216, 195, 0.25);
-}
-
-
-.search-field button {
-  min-width: 120px;
-
-  padding: 0 22px;
-
-  border: none;
-  border-radius: 14px;
-
-  background: var(--green-dark);
-  color: white;
-
-  font-weight: 600;
-
-  transition: 0.2s ease;
-}
-
-
-.search-field button:hover {
-  background: var(--black);
-}
-
-
-/* --------------------------------------------------
-   TABELA
--------------------------------------------------- */
-
-.food-table-wrapper {
-  overflow-x: auto;
-
-  border-radius: 24px;
-
-  background: rgba(255, 255, 255, 0.9);
-
-  border: 1px solid rgba(138, 114, 93, 0.12);
-
-  box-shadow: var(--shadow-soft);
-}
-
-
-.food-table {
-  width: 100%;
-  border-collapse: collapse;
-
-  min-width: 760px;
-}
-
-
-.food-table thead {
-  background: var(--beige-soft);
-}
-
-
-.food-table th {
-  padding: 18px 20px;
-
-  text-align: left;
-
-  font-size: 12px;
-  font-weight: 700;
-
-  color: #5c554e;
-
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-
-.food-table td {
-  padding: 20px;
-
-  border-top: 1px solid rgba(23, 23, 23, 0.07);
-
-  font-size: 14px;
-}
-
-
-.food-table tbody tr {
-  transition: background 0.2s ease;
-}
-
-
-.food-table tbody tr:hover {
-  background: rgba(232, 242, 232, 0.46);
-}
-
-
-.food-table td:first-child {
-  font-weight: 600;
-}
-
-
-/* --------------------------------------------------
-   EMPTY STATE
--------------------------------------------------- */
-
-.food-empty-state {
-  margin-top: 20px;
-
-  padding: 35px;
-
-  text-align: center;
-
-  border-radius: 20px;
-
-  background: var(--beige-soft);
-}
-
-
-.food-empty-state h3 {
-  font-size: 20px;
-}
-
-
-.food-empty-state p {
-  margin-top: 6px;
-  color: var(--text-soft);
-}
-
-
-/* --------------------------------------------------
-   FOOTER
--------------------------------------------------- */
-
-.site-footer {
-  padding: 60px 0;
-
-  background: #f0ebe3;
-
-  border-top: 1px solid rgba(93, 74, 59, 0.08);
-}
-
-
-.footer-content {
-  display: flex;
-
-  align-items: flex-start;
-  justify-content: space-between;
-
-  gap: 40px;
-}
-
-
-.footer-content strong {
-  font-size: 17px;
-}
-
-
-.footer-content p {
-  margin-top: 7px;
-
-  color: var(--text-soft);
-  font-size: 13px;
-}
-
-
-.footer-links {
-  display: flex;
-  gap: 24px;
-}
-
-
-.footer-links a {
-  font-size: 13px;
-  color: #55524e;
-}
-
-
-.footer-links a:hover {
-  color: var(--black);
-}
-
-
-/* --------------------------------------------------
-   RESPONSIVE
--------------------------------------------------- */
-
-@media (max-width: 980px) {
-
-  .calculator-layout {
-    grid-template-columns: 1fr;
-
-    gap: 60px;
-  }
-
-
-  .calculator-intro {
-    max-width: 720px;
-  }
-
-
-  .premium-content {
-    grid-template-columns: 1fr;
-  }
-
-
-  .premium-action {
-    align-items: flex-start;
-  }
-
-
-  body::after {
-    opacity: 0.2;
-    right: -260px;
-  }
-
-}
-
-
-@media (max-width: 760px) {
-
-  .container {
-    width: min(100% - 30px, 1180px);
-  }
-
-
-  .main-nav {
-    display: none;
-  }
-
-
-  .hero-calculator {
-    padding: 72px 0;
-  }
-
-
-  .calculator-intro h1 {
-    font-size: 45px;
-  }
-
-
-  .calculator-card {
-    padding: 28px 22px;
-
-    border-radius: 26px;
-  }
-
-
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-
-
-  .imc-result {
-    grid-template-columns: 1fr;
-  }
-
-
-  .result-main {
-    border-right: none;
-    border-bottom: 1px solid rgba(23, 23, 23, 0.1);
-
-    padding-right: 0;
-    padding-bottom: 15px;
-  }
-
-
-  .premium-content {
-    padding: 35px 26px;
-  }
-
-
-  .premium-text h2 {
-    font-size: 29px;
-  }
-
-
-  .search-field {
-    grid-template-columns: 1fr;
-  }
-
-
-  .search-field button {
-    min-height: 50px;
-  }
-
-
-  .footer-content {
-    flex-direction: column;
-  }
-
-
-  .footer-links {
-    flex-wrap: wrap;
-  }
-
-}
+renderFoods(foods);
