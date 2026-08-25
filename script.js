@@ -1,64 +1,336 @@
-const bmiForm = document.getElementById("bmi-form");
-const weightInput = document.getElementById("weight");
-const heightInput = document.getElementById("height");
+/* ==================================================
+   ONBOARDING SLIDER
+================================================== */
 
-const resultSection = document.getElementById("result-section");
-const bmiValue = document.getElementById("bmi-value");
-const bmiCategory = document.getElementById("bmi-category");
-const bmiMessage = document.getElementById("bmi-message");
+const slidesContainer = document.getElementById("slides");
+const slides = document.querySelectorAll(".slide");
 
-bmiForm.addEventListener("submit", function (event) {
-  event.preventDefault();
+const previousButton = document.getElementById("previous-slide");
+const nextButton = document.getElementById("next-slide");
 
-  const weight = parseFloat(weightInput.value);
-  const heightCm = parseFloat(heightInput.value);
+const dots = document.querySelectorAll(".slider-dot");
 
-  if (!weight || !heightCm) {
-    return;
+let currentSlide = 0;
+
+
+/* ==================================================
+   MOSTRAR SLIDE
+================================================== */
+
+function showSlide(index) {
+
+  if (index < 0) {
+    index = slides.length - 1;
   }
 
-  const heightM = heightCm / 100;
-  const bmi = weight / (heightM * heightM);
-
-  let category = "";
-  let message = "";
-
-  if (bmi < 18.5) {
-    category = "Untergewicht";
-    message =
-      "Dein BMI liegt unter dem üblichen Orientierungsbereich. Wenn du dein Gewicht verändern möchtest, kann eine persönliche Beratung sinnvoll sein.";
-  } else if (bmi < 25) {
-    category = "Normalgewicht";
-    message =
-      "Dein BMI liegt im üblichen Orientierungsbereich. Du kannst deine Entwicklung weiterhin im Blick behalten und deine persönlichen Ziele verfolgen.";
-  } else if (bmi < 30) {
-    category = "Übergewicht";
-    message =
-      "Dein BMI liegt über dem üblichen Orientierungsbereich. Das ist nur dein Ausgangspunkt – entscheidend ist, wie du deinen nächsten Schritt gestalten möchtest.";
-  } else if (bmi < 35) {
-    category = "Adipositas Grad I";
-    message =
-      "Dein BMI liegt deutlich über dem üblichen Orientierungsbereich. Eine strukturierte Begleitung kann dir helfen, realistische und passende Ziele festzulegen.";
-  } else if (bmi < 40) {
-    category = "Adipositas Grad II";
-    message =
-      "Dein BMI liegt deutlich über dem üblichen Orientierungsbereich. Eine persönliche fachliche Begleitung kann besonders sinnvoll sein.";
-  } else {
-    category = "Adipositas Grad III";
-    message =
-      "Dein BMI liegt stark über dem üblichen Orientierungsbereich. Für eine individuelle Einschätzung ist eine persönliche fachliche Beratung besonders wichtig.";
+  if (index >= slides.length) {
+    index = 0;
   }
 
-  bmiValue.textContent = bmi.toFixed(1);
-  bmiCategory.textContent = category;
-  bmiMessage.textContent = message;
+  currentSlide = index;
 
-  resultSection.hidden = false;
+  slidesContainer.style.transform =
+    `translateX(-${currentSlide * 100}%)`;
 
-  setTimeout(() => {
-    resultSection.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-  }, 100);
+
+  /* Atualizar bolinhas */
+
+  dots.forEach((dot, dotIndex) => {
+
+    if (dotIndex === currentSlide) {
+      dot.classList.add("active");
+    } else {
+      dot.classList.remove("active");
+    }
+
+  });
+
+
+  /* Atualizar slides */
+
+  slides.forEach((slide, slideIndex) => {
+
+    if (slideIndex === currentSlide) {
+
+      slide.classList.add("active");
+
+      slide.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+    } else {
+
+      slide.classList.remove("active");
+
+      slide.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+    }
+
+  });
+
+}
+
+
+/* ==================================================
+   PRÓXIMO
+================================================== */
+
+function nextSlide() {
+  showSlide(currentSlide + 1);
+}
+
+
+/* ==================================================
+   ANTERIOR
+================================================== */
+
+function previousSlide() {
+  showSlide(currentSlide - 1);
+}
+
+
+/* ==================================================
+   BOTÕES
+================================================== */
+
+nextButton.addEventListener(
+  "click",
+  nextSlide
+);
+
+
+previousButton.addEventListener(
+  "click",
+  previousSlide
+);
+
+
+/* ==================================================
+   DOTS
+================================================== */
+
+dots.forEach((dot) => {
+
+  dot.addEventListener(
+    "click",
+    function () {
+
+      const slideIndex =
+        Number(this.dataset.slide);
+
+      showSlide(slideIndex);
+
+    }
+  );
+
 });
+
+
+/* ==================================================
+   TECLADO
+================================================== */
+
+document.addEventListener(
+  "keydown",
+  function (event) {
+
+    if (event.key === "ArrowRight") {
+      nextSlide();
+    }
+
+    if (event.key === "ArrowLeft") {
+      previousSlide();
+    }
+
+  }
+);
+
+
+/* ==================================================
+   SWIPE / TOUCH
+================================================== */
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+
+slidesContainer.addEventListener(
+  "touchstart",
+  function (event) {
+
+    touchStartX =
+      event.changedTouches[0].screenX;
+
+  },
+  {
+    passive: true
+  }
+);
+
+
+slidesContainer.addEventListener(
+  "touchend",
+  function (event) {
+
+    touchEndX =
+      event.changedTouches[0].screenX;
+
+    handleSwipe();
+
+  },
+  {
+    passive: true
+  }
+);
+
+
+function handleSwipe() {
+
+  const swipeDistance =
+    touchStartX - touchEndX;
+
+
+  const minimumSwipeDistance = 50;
+
+
+  /*
+    Movimento para esquerda
+  */
+
+  if (
+    swipeDistance >
+    minimumSwipeDistance
+  ) {
+
+    nextSlide();
+
+  }
+
+
+  /*
+    Movimento para direita
+  */
+
+  if (
+    swipeDistance <
+    -minimumSwipeDistance
+  ) {
+
+    previousSlide();
+
+  }
+
+}
+
+
+/* ==================================================
+   MOUSE DRAG
+================================================== */
+
+let mouseStartX = 0;
+let mouseEndX = 0;
+let isDragging = false;
+
+
+slidesContainer.addEventListener(
+  "mousedown",
+  function (event) {
+
+    isDragging = true;
+
+    mouseStartX =
+      event.clientX;
+
+  }
+);
+
+
+slidesContainer.addEventListener(
+  "mouseup",
+  function (event) {
+
+    if (!isDragging) {
+      return;
+    }
+
+    mouseEndX =
+      event.clientX;
+
+    isDragging = false;
+
+    handleMouseDrag();
+
+  }
+);
+
+
+slidesContainer.addEventListener(
+  "mouseleave",
+  function () {
+
+    isDragging = false;
+
+  }
+);
+
+
+function handleMouseDrag() {
+
+  const dragDistance =
+    mouseStartX - mouseEndX;
+
+
+  const minimumDragDistance = 70;
+
+
+  if (
+    dragDistance >
+    minimumDragDistance
+  ) {
+
+    nextSlide();
+
+  }
+
+
+  if (
+    dragDistance <
+    -minimumDragDistance
+  ) {
+
+    previousSlide();
+
+  }
+
+}
+
+
+/* ==================================================
+   IMPEDIR ARRASTAR IMAGENS
+================================================== */
+
+const images =
+  document.querySelectorAll(
+    ".slide img"
+  );
+
+
+images.forEach((image) => {
+
+  image.setAttribute(
+    "draggable",
+    "false"
+  );
+
+});
+
+
+/* ==================================================
+   INICIAR
+================================================== */
+
+showSlide(0);
