@@ -1,368 +1,707 @@
-const bmiForm = document.getElementById("imc-form");
-const weightInput = document.getElementById("weight");
-const heightInput = document.getElementById("height");
+:root {
+  --white: #ffffff;
+  --black: #121212;
+  --text: #202020;
+  --muted: #6f746f;
+  --line: #e8ebe8;
 
-const bmiResult = document.getElementById("imc-result");
-const bmiValue = document.getElementById("imc-value");
-const bmiCategory = document.getElementById("imc-category");
-const bmiMessage = document.getElementById("imc-message");
+  --green: #2f8f5b;
+  --green-dark: #247449;
+  --green-soft: #eef8f2;
 
-const foodSearchInput = document.getElementById("food-search");
-const foodSearchButton = document.getElementById("food-search-button");
-const foodTableBody = document.getElementById("food-table-body");
-const foodEmptyState = document.getElementById("food-empty-state");
-
-
-/* --------------------------------------------------
-   BMI RECHNER
--------------------------------------------------- */
-
-bmiForm.addEventListener("submit", function (event) {
-  event.preventDefault();
-
-  const weight = parseFloat(weightInput.value);
-  const heightCm = parseFloat(heightInput.value);
-
-  if (!weight || !heightCm) {
-    return;
-  }
-
-  const heightM = heightCm / 100;
-  const bmi = weight / (heightM * heightM);
-
-  let category = "";
-  let message = "";
-
-  if (bmi < 18.5) {
-    category = "Untergewicht";
-    message = "Dein BMI liegt unter dem üblichen Normalbereich.";
-  } else if (bmi < 25) {
-    category = "Normalgewicht";
-    message = "Dein BMI liegt im üblichen Normalbereich.";
-  } else if (bmi < 30) {
-    category = "Übergewicht";
-    message = "Dein BMI liegt über dem üblichen Normalbereich.";
-  } else if (bmi < 35) {
-    category = "Adipositas Grad I";
-    message = "Dein BMI liegt im Bereich Adipositas Grad I.";
-  } else if (bmi < 40) {
-    category = "Adipositas Grad II";
-    message = "Dein BMI liegt im Bereich Adipositas Grad II.";
-  } else {
-    category = "Adipositas Grad III";
-    message = "Dein BMI liegt im Bereich Adipositas Grad III.";
-  }
-
-  bmiValue.textContent = bmi.toFixed(1);
-  bmiCategory.textContent = category;
-  bmiMessage.textContent = message;
-
-  bmiResult.hidden = false;
-
-  bmiResult.scrollIntoView({
-    behavior: "smooth",
-    block: "nearest"
-  });
-});
-
-
-/* --------------------------------------------------
-   LEBENSMITTEL DATENBANK
--------------------------------------------------- */
-
-const foods = [
-  {
-    name: "Banane",
-    amount: "100 g",
-    calories: 89,
-    protein: 1.1,
-    carbs: 22.8,
-    fat: 0.3
-  },
-  {
-    name: "Apfel",
-    amount: "100 g",
-    calories: 52,
-    protein: 0.3,
-    carbs: 13.8,
-    fat: 0.2
-  },
-  {
-    name: "Birne",
-    amount: "100 g",
-    calories: 57,
-    protein: 0.4,
-    carbs: 15.2,
-    fat: 0.1
-  },
-  {
-    name: "Orange",
-    amount: "100 g",
-    calories: 47,
-    protein: 0.9,
-    carbs: 11.8,
-    fat: 0.1
-  },
-  {
-    name: "Erdbeeren",
-    amount: "100 g",
-    calories: 32,
-    protein: 0.7,
-    carbs: 7.7,
-    fat: 0.3
-  },
-  {
-    name: "Avocado",
-    amount: "100 g",
-    calories: 160,
-    protein: 2.0,
-    carbs: 8.5,
-    fat: 14.7
-  },
-  {
-    name: "Ei, gekocht",
-    amount: "1 Stück",
-    calories: 78,
-    protein: 6.3,
-    carbs: 0.6,
-    fat: 5.3
-  },
-  {
-    name: "Pouletbrust, gebraten",
-    amount: "100 g",
-    calories: 165,
-    protein: 31.0,
-    carbs: 0,
-    fat: 3.6
-  },
-  {
-    name: "Rindfleisch, mager",
-    amount: "100 g",
-    calories: 200,
-    protein: 26.0,
-    carbs: 0,
-    fat: 10.0
-  },
-  {
-    name: "Lachs",
-    amount: "100 g",
-    calories: 208,
-    protein: 20.0,
-    carbs: 0,
-    fat: 13.0
-  },
-  {
-    name: "Thunfisch",
-    amount: "100 g",
-    calories: 132,
-    protein: 29.0,
-    carbs: 0,
-    fat: 1.0
-  },
-  {
-    name: "Weisser Reis, gekocht",
-    amount: "100 g",
-    calories: 130,
-    protein: 2.7,
-    carbs: 28.2,
-    fat: 0.3
-  },
-  {
-    name: "Vollkornreis, gekocht",
-    amount: "100 g",
-    calories: 123,
-    protein: 2.7,
-    carbs: 25.6,
-    fat: 1.0
-  },
-  {
-    name: "Kartoffeln, gekocht",
-    amount: "100 g",
-    calories: 87,
-    protein: 1.9,
-    carbs: 20.1,
-    fat: 0.1
-  },
-  {
-    name: "Süsskartoffel",
-    amount: "100 g",
-    calories: 86,
-    protein: 1.6,
-    carbs: 20.1,
-    fat: 0.1
-  },
-  {
-    name: "Haferflocken",
-    amount: "100 g",
-    calories: 372,
-    protein: 13.5,
-    carbs: 58.7,
-    fat: 7.0
-  },
-  {
-    name: "Vollkornbrot",
-    amount: "100 g",
-    calories: 247,
-    protein: 9.0,
-    carbs: 41.0,
-    fat: 4.2
-  },
-  {
-    name: "Nature Joghurt",
-    amount: "100 g",
-    calories: 61,
-    protein: 3.5,
-    carbs: 4.7,
-    fat: 3.3
-  },
-  {
-    name: "Magerquark",
-    amount: "100 g",
-    calories: 67,
-    protein: 12.0,
-    carbs: 4.0,
-    fat: 0.2
-  },
-  {
-    name: "Milch, 1.5 %",
-    amount: "100 ml",
-    calories: 47,
-    protein: 3.4,
-    carbs: 4.9,
-    fat: 1.5
-  },
-  {
-    name: "Mandeln",
-    amount: "100 g",
-    calories: 579,
-    protein: 21.2,
-    carbs: 21.6,
-    fat: 49.9
-  },
-  {
-    name: "Brokkoli",
-    amount: "100 g",
-    calories: 34,
-    protein: 2.8,
-    carbs: 6.6,
-    fat: 0.4
-  },
-  {
-    name: "Karotten",
-    amount: "100 g",
-    calories: 41,
-    protein: 0.9,
-    carbs: 9.6,
-    fat: 0.2
-  },
-  {
-    name: "Tomaten",
-    amount: "100 g",
-    calories: 18,
-    protein: 0.9,
-    carbs: 3.9,
-    fat: 0.2
-  },
-  {
-    name: "Gurke",
-    amount: "100 g",
-    calories: 15,
-    protein: 0.7,
-    carbs: 3.6,
-    fat: 0.1
-  }
-];
-
-
-/* --------------------------------------------------
-   TABELLE ERSTELLEN
--------------------------------------------------- */
-
-function renderFoods(foodList) {
-  foodTableBody.innerHTML = "";
-
-  if (foodList.length === 0) {
-    foodEmptyState.hidden = false;
-    return;
-  }
-
-  foodEmptyState.hidden = true;
-
-  foodList.forEach(function (food) {
-    const row = document.createElement("tr");
-
-    row.innerHTML = `
-      <td>${food.name}</td>
-      <td>${food.amount}</td>
-      <td><strong>${food.calories} kcal</strong></td>
-      <td>${formatNumber(food.protein)} g</td>
-      <td>${formatNumber(food.carbs)} g</td>
-      <td>${formatNumber(food.fat)} g</td>
-    `;
-
-    foodTableBody.appendChild(row);
-  });
+  --max-width: 1180px;
 }
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--white);
+  color: var(--text);
+
+  font-family:
+    Inter,
+    "Helvetica Neue",
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
 
 /* --------------------------------------------------
-   LEBENSMITTEL SUCHEN
+   MAIN
 -------------------------------------------------- */
 
-function searchFoods() {
-  const query = normalizeText(foodSearchInput.value.trim());
+.onboarding {
+  min-height: 100vh;
+  padding-bottom: 150px;
+}
 
-  if (!query) {
-    renderFoods(foods);
-    return;
+/* --------------------------------------------------
+   HEADER
+-------------------------------------------------- */
+
+.onboarding-header {
+  width: min(var(--max-width), calc(100% - 48px));
+  height: 88px;
+
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-icon {
+  width: 42px;
+  height: 42px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background: var(--green);
+  color: var(--white);
+
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.brand-name {
+  color: var(--black);
+
+  font-size: 17px;
+  font-weight: 700;
+
+  letter-spacing: -0.02em;
+}
+
+/* --------------------------------------------------
+   SLIDER
+-------------------------------------------------- */
+
+.slider {
+  position: relative;
+
+  width: 100%;
+  max-width: var(--max-width);
+
+  margin: 0 auto;
+
+  overflow: hidden;
+}
+
+.slides {
+  display: flex;
+
+  width: 100%;
+
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.slide {
+  min-width: 100%;
+
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+
+  align-items: center;
+
+  gap: 90px;
+
+  padding: 35px 70px 50px;
+}
+
+/* --------------------------------------------------
+   IMAGEM
+-------------------------------------------------- */
+
+.slide-visual {
+  position: relative;
+
+  min-height: 560px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slide-visual img {
+  display: block;
+
+  width: 100%;
+  height: 560px;
+
+  object-fit: cover;
+
+  border-radius: 28px;
+}
+
+/* --------------------------------------------------
+   TEXTO
+-------------------------------------------------- */
+
+.slide-content {
+  max-width: 480px;
+}
+
+.welcome,
+.slide-number {
+  display: inline-block;
+
+  margin-bottom: 22px;
+
+  color: var(--green);
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.slide-content h1,
+.slide-content h2 {
+  color: var(--black);
+
+  font-weight: 600;
+
+  letter-spacing: -0.045em;
+
+  line-height: 1.02;
+}
+
+.slide-content h1 {
+  font-size: clamp(46px, 5vw, 70px);
+}
+
+.slide-content h2 {
+  font-size: clamp(42px, 4.6vw, 62px);
+}
+
+.slide-content p {
+  max-width: 440px;
+
+  margin-top: 24px;
+
+  color: var(--muted);
+
+  font-size: 18px;
+
+  line-height: 1.7;
+}
+
+/* --------------------------------------------------
+   DASHBOARD PREVIEW
+-------------------------------------------------- */
+
+.dashboard-preview {
+  background: var(--green-soft);
+
+  border-radius: 28px;
+
+  padding: 60px;
+}
+
+.app-preview {
+  width: min(100%, 410px);
+
+  background: var(--white);
+
+  border: 1px solid var(--line);
+
+  border-radius: 26px;
+
+  padding: 28px;
+
+  box-shadow: 0 20px 55px rgba(25, 70, 45, 0.08);
+}
+
+.preview-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 42px;
+
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.preview-profile {
+  width: 38px;
+  height: 38px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background: var(--green-soft);
+  color: var(--green-dark);
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.calorie-preview {
+  text-align: center;
+
+  padding: 20px 0 32px;
+}
+
+.preview-small {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: var(--muted);
+
+  font-size: 13px;
+}
+
+.calorie-preview strong {
+  display: block;
+
+  color: var(--black);
+
+  font-size: 70px;
+  font-weight: 600;
+
+  line-height: 1;
+
+  letter-spacing: -0.06em;
+}
+
+.calorie-preview > span:last-child {
+  display: block;
+
+  margin-top: 8px;
+
+  color: var(--muted);
+
+  font-size: 13px;
+}
+
+.calorie-details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 14px;
+
+  padding: 22px 0;
+
+  border-top: 1px solid var(--line);
+}
+
+.calorie-details div {
+  text-align: center;
+}
+
+.calorie-details span {
+  display: block;
+
+  color: var(--muted);
+
+  font-size: 11px;
+}
+
+.calorie-details strong {
+  display: block;
+
+  margin-top: 5px;
+
+  color: var(--black);
+
+  font-size: 15px;
+}
+
+.preview-progress {
+  margin-top: 17px;
+}
+
+.preview-progress-bar {
+  height: 8px;
+
+  border-radius: 999px;
+
+  background: #edf0ed;
+
+  overflow: hidden;
+}
+
+.preview-progress-bar span {
+  display: block;
+
+  width: 68%;
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: var(--green);
+}
+
+/* --------------------------------------------------
+   PREMIUM LABEL
+-------------------------------------------------- */
+
+.premium-label {
+  position: absolute;
+
+  top: 22px;
+  left: 22px;
+
+  padding: 8px 14px;
+
+  border-radius: 999px;
+
+  background: var(--green);
+  color: var(--white);
+
+  font-size: 11px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* --------------------------------------------------
+   SETAS
+-------------------------------------------------- */
+
+.slider-arrow {
+  position: absolute;
+
+  top: 50%;
+
+  width: 48px;
+  height: 48px;
+
+  transform: translateY(-50%);
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.95);
+
+  border: 1px solid var(--line);
+
+  color: var(--black);
+
+  font-size: 30px;
+
+  z-index: 10;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.slider-arrow:hover {
+  background: var(--green);
+  color: var(--white);
+}
+
+.slider-arrow-left {
+  left: 12px;
+}
+
+.slider-arrow-right {
+  right: 12px;
+}
+
+/* --------------------------------------------------
+   DOTS
+-------------------------------------------------- */
+
+.slider-dots {
+  display: flex;
+  justify-content: center;
+
+  gap: 9px;
+
+  margin-top: 15px;
+}
+
+.slider-dot {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #d7ddd8;
+
+  transition:
+    width 0.25s ease,
+    background 0.25s ease;
+}
+
+.slider-dot.active {
+  width: 28px;
+
+  border-radius: 999px;
+
+  background: var(--green);
+}
+
+/* --------------------------------------------------
+   BOTOES FIXOS
+-------------------------------------------------- */
+
+.onboarding-actions {
+  position: fixed;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  z-index: 100;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  border-top: 1px solid var(--line);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.action-container {
+  width: min(620px, calc(100% - 40px));
+
+  margin: 0 auto;
+
+  padding: 18px 0;
+
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+
+  gap: 12px;
+}
+
+.button {
+  min-height: 54px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  font-size: 15px;
+  font-weight: 650;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.button-primary {
+  background: var(--green);
+  color: var(--white);
+}
+
+.button-primary:hover {
+  background: var(--green-dark);
+
+  transform: translateY(-1px);
+}
+
+.button-secondary {
+  background: var(--white);
+
+  color: var(--black);
+
+  border: 1px solid #cfd6d0;
+}
+
+.button-secondary:hover {
+  border-color: var(--green);
+
+  color: var(--green-dark);
+}
+
+/* --------------------------------------------------
+   TABLET
+-------------------------------------------------- */
+
+@media (max-width: 950px) {
+  .slide {
+    grid-template-columns: 1fr;
+
+    gap: 45px;
+
+    padding: 30px 70px 45px;
   }
 
-  const results = foods.filter(function (food) {
-    return normalizeText(food.name).includes(query);
-  });
-
-  renderFoods(results);
-}
-
-
-foodSearchButton.addEventListener("click", searchFoods);
-
-
-foodSearchInput.addEventListener("input", function () {
-  searchFoods();
-});
-
-
-foodSearchInput.addEventListener("keydown", function (event) {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    searchFoods();
+  .slide-visual {
+    min-height: 420px;
   }
-});
 
+  .slide-visual img {
+    height: 420px;
+  }
 
-/* --------------------------------------------------
-   HILFSFUNKTIONEN
--------------------------------------------------- */
+  .slide-content {
+    max-width: 680px;
 
-function normalizeText(text) {
-  return text
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
+    text-align: center;
+
+    margin: 0 auto;
+  }
+
+  .slide-content p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .dashboard-preview {
+    min-height: 480px;
+  }
 }
 
-
-function formatNumber(number) {
-  return number.toLocaleString("de-CH", {
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 1
-  });
-}
-
-
 /* --------------------------------------------------
-   START
+   MOBILE
 -------------------------------------------------- */
 
-renderFoods(foods);
+@media (max-width: 650px) {
+  .onboarding {
+    padding-bottom: 170px;
+  }
+
+  .onboarding-header {
+    width: calc(100% - 30px);
+
+    height: 72px;
+  }
+
+  .brand-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .brand-name {
+    font-size: 15px;
+  }
+
+  .slide {
+    gap: 28px;
+
+    padding: 12px 20px 30px;
+  }
+
+  .slide-visual {
+    min-height: 340px;
+  }
+
+  .slide-visual img {
+    height: 340px;
+
+    border-radius: 20px;
+  }
+
+  .dashboard-preview {
+    min-height: 370px;
+
+    padding: 28px 20px;
+
+    border-radius: 20px;
+  }
+
+  .app-preview {
+    padding: 22px 18px;
+
+    border-radius: 20px;
+  }
+
+  .preview-header {
+    margin-bottom: 28px;
+  }
+
+  .calorie-preview strong {
+    font-size: 56px;
+  }
+
+  .slide-content h1,
+  .slide-content h2 {
+    font-size: 38px;
+  }
+
+  .slide-content p {
+    margin-top: 17px;
+
+    font-size: 16px;
+  }
+
+  .welcome,
+  .slide-number {
+    margin-bottom: 14px;
+  }
+
+  .slider-arrow {
+    width: 40px;
+    height: 40px;
+
+    font-size: 25px;
+  }
+
+  .slider-arrow-left {
+    left: 5px;
+  }
+
+  .slider-arrow-right {
+    right: 5px;
+  }
+
+  .slider-dots {
+    margin-top: 5px;
+  }
+
+  .action-container {
+    width: calc(100% - 30px);
+
+    grid-template-columns: 1fr;
+
+    padding: 12px 0;
+  }
+
+  .button {
+    min-height: 50px;
+  }
+}
