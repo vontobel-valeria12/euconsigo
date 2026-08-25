@@ -6,7 +6,7 @@
 
   <meta
     name="description"
-    content="BMI berechnen, Kalorien von Lebensmitteln prüfen und den persönlichen Fortschritt verfolgen."
+    content="Berechne deinen BMI und entscheide, wie du deine Entwicklung weiterverfolgen möchtest."
   />
 
   <title>Mein Fortschritt</title>
@@ -19,19 +19,10 @@
   <header class="site-header">
     <div class="container header-content">
 
-      <a href="index.html" class="brand">
+      <a href="index.html" class="brand" aria-label="Mein Fortschritt Startseite">
         <span class="brand-mark">M</span>
-
-        <span class="brand-text">
-          Mein Fortschritt
-        </span>
+        <span class="brand-text">Mein Fortschritt</span>
       </a>
-
-      <nav class="main-nav" aria-label="Hauptnavigation">
-        <a href="#rechner">BMI-Rechner</a>
-        <a href="#lebensmittel">Kalorien</a>
-        <a href="#premium">Premium</a>
-      </nav>
 
       <a href="login.html" class="login-link">
         Anmelden
@@ -43,33 +34,31 @@
 
   <main>
 
-    <!-- BMI-RECHNER -->
+    <section class="bmi-hero">
 
-    <section class="hero-calculator" id="rechner">
+      <div class="container">
 
-      <div class="container calculator-layout">
-
-        <div class="calculator-intro">
+        <div class="hero-intro">
 
           <span class="eyebrow">
-            Starte mit deinem aktuellen Stand
+            Dein Ausgangspunkt
           </span>
 
           <h1>
-            Berechne deinen BMI und behalte deine Entwicklung im Blick.
+            Wo stehst du heute?
           </h1>
 
           <p>
-            Gib dein Gewicht und deine Körpergrösse ein und erhalte sofort
-            deinen Body-Mass-Index.
+            Berechne deinen BMI und entscheide danach, wie du deine
+            Entwicklung weiterverfolgen möchtest.
           </p>
 
         </div>
 
 
-        <div class="calculator-card">
+        <div class="bmi-card">
 
-          <div class="calculator-card-header">
+          <div class="bmi-card-header">
 
             <span class="calculator-label">
               BMI-Rechner
@@ -86,7 +75,7 @@
           </div>
 
 
-          <form id="imc-form">
+          <form id="bmi-form">
 
             <div class="form-grid">
 
@@ -105,7 +94,7 @@
                     min="20"
                     max="350"
                     step="0.1"
-                    placeholder="z. B. 78.5"
+                    placeholder="z. B. 82.5"
                     required
                   />
 
@@ -131,7 +120,7 @@
                     min="100"
                     max="250"
                     step="1"
-                    placeholder="z. B. 168"
+                    placeholder="z. B. 167"
                     required
                   />
 
@@ -150,278 +139,149 @@
 
           </form>
 
+        </div>
 
-          <div
-            class="imc-result"
-            id="imc-result"
-            aria-live="polite"
-            hidden
-          >
 
-            <div class="result-main">
+        <!-- RESULTAT -->
 
-              <span class="result-label">
-                Dein BMI
-              </span>
+        <section
+          class="result-section"
+          id="result-section"
+          aria-live="polite"
+          hidden
+        >
 
-              <strong id="imc-value">
-                0.0
-              </strong>
+          <div class="result-card">
 
+            <span class="result-eyebrow">
+              Dein Ergebnis
+            </span>
+
+            <div class="result-value">
+              <span id="bmi-value">0.0</span>
             </div>
 
+            <h2 id="bmi-category">
+              BMI
+            </h2>
 
-            <div class="result-info">
-
-              <strong id="imc-category"></strong>
-
-              <p id="imc-message"></p>
-
-            </div>
+            <p id="bmi-message"></p>
 
           </div>
 
-        </div>
 
-      </div>
+          <div class="next-step">
 
-    </section>
-
-
-    <!-- PREMIUM -->
-
-    <section class="premium-banner" id="premium">
-
-      <div class="container">
-
-        <div class="premium-content">
-
-          <div class="premium-text">
-
-            <span class="premium-tag">
-              Premium
+            <span class="eyebrow">
+              Dein nächster Schritt
             </span>
 
             <h2>
-              Du möchtest persönliche Unterstützung?
+              Wie möchtest du weitermachen?
             </h2>
 
             <p>
-              Erhalte eine individuelle Begleitung durch eine echte
-              Ernährungsberaterin oder einen Ernährungsberater.
-              Deine Ernährung, deine Gewohnheiten und deine Fortschritte
-              werden persönlich mit dir besprochen.
+              Verfolge deine Entwicklung selbst oder entscheide dich
+              für eine persönliche Begleitung.
             </p>
 
           </div>
 
 
-          <div class="premium-action">
+          <!-- PLÄNE -->
 
-            <a href="premium.html" class="premium-button">
-              Beratung kennenlernen
-            </a>
+          <div class="plans-grid">
 
-            <span class="premium-note">
-              Persönlich. Individuell. Menschlich.
-            </span>
+            <article class="plan-card free-plan">
 
-          </div>
+              <div class="plan-top">
 
-        </div>
+                <span class="plan-label">
+                  Kostenlos
+                </span>
 
-      </div>
+                <h3>
+                  Selbst verfolgen
+                </h3>
 
-    </section>
+                <p>
+                  Behalte dein Gewicht, deinen BMI und deine Entwicklung
+                  selbst im Blick.
+                </p>
 
-
-    <!-- KALORIEN -->
-
-    <section class="food-section" id="lebensmittel">
-
-      <div class="container">
-
-        <div class="section-heading">
-
-          <span class="eyebrow">
-            Lebensmittel
-          </span>
-
-          <h2>
-            Wie viele Kalorien hat dein Lebensmittel?
-          </h2>
-
-          <p>
-            Suche nach einem Lebensmittel und sieh dir Kalorien und
-            Nährwerte pro Menge an.
-          </p>
-
-        </div>
+              </div>
 
 
-        <div class="food-search-card">
+              <ul class="plan-features">
+                <li>Persönliches Konto</li>
+                <li>Startgewicht erfassen</li>
+                <li>Zielgewicht festlegen</li>
+                <li>Gewicht täglich eintragen</li>
+                <li>BMI-Verlauf</li>
+                <li>Fortschrittsdiagramm</li>
+                <li>Gewichtsverlauf</li>
+              </ul>
 
-          <div class="food-search">
 
-            <label for="food-search">
-              Lebensmittel suchen
-            </label>
+              <a href="register.html?plan=free" class="plan-button free-button">
+                Kostenlos starten
+              </a>
 
-            <div class="search-field">
+            </article>
 
-              <input
-                type="search"
-                id="food-search"
-                placeholder="z. B. Banane, Reis, Ei, Poulet..."
-                autocomplete="off"
-              />
 
-              <button
-                type="button"
-                id="food-search-button"
-                aria-label="Lebensmittel suchen"
+            <article class="plan-card premium-plan">
+
+              <div class="premium-badge">
+                Persönliche Begleitung
+              </div>
+
+              <div class="plan-top">
+
+                <span class="plan-label">
+                  Premium
+                </span>
+
+                <h3>
+                  Nicht alleine weitermachen
+                </h3>
+
+                <p>
+                  Erhalte persönliche Unterstützung durch eine echte
+                  Ernährungsberaterin oder einen Ernährungsberater.
+                </p>
+
+              </div>
+
+
+              <ul class="plan-features">
+                <li>Alle Funktionen des kostenlosen Plans</li>
+                <li>Persönliche Ernährungsberatung</li>
+                <li>Individuelle Ziele</li>
+                <li>Wöchentlicher Rückblick</li>
+                <li>Persönliche Analyse</li>
+                <li>Begleitung deiner Entwicklung</li>
+              </ul>
+
+
+              <a
+                href="premium.html"
+                class="plan-button premium-button"
               >
-                Suchen
-              </button>
+                Begleitung kennenlernen
+              </a>
 
-            </div>
+            </article>
 
           </div>
 
 
-          <div
-            class="food-suggestions"
-            id="food-suggestions"
-            hidden
-          ></div>
-
-        </div>
-
-
-        <div class="food-table-wrapper">
-
-          <table class="food-table">
-
-            <thead>
-
-              <tr>
-                <th>Lebensmittel</th>
-                <th>Menge</th>
-                <th>Kalorien</th>
-                <th>Eiweiss</th>
-                <th>Kohlenhydrate</th>
-                <th>Fett</th>
-              </tr>
-
-            </thead>
-
-
-            <tbody id="food-table-body">
-
-              <tr class="food-example-row">
-
-                <td>
-                  Banane
-                </td>
-
-                <td>
-                  100 g
-                </td>
-
-                <td>
-                  89 kcal
-                </td>
-
-                <td>
-                  1.1 g
-                </td>
-
-                <td>
-                  22.8 g
-                </td>
-
-                <td>
-                  0.3 g
-                </td>
-
-              </tr>
-
-
-              <tr class="food-example-row">
-
-                <td>
-                  Weisser Reis, gekocht
-                </td>
-
-                <td>
-                  100 g
-                </td>
-
-                <td>
-                  130 kcal
-                </td>
-
-                <td>
-                  2.7 g
-                </td>
-
-                <td>
-                  28.2 g
-                </td>
-
-                <td>
-                  0.3 g
-                </td>
-
-              </tr>
-
-
-              <tr class="food-example-row">
-
-                <td>
-                  Ei, gekocht
-                </td>
-
-                <td>
-                  1 Stück
-                </td>
-
-                <td>
-                  78 kcal
-                </td>
-
-                <td>
-                  6.3 g
-                </td>
-
-                <td>
-                  0.6 g
-                </td>
-
-                <td>
-                  5.3 g
-                </td>
-
-              </tr>
-
-            </tbody>
-
-          </table>
-
-        </div>
-
-
-        <div class="food-empty-state" id="food-empty-state" hidden>
-
-          <h3>
-            Kein Lebensmittel gefunden
-          </h3>
-
-          <p>
-            Versuche einen anderen Begriff oder eine andere Schreibweise.
+          <p class="bmi-note">
+            Der BMI ist ein allgemeiner Orientierungswert und ersetzt keine
+            medizinische oder individuelle ernährungsbezogene Beurteilung.
           </p>
 
-        </div>
+        </section>
 
       </div>
 
@@ -435,13 +295,15 @@
     <div class="container footer-content">
 
       <div>
+
         <strong>
           Mein Fortschritt
         </strong>
 
         <p>
-          Werkzeuge für Ernährung, Gewohnheiten und persönlichen Fortschritt.
+          Deine Entwicklung. Dein Weg. Deine Entscheidung.
         </p>
+
       </div>
 
 
@@ -460,5 +322,3 @@
 
 </body>
 </html>
-
-
