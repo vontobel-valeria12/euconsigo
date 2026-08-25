@@ -1,601 +1,464 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="de-CH">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meu Progresso</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+  <meta
+    name="description"
+    content="BMI berechnen, Kalorien von Lebensmitteln prüfen und den persönlichen Fortschritt verfolgen."
+  />
 
-    body {
-      background: #f7f8f7;
-      color: #222;
-    }
+  <title>Mein Fortschritt</title>
 
-    header {
-      background: white;
-      padding: 18px 8%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #eee;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    nav a {
-      margin-left: 20px;
-      text-decoration: none;
-      color: #333;
-      font-weight: 500;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 13px 22px;
-      border-radius: 10px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-      background: #222;
-      color: white;
-    }
-
-    .btn-secondary {
-      background: white;
-      color: #222;
-      border: 1px solid #ccc;
-    }
-
-    .hero {
-      min-height: 520px;
-      padding: 80px 8%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      gap: 50px;
-      background: white;
-    }
-
-    .hero h1 {
-      font-size: 52px;
-      line-height: 1.1;
-      margin-bottom: 20px;
-    }
-
-    .hero p {
-      font-size: 20px;
-      line-height: 1.6;
-      margin-bottom: 30px;
-      color: #555;
-    }
-
-    .hero-card {
-      background: #f1f3f1;
-      padding: 35px;
-      border-radius: 24px;
-    }
-
-    .hero-card h3 {
-      margin-bottom: 20px;
-    }
-
-    .progress-number {
-      font-size: 38px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .progress-bar {
-      width: 100%;
-      background: #ddd;
-      border-radius: 20px;
-      overflow: hidden;
-      height: 14px;
-      margin: 16px 0 25px;
-    }
-
-    .progress-fill {
-      width: 42%;
-      height: 100%;
-      background: #222;
-    }
-
-    section {
-      padding: 70px 8%;
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 45px;
-    }
-
-    .section-title h2 {
-      font-size: 36px;
-      margin-bottom: 10px;
-    }
-
-    .section-title p {
-      color: #666;
-      font-size: 18px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 25px;
-    }
-
-    .card {
-      background: white;
-      padding: 30px;
-      border-radius: 18px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-    }
-
-    .card h3 {
-      margin-bottom: 12px;
-      font-size: 22px;
-    }
-
-    .card p {
-      color: #666;
-      line-height: 1.6;
-    }
-
-    .calculator {
-      max-width: 600px;
-      margin: auto;
-      background: white;
-      padding: 35px;
-      border-radius: 20px;
-    }
-
-    .input-group {
-      margin-bottom: 18px;
-    }
-
-    .input-group label {
-      display: block;
-      margin-bottom: 7px;
-      font-weight: bold;
-    }
-
-    .input-group input {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-
-    .result {
-      margin-top: 20px;
-      padding: 20px;
-      background: #f3f4f3;
-      border-radius: 12px;
-      display: none;
-    }
-
-    .calorie-box {
-      max-width: 700px;
-      margin: auto;
-      background: white;
-      padding: 35px;
-      border-radius: 20px;
-    }
-
-    .calorie-total {
-      font-size: 36px;
-      font-weight: bold;
-      margin: 20px 0;
-    }
-
-    .food-row {
-      display: grid;
-      grid-template-columns: 2fr 1fr auto;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .food-row input {
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-
-    .food-list {
-      margin-top: 25px;
-    }
-
-    .food-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 1px solid #eee;
-    }
-
-    .premium {
-      background: #202020;
-      color: white;
-    }
-
-    .premium .card {
-      color: #222;
-    }
-
-    .shop-card .product-box {
-      height: 170px;
-      border-radius: 14px;
-      background: #eee;
-      margin-bottom: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 50px;
-    }
-
-    footer {
-      padding: 40px 8%;
-      text-align: center;
-      background: white;
-      color: #666;
-    }
-
-    @media(max-width: 900px) {
-      .hero {
-        grid-template-columns: 1fr;
-      }
-
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      nav {
-        display: none;
-      }
-
-      .hero h1 {
-        font-size: 40px;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-<header>
-  <div class="logo">Meu Progresso</div>
+  <header class="site-header">
+    <div class="container header-content">
 
-  <nav>
-    <a href="#inicio">Início</a>
-    <a href="#imc">IMC</a>
-    <a href="#calorias">Calorias</a>
-    <a href="#progresso">Progresso</a>
-    <a href="#premium">Premium</a>
-    <a href="#loja">Loja</a>
-  </nav>
+      <a href="index.html" class="brand">
+        <span class="brand-mark">M</span>
 
-  <a href="#" class="btn">Entrar</a>
-</header>
+        <span class="brand-text">
+          Mein Fortschritt
+        </span>
+      </a>
 
+      <nav class="main-nav" aria-label="Hauptnavigation">
+        <a href="#rechner">BMI-Rechner</a>
+        <a href="#lebensmittel">Kalorien</a>
+        <a href="#premium">Premium</a>
+      </nav>
 
-<section class="hero" id="inicio">
-
-  <div>
-    <h1>Seu emagrecimento. Seu plano. Seu progresso.</h1>
-
-    <p>
-      Acompanhe sua alimentação, peso, medidas e evolução em um só lugar.
-      Comece gratuitamente e tenha acompanhamento profissional quando quiser.
-    </p>
-
-    <a href="#imc" class="btn">Começar agora</a>
-    <a href="#" class="btn btn-secondary">Já tenho acesso</a>
-  </div>
-
-  <div class="hero-card">
-    <h3>Seu progresso</h3>
-
-    <div class="progress-number">-3,6 kg</div>
-
-    <p>84 kg → 80,4 kg</p>
-
-    <div class="progress-bar">
-      <div class="progress-fill"></div>
-    </div>
-
-    <p>Meta: 70 kg</p>
-  </div>
-
-</section>
-
-
-<section>
-
-  <div class="section-title">
-    <h2>Tudo que você precisa para acompanhar sua evolução</h2>
-    <p>Ferramentas simples para entender sua rotina e seu progresso.</p>
-  </div>
-
-  <div class="grid">
-
-    <div class="card">
-      <h3>🍽️ Contador de calorias</h3>
-      <p>
-        Registre suas refeições e acompanhe sua alimentação durante o dia.
-      </p>
-    </div>
-
-    <div class="card">
-      <h3>⚖️ Calculadora de IMC</h3>
-      <p>
-        Veja seu índice de massa corporal usando seu peso e altura.
-      </p>
-    </div>
-
-    <div class="card">
-      <h3>📊 Seu progresso</h3>
-      <p>
-        Acompanhe peso, IMC, medidas e evolução semanal.
-      </p>
-    </div>
-
-  </div>
-
-</section>
-
-
-<section id="imc">
-
-  <div class="section-title">
-    <h2>Calculadora de IMC</h2>
-    <p>Descubra seu índice de massa corporal.</p>
-  </div>
-
-  <div class="calculator">
-
-    <div class="input-group">
-      <label>Peso em kg</label>
-      <input type="number" id="peso" placeholder="Ex.: 80">
-    </div>
-
-    <div class="input-group">
-      <label>Altura em cm</label>
-      <input type="number" id="altura" placeholder="Ex.: 170">
-    </div>
-
-    <button class="btn" onclick="calcularIMC()">Calcular IMC</button>
-
-    <div class="result" id="resultadoIMC"></div>
-
-  </div>
-
-</section>
-
-
-<section id="calorias">
-
-  <div class="section-title">
-    <h2>Contador de calorias</h2>
-    <p>Registre os alimentos consumidos durante o dia.</p>
-  </div>
-
-  <div class="calorie-box">
-
-    <p>Total consumido hoje</p>
-
-    <div class="calorie-total">
-      <span id="totalCalorias">0</span> kcal
-    </div>
-
-    <div class="food-row">
-      <input type="text" id="alimento" placeholder="Alimento">
-      <input type="number" id="caloriasInput" placeholder="kcal">
-      <button class="btn" onclick="adicionarAlimento()">+</button>
-    </div>
-
-    <div class="food-list" id="listaAlimentos"></div>
-
-  </div>
-
-</section>
-
-
-<section id="progresso">
-
-  <div class="section-title">
-    <h2>Seu progresso</h2>
-    <p>Acompanhe sua evolução ao longo das semanas.</p>
-  </div>
-
-  <div class="card" style="max-width:800px;margin:auto;">
-
-    <h3>Últimas semanas</h3>
-
-    <div style="
-      height:250px;
-      display:flex;
-      align-items:flex-end;
-      gap:30px;
-      padding-top:30px;
-    ">
-
-      <div style="height:95%;width:60px;background:#ccc;"></div>
-      <div style="height:85%;width:60px;background:#bbb;"></div>
-      <div style="height:76%;width:60px;background:#aaa;"></div>
-      <div style="height:68%;width:60px;background:#888;"></div>
-      <div style="height:60%;width:60px;background:#555;"></div>
+      <a href="login.html" class="login-link">
+        Anmelden
+      </a>
 
     </div>
-
-    <p style="margin-top:20px;">
-      84 kg → 83 kg → 82 kg → 81 kg → 80 kg
-    </p>
-
-  </div>
-
-</section>
+  </header>
 
 
-<section class="premium" id="premium">
+  <main>
 
-  <div class="section-title">
-    <h2>Premium</h2>
-    <p style="color:#ccc;">
-      Para quem quer acompanhamento personalizado.
-    </p>
-  </div>
+    <!-- BMI-RECHNER -->
 
-  <div class="grid">
+    <section class="hero-calculator" id="rechner">
 
-    <div class="card">
-      <h3>📖 Diário semanal</h3>
-      <p>
-        Registre suas dificuldades, conquistas, alimentação e objetivos da semana.
-      </p>
+      <div class="container calculator-layout">
+
+        <div class="calculator-intro">
+
+          <span class="eyebrow">
+            Starte mit deinem aktuellen Stand
+          </span>
+
+          <h1>
+            Berechne deinen BMI und behalte deine Entwicklung im Blick.
+          </h1>
+
+          <p>
+            Gib dein Gewicht und deine Körpergrösse ein und erhalte sofort
+            deinen Body-Mass-Index.
+          </p>
+
+        </div>
+
+
+        <div class="calculator-card">
+
+          <div class="calculator-card-header">
+
+            <span class="calculator-label">
+              BMI-Rechner
+            </span>
+
+            <h2>
+              Deine Angaben
+            </h2>
+
+            <p>
+              Trage dein aktuelles Gewicht und deine Körpergrösse ein.
+            </p>
+
+          </div>
+
+
+          <form id="imc-form">
+
+            <div class="form-grid">
+
+              <div class="form-group">
+
+                <label for="weight">
+                  Gewicht
+                </label>
+
+                <div class="input-with-unit">
+
+                  <input
+                    type="number"
+                    id="weight"
+                    name="weight"
+                    min="20"
+                    max="350"
+                    step="0.1"
+                    placeholder="z. B. 78.5"
+                    required
+                  />
+
+                  <span>kg</span>
+
+                </div>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="height">
+                  Körpergrösse
+                </label>
+
+                <div class="input-with-unit">
+
+                  <input
+                    type="number"
+                    id="height"
+                    name="height"
+                    min="100"
+                    max="250"
+                    step="1"
+                    placeholder="z. B. 168"
+                    required
+                  />
+
+                  <span>cm</span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <button type="submit" class="primary-button">
+              BMI berechnen
+            </button>
+
+          </form>
+
+
+          <div
+            class="imc-result"
+            id="imc-result"
+            aria-live="polite"
+            hidden
+          >
+
+            <div class="result-main">
+
+              <span class="result-label">
+                Dein BMI
+              </span>
+
+              <strong id="imc-value">
+                0.0
+              </strong>
+
+            </div>
+
+
+            <div class="result-info">
+
+              <strong id="imc-category"></strong>
+
+              <p id="imc-message"></p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- PREMIUM -->
+
+    <section class="premium-banner" id="premium">
+
+      <div class="container">
+
+        <div class="premium-content">
+
+          <div class="premium-text">
+
+            <span class="premium-tag">
+              Premium
+            </span>
+
+            <h2>
+              Du möchtest persönliche Unterstützung?
+            </h2>
+
+            <p>
+              Erhalte eine individuelle Begleitung durch eine echte
+              Ernährungsberaterin oder einen Ernährungsberater.
+              Deine Ernährung, deine Gewohnheiten und deine Fortschritte
+              werden persönlich mit dir besprochen.
+            </p>
+
+          </div>
+
+
+          <div class="premium-action">
+
+            <a href="premium.html" class="premium-button">
+              Beratung kennenlernen
+            </a>
+
+            <span class="premium-note">
+              Persönlich. Individuell. Menschlich.
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- KALORIEN -->
+
+    <section class="food-section" id="lebensmittel">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span class="eyebrow">
+            Lebensmittel
+          </span>
+
+          <h2>
+            Wie viele Kalorien hat dein Lebensmittel?
+          </h2>
+
+          <p>
+            Suche nach einem Lebensmittel und sieh dir Kalorien und
+            Nährwerte pro Menge an.
+          </p>
+
+        </div>
+
+
+        <div class="food-search-card">
+
+          <div class="food-search">
+
+            <label for="food-search">
+              Lebensmittel suchen
+            </label>
+
+            <div class="search-field">
+
+              <input
+                type="search"
+                id="food-search"
+                placeholder="z. B. Banane, Reis, Ei, Poulet..."
+                autocomplete="off"
+              />
+
+              <button
+                type="button"
+                id="food-search-button"
+                aria-label="Lebensmittel suchen"
+              >
+                Suchen
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="food-suggestions"
+            id="food-suggestions"
+            hidden
+          ></div>
+
+        </div>
+
+
+        <div class="food-table-wrapper">
+
+          <table class="food-table">
+
+            <thead>
+
+              <tr>
+                <th>Lebensmittel</th>
+                <th>Menge</th>
+                <th>Kalorien</th>
+                <th>Eiweiss</th>
+                <th>Kohlenhydrate</th>
+                <th>Fett</th>
+              </tr>
+
+            </thead>
+
+
+            <tbody id="food-table-body">
+
+              <tr class="food-example-row">
+
+                <td>
+                  Banane
+                </td>
+
+                <td>
+                  100 g
+                </td>
+
+                <td>
+                  89 kcal
+                </td>
+
+                <td>
+                  1.1 g
+                </td>
+
+                <td>
+                  22.8 g
+                </td>
+
+                <td>
+                  0.3 g
+                </td>
+
+              </tr>
+
+
+              <tr class="food-example-row">
+
+                <td>
+                  Weisser Reis, gekocht
+                </td>
+
+                <td>
+                  100 g
+                </td>
+
+                <td>
+                  130 kcal
+                </td>
+
+                <td>
+                  2.7 g
+                </td>
+
+                <td>
+                  28.2 g
+                </td>
+
+                <td>
+                  0.3 g
+                </td>
+
+              </tr>
+
+
+              <tr class="food-example-row">
+
+                <td>
+                  Ei, gekocht
+                </td>
+
+                <td>
+                  1 Stück
+                </td>
+
+                <td>
+                  78 kcal
+                </td>
+
+                <td>
+                  6.3 g
+                </td>
+
+                <td>
+                  0.6 g
+                </td>
+
+                <td>
+                  5.3 g
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+        <div class="food-empty-state" id="food-empty-state" hidden>
+
+          <h3>
+            Kein Lebensmittel gefunden
+          </h3>
+
+          <p>
+            Versuche einen anderen Begriff oder eine andere Schreibweise.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <footer class="site-footer">
+
+    <div class="container footer-content">
+
+      <div>
+        <strong>
+          Mein Fortschritt
+        </strong>
+
+        <p>
+          Werkzeuge für Ernährung, Gewohnheiten und persönlichen Fortschritt.
+        </p>
+      </div>
+
+
+      <div class="footer-links">
+        <a href="#">Datenschutz</a>
+        <a href="#">AGB</a>
+        <a href="#">Kontakt</a>
+      </div>
+
     </div>
 
-    <div class="card">
-      <h3>👩‍⚕️ Nutricionista</h3>
-      <p>
-        Tenha acompanhamento de um profissional de verdade.
-      </p>
-    </div>
-
-    <div class="card">
-      <h3>🎯 Metas personalizadas</h3>
-      <p>
-        Receba orientações de acordo com sua rotina e evolução.
-      </p>
-    </div>
-
-  </div>
-
-</section>
+  </footer>
 
 
-<section id="loja">
-
-  <div class="section-title">
-    <h2>Loja</h2>
-    <p>Produtos que ajudam você a manter organização, rotina e foco.</p>
-  </div>
-
-  <div class="grid">
-
-    <div class="card shop-card">
-      <div class="product-box">🥤</div>
-      <h3>Garrafa para água</h3>
-      <p>Ajude a acompanhar sua hidratação diária.</p>
-    </div>
-
-    <div class="card shop-card">
-      <div class="product-box">🍱</div>
-      <h3>Organizador de refeições</h3>
-      <p>Prepare e organize suas refeições da semana.</p>
-    </div>
-
-    <div class="card shop-card">
-      <div class="product-box">📔</div>
-      <h3>Planner de hábitos</h3>
-      <p>Organize suas metas e acompanhe sua rotina.</p>
-    </div>
-
-  </div>
-
-</section>
-
-
-<footer>
-  © 2026 Meu Progresso
-</footer>
-
-
-<script>
-
-  function calcularIMC() {
-
-    const peso = parseFloat(document.getElementById("peso").value);
-    const alturaCM = parseFloat(document.getElementById("altura").value);
-
-    const resultado = document.getElementById("resultadoIMC");
-
-    if (!peso || !alturaCM) {
-      resultado.style.display = "block";
-      resultado.innerHTML = "Preencha peso e altura.";
-      return;
-    }
-
-    const altura = alturaCM / 100;
-    const imc = peso / (altura * altura);
-
-    let classificacao = "";
-
-    if (imc < 18.5) {
-      classificacao = "Abaixo do peso";
-    } else if (imc < 25) {
-      classificacao = "Faixa considerada normal";
-    } else if (imc < 30) {
-      classificacao = "Sobrepeso";
-    } else {
-      classificacao = "Obesidade";
-    }
-
-    resultado.style.display = "block";
-
-    resultado.innerHTML = `
-      <strong>Seu IMC é ${imc.toFixed(1)}</strong>
-      <br><br>
-      ${classificacao}
-    `;
-  }
-
-
-  let caloriasTotal = 0;
-
-  function adicionarAlimento() {
-
-    const alimento = document.getElementById("alimento").value;
-    const calorias = parseInt(document.getElementById("caloriasInput").value);
-
-    if (!alimento || !calorias) {
-      return;
-    }
-
-    caloriasTotal += calorias;
-
-    document.getElementById("totalCalorias").textContent = caloriasTotal;
-
-    const item = document.createElement("div");
-
-    item.className = "food-item";
-
-    item.innerHTML = `
-      <span>${alimento}</span>
-      <strong>${calorias} kcal</strong>
-    `;
-
-    document.getElementById("listaAlimentos").appendChild(item);
-
-    document.getElementById("alimento").value = "";
-    document.getElementById("caloriasInput").value = "";
-  }
-
-</script>
+  <script src="script.js"></script>
 
 </body>
 </html>
+
+
