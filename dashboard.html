@@ -11,10 +11,10 @@
 
   <meta
     name="description"
-    content="Verfolge dein Gewicht, deine Ernährung, Bewegung, Wasser und deine persönlichen Ziele."
+    content="Verfolge Gewicht, Ziele, Kalorien, Wasser und Bewegung und entdecke zusätzliche Premium-Funktionen."
   >
 
-  <title>Mein Fortschritt | Übersicht</title>
+  <title>Mein Fortschritt | Dashboard</title>
 
   <link rel="stylesheet" href="dashboard.css">
 </head>
@@ -28,56 +28,25 @@
 
   <header class="app-header">
 
-    <div class="header-inner">
+    <!-- TOPO -->
+
+    <div class="top-header">
 
       <a
         href="dashboard.html"
         class="brand"
         aria-label="Mein Fortschritt"
       >
-        <span class="brand-mark">M</span>
+
+        <span class="brand-mark">
+          M
+        </span>
 
         <span class="brand-name">
           Mein Fortschritt
         </span>
+
       </a>
-
-
-      <nav class="desktop-nav" aria-label="Hauptnavigation">
-
-        <a href="#uebersicht" class="nav-link active">
-          Übersicht
-        </a>
-
-        <a href="#gewicht" class="nav-link">
-          Gewicht
-        </a>
-
-        <a href="#kalorien" class="nav-link">
-          Kalorien
-        </a>
-
-        <a href="#wasser" class="nav-link">
-          Wasser
-        </a>
-
-        <a href="#bewegung" class="nav-link">
-          Bewegung
-        </a>
-
-        <a href="#ziele" class="nav-link">
-          Ziele
-        </a>
-
-        <a href="premium.html" class="nav-link consultation-link">
-          Beratung
-        </a>
-
-        <a href="shop.html" class="nav-link">
-          Shop
-        </a>
-
-      </nav>
 
 
       <button
@@ -90,6 +59,258 @@
       </button>
 
     </div>
+
+
+
+    <!-- =================================================
+         MENU HORIZONTAL
+    ================================================== -->
+
+    <nav
+      class="function-menu"
+      aria-label="Funktionen"
+    >
+
+
+      <!-- BEGLEITUNG -->
+
+      <button
+        class="function-item premium-function"
+        type="button"
+        data-premium="true"
+        data-feature="Begleitung"
+      >
+
+        <div class="function-circle premium-circle">
+          ♡
+        </div>
+
+        <span class="function-name">
+          Begleitung
+        </span>
+
+        <small class="premium-badge">
+          👑 Premium
+        </small>
+
+      </button>
+
+
+
+      <!-- SHOP -->
+
+      <a
+        href="shop.html"
+        class="function-item"
+      >
+
+        <div class="function-circle">
+          ◇
+        </div>
+
+        <span class="function-name">
+          Shop
+        </span>
+
+      </a>
+
+
+
+      <!-- KALORIEN -->
+
+      <a
+        href="#kalorien"
+        class="function-item"
+      >
+
+        <div class="function-circle">
+          +
+        </div>
+
+        <span class="function-name">
+          Kalorien
+        </span>
+
+      </a>
+
+
+
+      <!-- WASSER -->
+
+      <a
+        href="#wasser"
+        class="function-item"
+      >
+
+        <div class="function-circle">
+          ◉
+        </div>
+
+        <span class="function-name">
+          Wasser
+        </span>
+
+      </a>
+
+
+
+      <!-- BEWEGUNG -->
+
+      <a
+        href="#bewegung"
+        class="function-item"
+      >
+
+        <div class="function-circle">
+          ↗
+        </div>
+
+        <span class="function-name">
+          Bewegung
+        </span>
+
+      </a>
+
+
+
+      <!-- GEWICHT -->
+
+      <a
+        href="#gewicht"
+        class="function-item"
+      >
+
+        <div class="function-circle">
+          ↓
+        </div>
+
+        <span class="function-name">
+          Gewicht
+        </span>
+
+      </a>
+
+
+
+      <!-- ZIELE -->
+
+      <a
+        href="#ziele"
+        class="function-item"
+      >
+
+        <div class="function-circle">
+          ✓
+        </div>
+
+        <span class="function-name">
+          Ziele
+        </span>
+
+      </a>
+
+
+
+      <!-- WOCHENANALYSE -->
+
+      <button
+        class="function-item premium-function"
+        type="button"
+        data-premium="true"
+        data-feature="Wochenanalyse"
+      >
+
+        <div class="function-circle premium-circle">
+          ◫
+        </div>
+
+        <span class="function-name">
+          Wochenanalyse
+        </span>
+
+        <small class="premium-badge">
+          👑 Premium
+        </small>
+
+      </button>
+
+
+
+      <!-- STRATEGIE -->
+
+      <button
+        class="function-item premium-function"
+        type="button"
+        data-premium="true"
+        data-feature="Strategie"
+      >
+
+        <div class="function-circle premium-circle">
+          ✦
+        </div>
+
+        <span class="function-name">
+          Strategie
+        </span>
+
+        <small class="premium-badge">
+          👑 Premium
+        </small>
+
+      </button>
+
+
+
+      <!-- ERNÄHRUNGSPLAN -->
+
+      <button
+        class="function-item premium-function"
+        type="button"
+        data-premium="true"
+        data-feature="Ernährungsplan"
+      >
+
+        <div class="function-circle premium-circle">
+          ≋
+        </div>
+
+        <span class="function-name">
+          Ernährungsplan
+        </span>
+
+        <small class="premium-badge">
+          👑 Premium
+        </small>
+
+      </button>
+
+
+
+      <!-- ANALYSE -->
+
+      <button
+        class="function-item premium-function"
+        type="button"
+        data-premium="true"
+        data-feature="Analyse"
+      >
+
+        <div class="function-circle premium-circle">
+          ◎
+        </div>
+
+        <span class="function-name">
+          Analyse
+        </span>
+
+        <small class="premium-badge">
+          👑 Premium
+        </small>
+
+      </button>
+
+
+    </nav>
 
   </header>
 
@@ -105,7 +326,7 @@
 
 
       <!-- =================================================
-           WILLKOMMEN
+           WELCOME
       ================================================== -->
 
       <section
@@ -116,7 +337,7 @@
         <div class="welcome-copy">
 
           <span class="section-kicker">
-            Dein Tag
+            Dein Fortschritt
           </span>
 
           <h1>
@@ -124,21 +345,8 @@
           </h1>
 
           <p>
-            Nicht perfekt sein. Einfach weitergehen.
+            Heute ist ein neuer Schritt in Richtung deines Ziels.
           </p>
-
-        </div>
-
-
-        <div class="date-box">
-
-          <span>
-            Heute
-          </span>
-
-          <strong id="today-date">
-            26. August
-          </strong>
 
         </div>
 
@@ -147,146 +355,112 @@
 
 
       <!-- =================================================
-           HAUPTÜBERSICHT
+           PRINCIPAL PROGRESS CARD
       ================================================== -->
 
-      <section class="overview-grid">
+      <section class="main-progress-card">
+
+        <div class="progress-copy">
+
+          <span class="section-kicker">
+            Dein Ziel
+          </span>
+
+          <h2>
+            87 kg
+          </h2>
+
+          <p>
+            Zielgewicht:
+            <strong>70 kg</strong>
+          </p>
+
+        </div>
 
 
-        <!-- GEWICHT -->
+        <div class="progress-visual">
 
-        <article
-          class="summary-card weight-summary"
-          id="gewicht"
-        >
+          <div class="goal-track">
 
-          <div class="summary-header">
-
-            <span class="summary-label">
-              Gewicht
-            </span>
-
-            <span class="summary-status positive">
-              Start
-            </span>
+            <div
+              class="goal-fill"
+              id="goal-fill"
+              style="width: 6%;"
+            ></div>
 
           </div>
 
 
-          <div class="summary-value">
-
-            <strong id="current-weight">
-              88
-            </strong>
+          <div class="goal-numbers">
 
             <span>
-              kg
+              Start 88 kg
             </span>
-
-          </div>
-
-
-          <div class="summary-footer">
 
             <span>
-              Ziel
+              Aktuell 87 kg
             </span>
 
-            <strong>
-              70 kg
-            </strong>
+            <span>
+              Ziel 70 kg
+            </span>
 
           </div>
 
-        </article>
+        </div>
 
+      </section>
+
+
+
+      <!-- =================================================
+           QUICK OVERVIEW
+      ================================================== -->
+
+      <section class="quick-grid">
 
 
         <!-- BMI -->
 
-        <article class="summary-card">
+        <article class="quick-card">
 
-          <div class="summary-header">
+          <span class="quick-label">
+            BMI
+          </span>
 
-            <span class="summary-label">
-              BMI
-            </span>
+          <strong id="current-bmi">
+            31.2
+          </strong>
 
-          </div>
-
-
-          <div class="summary-value">
-
-            <strong id="current-bmi">
-              31.5
-            </strong>
-
-          </div>
-
-
-          <div class="summary-footer">
-
-            <span id="bmi-category">
-              Adipositas Grad I
-            </span>
-
-          </div>
+          <span class="quick-text">
+            Adipositas Grad I
+          </span>
 
         </article>
 
 
 
-        <!-- ÁGUA -->
+        <!-- WASSER -->
 
         <article
-          class="summary-card water-summary"
+          class="quick-card"
           id="wasser"
         >
 
-          <div class="summary-header">
+          <span class="quick-label">
+            Wasser heute
+          </span>
 
-            <span class="summary-label">
-              Wasser
+          <strong>
+            <span id="water-current">
+              1.45
             </span>
-
-            <span class="summary-status">
-              Heute
-            </span>
-
-          </div>
-
-
-          <div class="summary-value">
-
-            <strong id="water-current">
-              1.2
-            </strong>
-
-            <span>
-              / 2.0 L
-            </span>
-
-          </div>
-
-
-          <div class="mini-progress">
-
-            <div class="mini-progress-track">
-
-              <div
-                class="mini-progress-fill"
-                id="water-progress"
-                style="width: 60%;"
-              ></div>
-
-            </div>
-
-          </div>
-
+            L
+          </strong>
 
           <button
             type="button"
-            class="quick-action"
+            class="small-action"
             id="add-water-button"
           >
             + 250 ml
@@ -296,50 +470,27 @@
 
 
 
-        <!-- MOVIMENTO -->
+        <!-- BEWEGUNG -->
 
         <article
-          class="summary-card movement-summary"
+          class="quick-card"
           id="bewegung"
         >
 
-          <div class="summary-header">
+          <span class="quick-label">
+            Bewegung
+          </span>
 
-            <span class="summary-label">
-              Bewegung
-            </span>
-
-            <span class="summary-status">
-              Heute
-            </span>
-
-          </div>
-
-
-          <div class="summary-value">
-
-            <strong id="movement-minutes">
+          <strong>
+            <span id="movement-minutes">
               0
-            </strong>
-
-            <span>
-              Min.
             </span>
+            Min.
+          </strong>
 
-          </div>
-
-
-          <div class="summary-footer">
-
-            <span>
-              Tagesziel
-            </span>
-
-            <strong>
-              30 Min.
-            </strong>
-
-          </div>
+          <span class="quick-text">
+            Tagesziel 30 Min.
+          </span>
 
         </article>
 
@@ -348,87 +499,15 @@
 
 
       <!-- =================================================
-           ZIEL
+           GEWICHT
       ================================================== -->
 
       <section
-        class="content-card goal-section"
-        id="ziele"
+        class="content-section"
+        id="gewicht"
       >
 
-        <div class="section-heading">
-
-          <div>
-
-            <span class="section-kicker">
-              Dein Ziel
-            </span>
-
-            <h2>
-              Von 88 kg auf 70 kg.
-            </h2>
-
-            <p>
-              Dein Fortschritt wird Schritt für Schritt sichtbar.
-            </p>
-
-          </div>
-
-
-          <strong
-            class="goal-percentage"
-            id="goal-percentage"
-          >
-            0 %
-          </strong>
-
-        </div>
-
-
-        <div class="goal-progress">
-
-          <div class="goal-track">
-
-            <div
-              class="goal-fill"
-              id="goal-fill"
-            ></div>
-
-          </div>
-
-
-          <div class="goal-numbers">
-
-            <div>
-              <span>Start</span>
-              <strong>88 kg</strong>
-            </div>
-
-            <div>
-              <span>Aktuell</span>
-              <strong id="goal-current-weight">88 kg</strong>
-            </div>
-
-            <div>
-              <span>Ziel</span>
-              <strong>70 kg</strong>
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-
-      <!-- =================================================
-           GEWICHTSVERLAUF
-      ================================================== -->
-
-      <section class="content-card weight-progress-section">
-
-        <div class="section-heading">
+        <div class="section-header">
 
           <div>
 
@@ -442,35 +521,26 @@
 
           </div>
 
-
-          <button
-            type="button"
-            class="secondary-button"
-            id="open-weight-form"
-          >
-            Gewicht eintragen
-          </button>
-
         </div>
 
 
-        <div class="weight-content">
+        <div class="weight-layout">
+
 
           <div
             class="chart-area"
             id="weight-chart"
-            aria-label="Gewichtsverlauf"
           >
 
-            <div class="chart-empty" id="chart-empty">
+            <div class="empty-state">
 
               <strong>
                 Dein Verlauf beginnt hier.
               </strong>
 
-              <p>
+              <span>
                 Trage dein Gewicht einmal pro Woche ein.
-              </p>
+              </span>
 
             </div>
 
@@ -478,13 +548,14 @@
 
 
           <form
-            class="weight-entry-form"
+            class="simple-form"
             id="weight-form"
           >
 
             <label for="new-weight">
               Aktuelles Gewicht
             </label>
+
 
             <div class="input-unit">
 
@@ -494,8 +565,7 @@
                 min="30"
                 max="300"
                 step="0.1"
-                placeholder="z. B. 87.4"
-                required
+                placeholder="z. B. 86.8"
               >
 
               <span>
@@ -509,7 +579,7 @@
               type="submit"
               class="primary-button"
             >
-              Speichern
+              Gewicht speichern
             </button>
 
           </form>
@@ -521,25 +591,17 @@
 
 
       <!-- =================================================
-           ANÚNCIO
+           ANZEIGE
       ================================================== -->
 
-      <aside
-        class="ad-area"
-        aria-label="Anzeige"
-      >
+      <aside class="ad-area">
 
         <span class="ad-label">
           Anzeige
         </span>
 
-
         <div class="ad-placeholder">
-
-          <span>
-            Werbefläche
-          </span>
-
+          Werbefläche
         </div>
 
       </aside>
@@ -547,15 +609,15 @@
 
 
       <!-- =================================================
-           CALORIAS
+           KALORIEN
       ================================================== -->
 
       <section
-        class="content-card calorie-section"
+        class="content-section"
         id="kalorien"
       >
 
-        <div class="section-heading">
+        <div class="section-header">
 
           <div>
 
@@ -568,7 +630,7 @@
             </h2>
 
             <p>
-              Du entscheidest selbst, was du eintragen möchtest.
+              Trage selbst ein, was du gegessen hast.
             </p>
 
           </div>
@@ -576,64 +638,43 @@
         </div>
 
 
-        <div class="calorie-grid">
+        <div class="calorie-layout">
 
 
-          <!-- RESUMO -->
+          <article class="calorie-summary">
 
-          <div class="calorie-overview">
+            <span>
+              Gegessen
+            </span>
 
-            <div class="calorie-main">
+            <strong id="calories-consumed">
+              0
+            </strong>
 
-              <span>
-                Gegessen
-              </span>
-
-              <strong id="calories-consumed">
-                0
-              </strong>
-
-              <small>
-                kcal
-              </small>
-
-            </div>
+            <small>
+              kcal
+            </small>
 
 
-            <div class="calorie-stats">
+            <div class="calorie-details">
 
               <div>
-
-                <span>
-                  Tagesziel
-                </span>
-
-                <strong id="calorie-goal">
-                  1'800
-                </strong>
-
+                <span>Ziel</span>
+                <strong>1'800</strong>
               </div>
 
-
               <div>
-
-                <span>
-                  Verbleibend
-                </span>
-
+                <span>Verbleibend</span>
                 <strong id="calories-remaining">
                   1'800
                 </strong>
-
               </div>
 
             </div>
 
-          </div>
+          </article>
 
 
-
-          <!-- ADICIONAR ALIMENTO -->
 
           <form
             class="food-form"
@@ -650,7 +691,6 @@
                 type="text"
                 id="food-name"
                 placeholder="z. B. Banane"
-                required
               >
 
             </div>
@@ -669,7 +709,6 @@
                   id="food-calories"
                   min="0"
                   placeholder="100"
-                  required
                 >
 
                 <span>
@@ -698,10 +737,8 @@
           id="food-list"
         >
 
-          <div
-            class="empty-state"
-            id="food-empty"
-          >
+          <div class="empty-state">
+
             <strong>
               Noch nichts eingetragen.
             </strong>
@@ -709,6 +746,7 @@
             <span>
               Deine Lebensmittel erscheinen hier.
             </span>
+
           </div>
 
         </div>
@@ -721,9 +759,9 @@
            BEWEGUNG
       ================================================== -->
 
-      <section class="content-card movement-section">
+      <section class="content-section">
 
-        <div class="section-heading">
+        <div class="section-header">
 
           <div>
 
@@ -734,10 +772,6 @@
             <h2>
               Was hast du heute gemacht?
             </h2>
-
-            <p>
-              Spaziergang, Training, Fahrrad oder einfach mehr Bewegung.
-            </p>
 
           </div>
 
@@ -759,7 +793,6 @@
               type="text"
               id="activity-name"
               placeholder="z. B. Spaziergang"
-              required
             >
 
           </div>
@@ -778,7 +811,6 @@
                 id="activity-minutes"
                 min="1"
                 placeholder="30"
-                required
               >
 
               <span>
@@ -805,7 +837,7 @@
           id="activity-list"
         >
 
-          <div class="empty-state" id="activity-empty">
+          <div class="empty-state">
 
             <strong>
               Noch keine Aktivität.
@@ -827,9 +859,9 @@
            SHOP
       ================================================== -->
 
-      <section class="shop-preview">
+      <section class="shop-section">
 
-        <div class="shop-copy">
+        <div>
 
           <span class="section-kicker">
             Shop
@@ -840,99 +872,44 @@
           </h2>
 
           <p>
-            Produkte, die dir helfen können, organisiert zu bleiben
-            und deine Ziele im Blick zu behalten.
+            Produkte für Organisation, Wasser,
+            Mahlzeiten und Motivation.
           </p>
 
-
-          <a
-            href="shop.html"
-            class="shop-button"
-          >
-            Zum Shop
-          </a>
-
         </div>
 
 
-        <div class="shop-products">
-
-          <article class="product-preview">
-
-            <div class="product-image">
-              <span>01</span>
-            </div>
-
-            <strong>
-              Trinkflasche
-            </strong>
-
-            <span>
-              Für deine tägliche Wasser-Routine.
-            </span>
-
-          </article>
-
-
-          <article class="product-preview">
-
-            <div class="product-image">
-              <span>02</span>
-            </div>
-
-            <strong>
-              Wochenplaner
-            </strong>
-
-            <span>
-              Ziele und Gewohnheiten organisieren.
-            </span>
-
-          </article>
-
-
-          <article class="product-preview">
-
-            <div class="product-image">
-              <span>03</span>
-            </div>
-
-            <strong>
-              Meal-Prep
-            </strong>
-
-            <span>
-              Mahlzeiten einfacher vorbereiten.
-            </span>
-
-          </article>
-
-        </div>
+        <a
+          href="shop.html"
+          class="secondary-button"
+        >
+          Shop entdecken
+        </a>
 
       </section>
 
 
 
       <!-- =================================================
-           BERATUNG / PREMIUM
+           PREMIUM
       ================================================== -->
 
-      <section class="consultation-section">
+      <section class="premium-section">
 
-        <div class="consultation-copy">
+        <div>
 
-          <span class="premium-label">
-            Premium
+          <span class="premium-title">
+            👑 Premium
           </span>
 
           <h2>
-            Du möchtest persönliche Begleitung?
+            Werkzeuge sind gut. Eine Strategie ist besser.
           </h2>
 
           <p>
-            Mit der persönlichen Beratung musst du deinen Weg
-            nicht alleine planen. Eine Ernährungsfachperson
-            begleitet dich individuell.
+            Mit Premium erhältst du persönliche Begleitung,
+            eine individuelle Strategie und zusätzliche
+            Auswertungen.
           </p>
 
         </div>
@@ -940,9 +917,9 @@
 
         <a
           href="premium.html"
-          class="consultation-button"
+          class="premium-button"
         >
-          Beratung kennenlernen
+          Premium entdecken
         </a>
 
       </section>
@@ -955,115 +932,58 @@
 
 
   <!-- =====================================================
-       MOBILE NAVIGATION
-  ====================================================== -->
-
-  <nav
-    class="mobile-nav"
-    aria-label="Mobile Navigation"
-  >
-
-    <a href="#uebersicht" class="mobile-nav-item active">
-
-      <span class="mobile-nav-icon">
-        ●
-      </span>
-
-      <span>
-        Übersicht
-      </span>
-
-    </a>
-
-
-    <a href="#gewicht" class="mobile-nav-item">
-
-      <span class="mobile-nav-icon">
-        ↓
-      </span>
-
-      <span>
-        Gewicht
-      </span>
-
-    </a>
-
-
-    <a href="#kalorien" class="mobile-nav-item">
-
-      <span class="mobile-nav-icon">
-        +
-      </span>
-
-      <span>
-        Kalorien
-      </span>
-
-    </a>
-
-
-    <a href="shop.html" class="mobile-nav-item">
-
-      <span class="mobile-nav-icon">
-        ◇
-      </span>
-
-      <span>
-        Shop
-      </span>
-
-    </a>
-
-
-    <button
-      type="button"
-      class="mobile-nav-item"
-      id="mobile-more-button"
-    >
-
-      <span class="mobile-nav-icon">
-        ···
-      </span>
-
-      <span>
-        Mehr
-      </span>
-
-    </button>
-
-  </nav>
-
-
-
-  <!-- =====================================================
-       MOBILE MORE MENU
+       PREMIUM MODAL
   ====================================================== -->
 
   <div
-    class="mobile-more-menu"
-    id="mobile-more-menu"
+    class="premium-modal"
+    id="premium-modal"
     hidden
   >
 
-    <a href="#wasser">
-      Wasser
-    </a>
+    <div class="premium-modal-backdrop"></div>
 
-    <a href="#bewegung">
-      Bewegung
-    </a>
 
-    <a href="#ziele">
-      Ziele
-    </a>
+    <div
+      class="premium-modal-card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="premium-modal-title"
+    >
 
-    <a href="premium.html">
-      Beratung
-    </a>
+      <button
+        type="button"
+        class="modal-close"
+        id="premium-modal-close"
+        aria-label="Fenster schliessen"
+      >
+        ×
+      </button>
 
-    <a href="#">
-      Profil
-    </a>
+
+      <span class="premium-title">
+        👑 Premium
+      </span>
+
+
+      <h2 id="premium-modal-title">
+        Premium-Funktion
+      </h2>
+
+
+      <p id="premium-modal-text">
+        Diese Funktion ist Teil der persönlichen Begleitung.
+      </p>
+
+
+      <a
+        href="premium.html"
+        class="premium-button"
+      >
+        Premium entdecken
+      </a>
+
+    </div>
 
   </div>
 
