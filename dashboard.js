@@ -1,24 +1,24 @@
 /* =========================================================
    MEIN FORTSCHRITT
-   Dashboard - Protótipo
+   Dashboard Prototype
 ========================================================= */
 
 
 /* =========================================================
-   DADOS INICIAIS DO USUÁRIO
+   DADOS DO USUÁRIO
 ========================================================= */
 
 const user = {
   name: "Valeria",
 
   startWeight: 88,
-  currentWeight: 88,
+  currentWeight: 87,
   goalWeight: 70,
 
   height: 1.67,
 
-  water: 1.2,
-  waterGoal: 2,
+  water: 1.45,
+  waterGoal: 2.0,
 
   movementMinutes: 0,
   movementGoal: 30,
@@ -36,92 +36,37 @@ const user = {
 
 /* =========================================================
    LOCAL STORAGE
-
-   No protótipo, os dados ficam salvos no navegador.
-   Depois isso será substituído pelo Firebase.
 ========================================================= */
 
-const STORAGE_KEY = "meinFortschrittDashboard";
+const STORAGE_KEY = "meinFortschrittDashboardV2";
 
 
-function saveData() {
-
+function saveUserData() {
   localStorage.setItem(
     STORAGE_KEY,
     JSON.stringify(user)
   );
-
 }
 
 
-function loadData() {
-
-  const savedData =
-    localStorage.getItem(STORAGE_KEY);
-
+function loadUserData() {
+  const savedData = localStorage.getItem(STORAGE_KEY);
 
   if (!savedData) {
     return;
   }
 
-
   try {
-
-    const data =
-      JSON.parse(savedData);
-
+    const data = JSON.parse(savedData);
 
     Object.assign(user, data);
-
-  }
-
-  catch (error) {
-
+  } catch (error) {
     console.error(
       "Gespeicherte Daten konnten nicht geladen werden.",
       error
     );
-
   }
-
 }
-
-
-
-/* =========================================================
-   DATA DE HOJE
-========================================================= */
-
-function updateDate() {
-
-  const dateElement =
-    document.getElementById("today-date");
-
-
-  if (!dateElement) {
-    return;
-  }
-
-
-  const today =
-    new Date();
-
-
-  const formattedDate =
-    new Intl.DateTimeFormat(
-      "de-CH",
-      {
-        day: "numeric",
-        month: "long"
-      }
-    ).format(today);
-
-
-  dateElement.textContent =
-    formattedDate;
-
-}
-
 
 
 /* =========================================================
@@ -129,21 +74,17 @@ function updateDate() {
 ========================================================= */
 
 function calculateBMI() {
-
   const bmi =
     user.currentWeight /
     (user.height * user.height);
 
-
   return Number(
     bmi.toFixed(1)
   );
-
 }
 
 
 function getBMICategory(bmi) {
-
   if (bmi < 18.5) {
     return "Untergewicht";
   }
@@ -165,148 +106,69 @@ function getBMICategory(bmi) {
   }
 
   return "Adipositas Grad III";
-
 }
 
 
-
 /* =========================================================
-   PROGRESSO DO PESO
+   PROGRESSO DA META
 ========================================================= */
 
 function calculateGoalProgress() {
+  const totalDifference =
+    user.startWeight - user.goalWeight;
 
-  const total =
-    user.startWeight -
-    user.goalWeight;
+  const currentDifference =
+    user.startWeight - user.currentWeight;
 
-
-  const lost =
-    user.startWeight -
-    user.currentWeight;
-
-
-  if (total <= 0) {
+  if (totalDifference <= 0) {
     return 0;
   }
 
-
   let progress =
-    (lost / total) * 100;
+    (currentDifference / totalDifference) * 100;
 
-
-  progress =
-    Math.max(
-      0,
-      Math.min(100, progress)
-    );
-
+  progress = Math.max(
+    0,
+    Math.min(100, progress)
+  );
 
   return Math.round(progress);
-
 }
 
 
-
 /* =========================================================
-   ATUALIZAR DASHBOARD
+   ATUALIZAR PAINEL
 ========================================================= */
 
 function updateDashboard() {
-
-  /* -------------------------
-     PESO
-  ------------------------- */
-
-  const currentWeightElement =
-    document.getElementById("current-weight");
-
-  const goalCurrentWeight =
-    document.getElementById(
-      "goal-current-weight"
-    );
-
-
-  if (currentWeightElement) {
-
-    currentWeightElement.textContent =
-      formatNumber(user.currentWeight);
-
-  }
-
-
-  if (goalCurrentWeight) {
-
-    goalCurrentWeight.textContent =
-      `${formatNumber(user.currentWeight)} kg`;
-
-  }
-
-
   /* -------------------------
      BMI
   ------------------------- */
 
-  const bmi =
-    calculateBMI();
-
+  const bmi = calculateBMI();
 
   const bmiElement =
     document.getElementById("current-bmi");
 
-  const bmiCategory =
-    document.getElementById("bmi-category");
-
-
   if (bmiElement) {
-
     bmiElement.textContent =
       bmi.toFixed(1);
-
-  }
-
-
-  if (bmiCategory) {
-
-    bmiCategory.textContent =
-      getBMICategory(bmi);
-
   }
 
 
   /* -------------------------
-     META
+     PROGRESSO
   ------------------------- */
 
-  const progress =
-    calculateGoalProgress();
+  const goalFill =
+    document.getElementById("goal-fill");
 
+  if (goalFill) {
+    const progress =
+      calculateGoalProgress();
 
-  const percentage =
-    document.getElementById(
-      "goal-percentage"
-    );
-
-
-  const progressBar =
-    document.getElementById(
-      "goal-fill"
-    );
-
-
-  if (percentage) {
-
-    percentage.textContent =
-      `${progress} %`;
-
-  }
-
-
-  if (progressBar) {
-
-    progressBar.style.width =
+    goalFill.style.width =
       `${progress}%`;
-
   }
 
 
@@ -315,38 +177,11 @@ function updateDashboard() {
   ------------------------- */
 
   const waterCurrent =
-    document.getElementById(
-      "water-current"
-    );
-
-
-  const waterProgress =
-    document.getElementById(
-      "water-progress"
-    );
-
+    document.getElementById("water-current");
 
   if (waterCurrent) {
-
     waterCurrent.textContent =
-      user.water.toFixed(2)
-        .replace(".", ",");
-
-  }
-
-
-  if (waterProgress) {
-
-    const waterPercentage =
-      Math.min(
-        100,
-        (user.water / user.waterGoal) * 100
-      );
-
-
-    waterProgress.style.width =
-      `${waterPercentage}%`;
-
+      formatDecimal(user.water);
   }
 
 
@@ -354,17 +189,14 @@ function updateDashboard() {
      MOVIMENTO
   ------------------------- */
 
-  const movement =
+  const movementMinutes =
     document.getElementById(
       "movement-minutes"
     );
 
-
-  if (movement) {
-
-    movement.textContent =
+  if (movementMinutes) {
+    movementMinutes.textContent =
       user.movementMinutes;
-
   }
 
 
@@ -372,58 +204,34 @@ function updateDashboard() {
      CALORIAS
   ------------------------- */
 
-  const consumed =
+  const caloriesConsumed =
     document.getElementById(
       "calories-consumed"
     );
 
-
-  const remaining =
+  const caloriesRemaining =
     document.getElementById(
       "calories-remaining"
     );
 
-
-  const calorieGoal =
-    document.getElementById(
-      "calorie-goal"
-    );
-
-
-  if (consumed) {
-
-    consumed.textContent =
+  if (caloriesConsumed) {
+    caloriesConsumed.textContent =
       user.caloriesConsumed;
-
   }
 
-
-  if (remaining) {
-
-    const caloriesLeft =
+  if (caloriesRemaining) {
+    const remaining =
       user.calorieGoal -
       user.caloriesConsumed;
 
-
-    remaining.textContent =
-      Math.max(0, caloriesLeft);
-
+    caloriesRemaining.textContent =
+      Math.max(0, remaining);
   }
-
-
-  if (calorieGoal) {
-
-    calorieGoal.textContent =
-      user.calorieGoal;
-
-  }
-
 }
 
 
-
 /* =========================================================
-   ADICIONAR ÁGUA
+   ÁGUA
 ========================================================= */
 
 const addWaterButton =
@@ -433,38 +241,26 @@ const addWaterButton =
 
 
 if (addWaterButton) {
-
   addWaterButton.addEventListener(
     "click",
     function () {
-
       user.water += 0.25;
-
-
-      /*
-        Evita números como:
-        1.500000000002
-      */
 
       user.water =
         Number(
           user.water.toFixed(2)
         );
 
-
-      saveData();
+      saveUserData();
 
       updateDashboard();
-
     }
   );
-
 }
 
 
-
 /* =========================================================
-   REGISTRAR PESO
+   PESO
 ========================================================= */
 
 const weightForm =
@@ -474,136 +270,56 @@ const weightForm =
 
 
 if (weightForm) {
-
   weightForm.addEventListener(
     "submit",
     function (event) {
-
       event.preventDefault();
-
 
       const input =
         document.getElementById(
           "new-weight"
         );
 
-
       const weight =
         Number(input.value);
-
 
       if (
         !weight ||
         weight < 30 ||
         weight > 300
       ) {
-
         alert(
           "Bitte gib ein gültiges Gewicht ein."
         );
 
         return;
-
       }
-
 
       user.currentWeight =
         weight;
 
-
-      const entry = {
-
+      user.weightHistory.push({
         weight: weight,
-
-        date:
-          new Date().toISOString()
-
-      };
-
-
-      user.weightHistory.push(
-        entry
-      );
-
-
-      /*
-        Mantém somente os últimos
-        12 registros no protótipo.
-      */
+        date: new Date().toISOString()
+      });
 
       if (
         user.weightHistory.length > 12
       ) {
-
         user.weightHistory =
           user.weightHistory.slice(-12);
-
       }
-
 
       input.value = "";
 
-
-      saveData();
+      saveUserData();
 
       updateDashboard();
 
       renderWeightChart();
-
     }
   );
-
 }
-
-
-
-/* =========================================================
-   BOTÃO "GEWICHT EINTRAGEN"
-========================================================= */
-
-const openWeightButton =
-  document.getElementById(
-    "open-weight-form"
-  );
-
-
-if (openWeightButton) {
-
-  openWeightButton.addEventListener(
-    "click",
-    function () {
-
-      const input =
-        document.getElementById(
-          "new-weight"
-        );
-
-
-      if (!input) {
-        return;
-      }
-
-
-      input.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
-
-
-      setTimeout(
-        function () {
-
-          input.focus();
-
-        },
-        400
-      );
-
-    }
-  );
-
-}
-
 
 
 /* =========================================================
@@ -611,53 +327,41 @@ if (openWeightButton) {
 ========================================================= */
 
 function renderWeightChart() {
-
   const chart =
     document.getElementById(
       "weight-chart"
     );
 
-
   if (!chart) {
     return;
   }
 
-
-  /*
-    Se ainda não houver registros,
-    mantém a mensagem inicial.
-  */
-
   if (
     user.weightHistory.length === 0
   ) {
-
     chart.innerHTML = `
 
-      <div class="chart-empty">
+      <div class="empty-state">
 
         <strong>
           Dein Verlauf beginnt hier.
         </strong>
 
-        <p>
+        <span>
           Trage dein Gewicht einmal pro Woche ein.
-        </p>
+        </span>
 
       </div>
 
     `;
 
     return;
-
   }
-
 
   const values =
     user.weightHistory.map(
       entry => entry.weight
     );
-
 
   const max =
     Math.max(...values);
@@ -665,17 +369,13 @@ function renderWeightChart() {
   const min =
     Math.min(...values);
 
-
   const difference =
     max - min || 1;
 
-
   let points = "";
-
 
   user.weightHistory.forEach(
     function (entry, index) {
-
       const x =
         user.weightHistory.length === 1
           ? 50
@@ -686,7 +386,6 @@ function renderWeightChart() {
               )
             ) * 100;
 
-
       const y =
         80 -
         (
@@ -696,33 +395,45 @@ function renderWeightChart() {
           difference
         ) * 60;
 
-
       points +=
         `${x},${y} `;
-
     }
   );
-
 
   chart.innerHTML = `
 
     <svg
-      class="weight-svg"
       viewBox="0 0 100 100"
       preserveAspectRatio="none"
+      style="
+        width: 100%;
+        height: 190px;
+        display: block;
+      "
       aria-hidden="true"
     >
 
       <polyline
-        class="weight-line"
         points="${points}"
         fill="none"
+        stroke="#7fa889"
+        stroke-width="2.2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
         vector-effect="non-scaling-stroke"
       ></polyline>
 
     </svg>
 
-    <div class="chart-values">
+    <div
+      style="
+        display:flex;
+        justify-content:space-between;
+        margin-top:8px;
+        color:#7b7771;
+        font-size:11px;
+      "
+    >
 
       <span>
         ${formatNumber(values[0])} kg
@@ -737,13 +448,11 @@ function renderWeightChart() {
     </div>
 
   `;
-
 }
 
 
-
 /* =========================================================
-   ADICIONAR ALIMENTOS
+   ALIMENTOS / CALORIAS
 ========================================================= */
 
 const foodForm =
@@ -753,83 +462,60 @@ const foodForm =
 
 
 if (foodForm) {
-
   foodForm.addEventListener(
     "submit",
     function (event) {
-
       event.preventDefault();
-
 
       const nameInput =
         document.getElementById(
           "food-name"
         );
 
-
       const caloriesInput =
         document.getElementById(
           "food-calories"
         );
 
-
       const name =
         nameInput.value.trim();
 
-
       const calories =
-        Number(caloriesInput.value);
-
+        Number(
+          caloriesInput.value
+        );
 
       if (
         name === "" ||
         !Number.isFinite(calories) ||
         calories < 0
       ) {
-
         alert(
           "Bitte Lebensmittel und Kalorien eintragen."
         );
 
         return;
-
       }
 
-
-      const food = {
-
+      user.foods.push({
         id: Date.now(),
-
         name: name,
-
         calories: calories
-
-      };
-
-
-      user.foods.push(
-        food
-      );
-
+      });
 
       calculateCalories();
-
 
       nameInput.value = "";
       caloriesInput.value = "";
 
-
-      saveData();
+      saveUserData();
 
       updateDashboard();
 
       renderFoodList();
-
     }
   );
-
 }
-
 
 
 /* =========================================================
@@ -837,43 +523,34 @@ if (foodForm) {
 ========================================================= */
 
 function calculateCalories() {
-
   user.caloriesConsumed =
     user.foods.reduce(
       function (total, food) {
-
         return total +
           Number(food.calories);
-
       },
       0
     );
-
 }
 
 
-
 /* =========================================================
-   MOSTRAR ALIMENTOS
+   LISTA DE ALIMENTOS
 ========================================================= */
 
 function renderFoodList() {
-
   const list =
     document.getElementById(
       "food-list"
     );
 
-
   if (!list) {
     return;
   }
 
-
   if (
     user.foods.length === 0
   ) {
-
     list.innerHTML = `
 
       <div class="empty-state">
@@ -891,23 +568,17 @@ function renderFoodList() {
     `;
 
     return;
-
   }
-
 
   list.innerHTML = "";
 
-
   user.foods.forEach(
     function (food) {
-
       const item =
         document.createElement("div");
 
-
       item.className =
         "food-item";
-
 
       item.innerHTML = `
 
@@ -933,34 +604,24 @@ function renderFoodList() {
 
       `;
 
-
       const removeButton =
         item.querySelector(
           ".remove-item"
         );
 
-
       removeButton.addEventListener(
         "click",
         function () {
-
           removeFood(
             food.id
           );
-
         }
       );
 
-
-      list.appendChild(
-        item
-      );
-
+      list.appendChild(item);
     }
   );
-
 }
-
 
 
 /* =========================================================
@@ -968,27 +629,24 @@ function renderFoodList() {
 ========================================================= */
 
 function removeFood(id) {
-
   user.foods =
     user.foods.filter(
-      food => food.id !== id
+      food =>
+        food.id !== id
     );
-
 
   calculateCalories();
 
-  saveData();
+  saveUserData();
 
   updateDashboard();
 
   renderFoodList();
-
 }
 
 
-
 /* =========================================================
-   MOVIMENTO / EXERCÍCIOS
+   MOVIMENTO
 ========================================================= */
 
 const movementForm =
@@ -998,83 +656,60 @@ const movementForm =
 
 
 if (movementForm) {
-
   movementForm.addEventListener(
     "submit",
     function (event) {
-
       event.preventDefault();
 
-
-      const nameInput =
+      const activityInput =
         document.getElementById(
           "activity-name"
         );
-
 
       const minutesInput =
         document.getElementById(
           "activity-minutes"
         );
 
-
-      const name =
-        nameInput.value.trim();
-
+      const activity =
+        activityInput.value.trim();
 
       const minutes =
-        Number(minutesInput.value);
-
+        Number(
+          minutesInput.value
+        );
 
       if (
-        name === "" ||
+        activity === "" ||
         !minutes ||
         minutes <= 0
       ) {
-
         alert(
           "Bitte Aktivität und Dauer eintragen."
         );
 
         return;
-
       }
 
-
-      const activity = {
-
+      user.activities.push({
         id: Date.now(),
-
-        name: name,
-
+        name: activity,
         minutes: minutes
-
-      };
-
-
-      user.activities.push(
-        activity
-      );
-
+      });
 
       calculateMovement();
 
-
-      nameInput.value = "";
+      activityInput.value = "";
       minutesInput.value = "";
 
-
-      saveData();
+      saveUserData();
 
       updateDashboard();
 
-      renderActivities();
-
+      renderActivityList();
     }
   );
-
 }
-
 
 
 /* =========================================================
@@ -1082,48 +717,39 @@ if (movementForm) {
 ========================================================= */
 
 function calculateMovement() {
-
   user.movementMinutes =
     user.activities.reduce(
       function (
         total,
         activity
       ) {
-
         return total +
           Number(
             activity.minutes
           );
-
       },
       0
     );
-
 }
 
 
-
 /* =========================================================
-   MOSTRAR ATIVIDADES
+   LISTA DE ATIVIDADES
 ========================================================= */
 
-function renderActivities() {
-
+function renderActivityList() {
   const list =
     document.getElementById(
       "activity-list"
     );
 
-
   if (!list) {
     return;
   }
 
-
   if (
     user.activities.length === 0
   ) {
-
     list.innerHTML = `
 
       <div class="empty-state">
@@ -1141,23 +767,17 @@ function renderActivities() {
     `;
 
     return;
-
   }
-
 
   list.innerHTML = "";
 
-
   user.activities.forEach(
     function (activity) {
-
       const item =
         document.createElement("div");
 
-
       item.className =
         "activity-item";
-
 
       item.innerHTML = `
 
@@ -1183,34 +803,24 @@ function renderActivities() {
 
       `;
 
-
       const removeButton =
         item.querySelector(
           ".remove-item"
         );
 
-
       removeButton.addEventListener(
         "click",
         function () {
-
           removeActivity(
             activity.id
           );
-
         }
       );
 
-
-      list.appendChild(
-        item
-      );
-
+      list.appendChild(item);
     }
   );
-
 }
-
 
 
 /* =========================================================
@@ -1218,146 +828,273 @@ function renderActivities() {
 ========================================================= */
 
 function removeActivity(id) {
-
   user.activities =
     user.activities.filter(
       activity =>
         activity.id !== id
     );
 
-
   calculateMovement();
 
-  saveData();
+  saveUserData();
 
   updateDashboard();
 
-  renderActivities();
-
+  renderActivityList();
 }
 
 
-
 /* =========================================================
-   MENU MOBILE
+   PREMIUM MODAL
 ========================================================= */
 
-const moreButton =
+const premiumButtons =
+  document.querySelectorAll(
+    ".premium-function"
+  );
+
+const premiumModal =
   document.getElementById(
-    "mobile-more-button"
+    "premium-modal"
   );
 
-
-const moreMenu =
+const premiumModalClose =
   document.getElementById(
-    "mobile-more-menu"
+    "premium-modal-close"
+  );
+
+const premiumModalTitle =
+  document.getElementById(
+    "premium-modal-title"
+  );
+
+const premiumModalText =
+  document.getElementById(
+    "premium-modal-text"
   );
 
 
-if (
-  moreButton &&
-  moreMenu
-) {
+premiumButtons.forEach(
+  function (button) {
+    button.addEventListener(
+      "click",
+      function () {
+        const feature =
+          this.dataset.feature ||
+          "Premium";
 
-  moreButton.addEventListener(
-    "click",
-    function () {
-
-      moreMenu.hidden =
-        !moreMenu.hidden;
-
-    }
-  );
-
-
-  moreMenu
-    .querySelectorAll("a")
-    .forEach(
-      function (link) {
-
-        link.addEventListener(
-          "click",
-          function () {
-
-            moreMenu.hidden =
-              true;
-
-          }
+        openPremiumModal(
+          feature
         );
-
       }
     );
-
-}
-
+  }
+);
 
 
 /* =========================================================
-   SEGURANÇA PARA TEXTO DO USUÁRIO
+   ABRIR PREMIUM MODAL
+========================================================= */
 
-   Evita inserir HTML digitado pelo usuário.
+function openPremiumModal(
+  feature
+) {
+  if (!premiumModal) {
+    return;
+  }
+
+  premiumModalTitle.textContent =
+    feature;
+
+  premiumModalText.textContent =
+    getPremiumMessage(
+      feature
+    );
+
+  premiumModal.hidden =
+    false;
+
+  document.body.style.overflow =
+    "hidden";
+}
+
+
+/* =========================================================
+   TEXTO PREMIUM
+========================================================= */
+
+function getPremiumMessage(
+  feature
+) {
+  const messages = {
+    Begleitung:
+      "Mit Premium erhältst du persönliche Begleitung durch eine Ernährungsfachperson.",
+
+    Wochenanalyse:
+      "Deine Woche wird gemeinsam ausgewertet, damit du erkennst, was funktioniert und wo Anpassungen sinnvoll sind.",
+
+    Strategie:
+      "Erhalte eine persönliche Strategie, die zu deinem Alltag, deinen Zielen und deiner Entwicklung passt.",
+
+    Ernährungsplan:
+      "Erhalte individuelle Empfehlungen und eine strukturierte Planung für deine Ernährung.",
+
+    Analyse:
+      "Mit erweiterten Auswertungen erkennst du Entwicklungen, Muster und Veränderungen besser."
+  };
+
+  return (
+    messages[feature] ||
+    "Diese Funktion ist Teil des Premium-Bereichs."
+  );
+}
+
+
+/* =========================================================
+   FECHAR MODAL
+========================================================= */
+
+if (
+  premiumModalClose &&
+  premiumModal
+) {
+  premiumModalClose.addEventListener(
+    "click",
+    closePremiumModal
+  );
+}
+
+
+const premiumBackdrop =
+  premiumModal
+    ? premiumModal.querySelector(
+        ".premium-modal-backdrop"
+      )
+    : null;
+
+
+if (premiumBackdrop) {
+  premiumBackdrop.addEventListener(
+    "click",
+    closePremiumModal
+  );
+}
+
+
+function closePremiumModal() {
+  if (!premiumModal) {
+    return;
+  }
+
+  premiumModal.hidden =
+    true;
+
+  document.body.style.overflow =
+    "";
+}
+
+
+/* =========================================================
+   ESC FECHA MODAL
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  function (event) {
+    if (
+      event.key === "Escape" &&
+      premiumModal &&
+      !premiumModal.hidden
+    ) {
+      closePremiumModal();
+    }
+  }
+);
+
+
+/* =========================================================
+   MENU HORIZONTAL
+   roda do mouse vira rolagem horizontal
+========================================================= */
+
+const functionMenu =
+  document.querySelector(
+    ".function-menu"
+  );
+
+
+if (functionMenu) {
+  functionMenu.addEventListener(
+    "wheel",
+    function (event) {
+      if (
+        Math.abs(event.deltaY) >
+        Math.abs(event.deltaX)
+      ) {
+        functionMenu.scrollLeft +=
+          event.deltaY;
+      }
+    },
+    {
+      passive: true
+    }
+  );
+}
+
+
+/* =========================================================
+   SEGURANÇA
 ========================================================= */
 
 function escapeHTML(value) {
-
   const element =
     document.createElement("div");
-
 
   element.textContent =
     value;
 
-
   return element.innerHTML;
-
 }
 
 
-
 /* =========================================================
-   FORMATAÇÃO DE NÚMEROS
+   FORMATAÇÃO
 ========================================================= */
 
 function formatNumber(value) {
-
   return Number(value)
     .toFixed(1)
     .replace(".0", "")
     .replace(".", ",");
-
 }
 
 
+function formatDecimal(value) {
+  return Number(value)
+    .toFixed(2)
+    .replace(/0$/, "")
+    .replace(".", ",");
+}
+
 
 /* =========================================================
-   INICIAR APLICAÇÃO
+   INICIAR
 ========================================================= */
 
 function initializeDashboard() {
-
-  loadData();
-
-  /*
-    Recalcula estes valores para garantir
-    que estejam corretos mesmo depois
-    de recarregar a página.
-  */
+  loadUserData();
 
   calculateCalories();
 
   calculateMovement();
 
-
-  updateDate();
-
   updateDashboard();
-
-  renderFoodList();
-
-  renderActivities();
 
   renderWeightChart();
 
+  renderFoodList();
+
+  renderActivityList();
 }
 
 
