@@ -1,0 +1,822 @@
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f4fbf6 0%,
+      #ffffff 100%
+    );
+
+  color: #24332a;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.pet-page {
+  width: min(100% - 28px, 720px);
+
+  margin: 0 auto;
+  padding: 28px 0 80px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.pet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 20px;
+
+  margin-bottom: 20px;
+}
+
+.pet-header h1 {
+  margin: 3px 0 0;
+
+  font-size: 32px;
+}
+
+.eyebrow {
+  color: #6f8175;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.phase-badge {
+  background: #e4f5e8;
+
+  padding: 9px 14px;
+
+  border-radius: 999px;
+
+  color: #327146;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.pet-card {
+  background: white;
+
+  border-radius: 28px;
+
+  padding: 22px;
+
+  box-shadow:
+    0 15px 40px rgba(45, 76, 55, 0.10);
+}
+
+
+/* =========================================================
+   SCENE
+========================================================= */
+
+.pet-scene {
+  position: relative;
+
+  min-height: 360px;
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #eef9f1,
+      #fafdfb
+    );
+
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+
+  padding-bottom: 35px;
+}
+
+
+/* =========================================================
+   SPEECH BUBBLE
+========================================================= */
+
+.speech-bubble {
+  position: absolute;
+
+  top: 20px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: calc(100% - 40px);
+  max-width: 380px;
+
+  background: white;
+
+  padding: 15px 18px;
+
+  border-radius: 18px;
+
+  text-align: center;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,0.08);
+
+  z-index: 10;
+}
+
+
+/* =========================================================
+   CAT
+========================================================= */
+
+.cat-wrapper {
+  height: 230px;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.cat {
+  position: relative;
+
+  width: 150px;
+  height: 190px;
+
+  transition:
+    transform 0.6s ease;
+}
+
+
+/* BODY */
+
+.cat-body {
+  position: absolute;
+
+  width: 105px;
+  height: 115px;
+
+  left: 50%;
+  bottom: 10px;
+
+  transform: translateX(-50%);
+
+  border-radius:
+    48% 48% 42% 42%;
+
+  background: #d7975f;
+
+  transition:
+    width 0.7s ease,
+    height 0.7s ease;
+}
+
+
+/* BELLY */
+
+.cat-belly {
+  position: absolute;
+
+  width: 62%;
+  height: 66%;
+
+  left: 50%;
+  bottom: 10px;
+
+  transform: translateX(-50%);
+
+  border-radius: 50%;
+
+  background: #efd0a8;
+}
+
+
+/* HEAD */
+
+.cat-head {
+  position: absolute;
+
+  width: 100px;
+  height: 92px;
+
+  top: 15px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  border-radius:
+    45% 45% 48% 48%;
+
+  background: #d7975f;
+
+  z-index: 4;
+}
+
+
+/* EARS */
+
+.ear {
+  position: absolute;
+
+  top: -18px;
+
+  width: 36px;
+  height: 42px;
+
+  background: #d7975f;
+
+  transform: rotate(45deg);
+
+  border-radius: 8px;
+}
+
+.left-ear {
+  left: 4px;
+}
+
+.right-ear {
+  right: 4px;
+}
+
+
+/* EYES */
+
+.eye {
+  position: absolute;
+
+  top: 38px;
+
+  width: 10px;
+  height: 13px;
+
+  background: #24332a;
+
+  border-radius: 50%;
+}
+
+.left-eye {
+  left: 28px;
+}
+
+.right-eye {
+  right: 28px;
+}
+
+
+/* NOSE */
+
+.nose {
+  position: absolute;
+
+  top: 57px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: 10px;
+  height: 7px;
+
+  background: #9c5e5e;
+
+  border-radius: 50%;
+}
+
+
+/* MOUTH */
+
+.mouth {
+  position: absolute;
+
+  top: 65px;
+  left: 50%;
+
+  width: 18px;
+  height: 9px;
+
+  transform: translateX(-50%);
+
+  border-bottom:
+    2px solid #704747;
+
+  border-radius: 50%;
+}
+
+
+/* WHISKERS */
+
+.whisker {
+  position: absolute;
+
+  width: 30px;
+  height: 1px;
+
+  background: #76583f;
+}
+
+.whisker-1 {
+  top: 57px;
+  left: -10px;
+
+  transform: rotate(8deg);
+}
+
+.whisker-2 {
+  top: 64px;
+  left: -12px;
+}
+
+.whisker-3 {
+  top: 71px;
+  left: -9px;
+
+  transform: rotate(-8deg);
+}
+
+.whisker-4 {
+  top: 57px;
+  right: -10px;
+
+  transform: rotate(-8deg);
+}
+
+.whisker-5 {
+  top: 64px;
+  right: -12px;
+}
+
+.whisker-6 {
+  top: 71px;
+  right: -9px;
+
+  transform: rotate(8deg);
+}
+
+
+/* LEGS */
+
+.cat-leg {
+  position: absolute;
+
+  width: 31px;
+  height: 38px;
+
+  bottom: -13px;
+
+  background: #c98751;
+
+  border-radius: 18px;
+}
+
+.left-leg {
+  left: 14px;
+}
+
+.right-leg {
+  right: 14px;
+}
+
+
+/* TAIL */
+
+.cat-tail {
+  position: absolute;
+
+  width: 75px;
+  height: 25px;
+
+  right: -28px;
+  bottom: 35px;
+
+  background: #c98751;
+
+  border-radius: 30px;
+
+  transform: rotate(-25deg);
+
+  transform-origin: left center;
+
+  z-index: 0;
+}
+
+
+/* =========================================================
+   CAT WEIGHT STAGES
+========================================================= */
+
+.cat.stage-0 .cat-body {
+  width: 90px;
+}
+
+.cat.stage-1 .cat-body {
+  width: 105px;
+}
+
+.cat.stage-2 .cat-body {
+  width: 120px;
+}
+
+.cat.stage-3 .cat-body {
+  width: 135px;
+  height: 122px;
+}
+
+.cat.stage-4 .cat-body {
+  width: 150px;
+  height: 128px;
+}
+
+.cat.stage-5 .cat-body {
+  width: 168px;
+  height: 135px;
+}
+
+
+/* =========================================================
+   CAT ANIMATIONS
+========================================================= */
+
+.cat.happy {
+  animation: catHappy 0.55s ease;
+}
+
+@keyframes catHappy {
+
+  0% {
+    transform: translateY(0);
+  }
+
+  40% {
+    transform: translateY(-15px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+
+}
+
+
+.cat.drinking {
+  animation: drinking 0.7s ease infinite alternate;
+}
+
+@keyframes drinking {
+
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(4deg);
+  }
+
+}
+
+
+.cat.exercise {
+  animation: exercise 0.45s ease 5;
+}
+
+@keyframes exercise {
+
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-13px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+
+}
+
+
+/* =========================================================
+   ACTIVITY EMOJI
+========================================================= */
+
+.activity-animation {
+  position: absolute;
+
+  bottom: 30px;
+  right: 35px;
+
+  font-size: 50px;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   INFORMATION
+========================================================= */
+
+.pet-info {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 10px;
+
+  margin-top: 18px;
+}
+
+.info-item {
+  background: #f7faf8;
+
+  padding: 14px;
+
+  border-radius: 16px;
+
+  text-align: center;
+}
+
+.info-item span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-size: 12px;
+
+  color: #7a897f;
+}
+
+.info-item strong {
+  font-size: 15px;
+}
+
+
+/* =========================================================
+   FOOD
+========================================================= */
+
+.food-area,
+.diet-area {
+  margin-top: 28px;
+}
+
+.food-area h2,
+.diet-area h2 {
+  margin-bottom: 16px;
+
+  font-size: 19px;
+}
+
+.food-buttons {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 12px;
+}
+
+.food-button {
+  border: 0;
+
+  padding: 20px 10px;
+
+  border-radius: 18px;
+
+  cursor: pointer;
+
+  font-weight: 700;
+
+  font-size: 15px;
+}
+
+.food-icon {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-size: 37px;
+}
+
+.burger-button {
+  background: #fff0d5;
+}
+
+.salad-button {
+  background: #e8f7eb;
+}
+
+.burger-counter {
+  margin-top: 15px;
+
+  color: #6a766e;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   HABITS
+========================================================= */
+
+.diet-description {
+  color: #738078;
+}
+
+.habit-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 10px;
+}
+
+.habit-button {
+  border: 0;
+
+  border-radius: 17px;
+
+  padding: 17px;
+
+  background: #f3f8f4;
+
+  cursor: pointer;
+
+  font-weight: 700;
+}
+
+.habit-button span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  font-size: 29px;
+}
+
+
+/* =========================================================
+   PANELS
+========================================================= */
+
+.habit-panel {
+  margin-top: 15px;
+
+  padding: 17px;
+
+  border-radius: 18px;
+
+  background: #f7faf8;
+}
+
+.habit-panel h3 {
+  margin-top: 0;
+
+  font-size: 16px;
+}
+
+.quick-buttons {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+.quick-buttons button,
+.primary-action {
+  border: 0;
+
+  background: #36794c;
+  color: white;
+
+  padding: 11px 15px;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   WEIGHT
+========================================================= */
+
+.weight-form {
+  display: flex;
+
+  gap: 8px;
+}
+
+.weight-form input {
+  flex: 1;
+
+  border:
+    1px solid #d9e4dc;
+
+  border-radius: 12px;
+
+  padding: 12px;
+
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   DEVELOPER
+========================================================= */
+
+.developer-card {
+  margin-top: 20px;
+
+  padding: 18px;
+
+  border-radius: 18px;
+
+  background: #fff8df;
+
+  font-size: 13px;
+}
+
+.developer-card p {
+  color: #796f50;
+}
+
+.developer-card button {
+  margin-right: 7px;
+  margin-top: 5px;
+
+  border: 0;
+
+  border-radius: 10px;
+
+  padding: 9px 12px;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   UTILITIES
+========================================================= */
+
+.hidden {
+  display: none !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 520px) {
+
+  .pet-header {
+    align-items: flex-start;
+  }
+
+  .phase-badge {
+    font-size: 11px;
+  }
+
+  .pet-card {
+    padding: 15px;
+  }
+
+  .pet-info {
+    grid-template-columns: 1fr;
+  }
+
+}
