@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="de-CH">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <meta
     name="description"
@@ -11,7 +16,13 @@
 
   <title>Mein Fortschritt | BMI-Rechner</title>
 
+
   <style>
+
+    /* =====================================================
+       ROOT
+    ====================================================== */
+
     :root {
       --green: #2f8f5b;
       --green-dark: #247249;
@@ -27,6 +38,10 @@
         0 24px 60px rgba(25, 70, 45, 0.08);
     }
 
+
+    /* =====================================================
+       RESET
+    ====================================================== */
 
     * {
       margin: 0;
@@ -69,9 +84,9 @@
     }
 
 
-    /* ----------------------------------------
+    /* =====================================================
        HEADER
-    ---------------------------------------- */
+    ====================================================== */
 
     .header {
       height: 82px;
@@ -147,9 +162,9 @@
     }
 
 
-    /* ----------------------------------------
+    /* =====================================================
        MAIN
-    ---------------------------------------- */
+    ====================================================== */
 
     main {
       min-height: calc(100vh - 82px);
@@ -175,9 +190,9 @@
     }
 
 
-    /* ----------------------------------------
-       TEXTO
-    ---------------------------------------- */
+    /* =====================================================
+       INTRO
+    ====================================================== */
 
     .intro {
       max-width: 520px;
@@ -225,9 +240,9 @@
     }
 
 
-    /* ----------------------------------------
+    /* =====================================================
        BMI CARD
-    ---------------------------------------- */
+    ====================================================== */
 
     .bmi-card {
       padding: 42px;
@@ -282,9 +297,9 @@
     }
 
 
-    /* ----------------------------------------
+    /* =====================================================
        FORM
-    ---------------------------------------- */
+    ====================================================== */
 
     .form-grid {
       display: grid;
@@ -385,9 +400,9 @@
     }
 
 
-    /* ----------------------------------------
-       RESULTADO
-    ---------------------------------------- */
+    /* =====================================================
+       RESULT
+    ====================================================== */
 
     .result {
       margin-top: 26px;
@@ -406,6 +421,7 @@
 
 
     @keyframes resultIn {
+
       from {
         opacity: 0;
         transform: translateY(10px);
@@ -415,6 +431,7 @@
         opacity: 1;
         transform: translateY(0);
       }
+
     }
 
 
@@ -452,7 +469,6 @@
 
     .result-category {
       display: inline-flex;
-
       align-items: center;
 
       min-height: 36px;
@@ -480,9 +496,9 @@
     }
 
 
-    /* ----------------------------------------
-       WEITER
-    ---------------------------------------- */
+    /* =====================================================
+       CONTINUE
+    ====================================================== */
 
     .continue-area {
       margin-top: 24px;
@@ -543,9 +559,9 @@
     }
 
 
-    /* ----------------------------------------
+    /* =====================================================
        DISCLAIMER
-    ---------------------------------------- */
+    ====================================================== */
 
     .bmi-note {
       margin-top: 18px;
@@ -558,9 +574,9 @@
     }
 
 
-    /* ----------------------------------------
-       MOBILE
-    ---------------------------------------- */
+    /* =====================================================
+       TABLET
+    ====================================================== */
 
     @media (max-width: 900px) {
 
@@ -601,6 +617,10 @@
 
     }
 
+
+    /* =====================================================
+       MOBILE
+    ====================================================== */
 
     @media (max-width: 600px) {
 
@@ -673,17 +693,27 @@
       }
 
     }
+
   </style>
+
 </head>
 
 
 <body>
 
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
   <header class="header">
 
     <div class="header-inner">
 
-      <a href="index.html" class="brand">
+      <a
+        href="index.html"
+        class="brand"
+      >
 
         <span class="brand-mark">
           M
@@ -696,20 +726,31 @@
       </a>
 
 
-     <a href="dashboard.html" class="login">
-  Anmelden
-</a>
+      <a
+        href="dashboard.html"
+        class="login"
+      >
+        Anmelden
+      </a>
+
     </div>
 
   </header>
 
+
+
+  <!-- =====================================================
+       MAIN
+  ====================================================== -->
 
   <main>
 
     <div class="page">
 
 
-      <!-- INTRO -->
+      <!-- =================================================
+           INTRO
+      ================================================== -->
 
       <section class="intro">
 
@@ -730,7 +771,9 @@
 
 
 
-      <!-- BMI -->
+      <!-- =================================================
+           BMI CARD
+      ================================================== -->
 
       <section class="bmi-card">
 
@@ -751,16 +794,22 @@
         </div>
 
 
+
+        <!-- FORM -->
+
         <form id="bmi-form">
 
           <div class="form-grid">
 
+
+            <!-- WEIGHT -->
 
             <div class="form-group">
 
               <label for="weight">
                 Gewicht
               </label>
+
 
               <div class="field">
 
@@ -784,11 +833,14 @@
 
 
 
+            <!-- HEIGHT -->
+
             <div class="form-group">
 
               <label for="height">
                 Körpergrösse
               </label>
+
 
               <div class="field">
 
@@ -824,7 +876,9 @@
 
 
 
-        <!-- RESULTAT -->
+        <!-- =================================================
+             RESULT
+        ================================================== -->
 
         <div
           class="result"
@@ -841,6 +895,7 @@
                 Dein BMI
               </span>
 
+
               <div
                 class="result-value"
                 id="bmi-value"
@@ -854,18 +909,20 @@
             <span
               class="result-category"
               id="bmi-category"
-            >
-            </span>
+            ></span>
 
           </div>
+
 
 
           <p
             class="result-message"
             id="bmi-message"
-          >
-          </p>
+          ></p>
 
+
+
+          <!-- CONTINUE -->
 
           <div class="continue-area">
 
@@ -878,6 +935,7 @@
               <span class="continue-arrow">
                 →
               </span>
+
             </a>
 
 
@@ -887,6 +945,9 @@
 
           </div>
 
+
+
+          <!-- DISCLAIMER -->
 
           <p class="bmi-note">
             Der BMI ist ein allgemeiner Orientierungswert und ersetzt
@@ -904,28 +965,128 @@
 
 
 
+  <!-- =====================================================
+       CENTRAL USER DATA
+       precisa vir antes do script da página
+  ====================================================== -->
+
+  <script src="user-data.js"></script>
+
+
+
+  <!-- =====================================================
+       INDEX JAVASCRIPT
+  ====================================================== -->
+
   <script>
+
+    /* =====================================================
+       ELEMENTS
+    ====================================================== */
+
     const bmiForm =
       document.getElementById("bmi-form");
+
 
     const weightInput =
       document.getElementById("weight");
 
+
     const heightInput =
       document.getElementById("height");
+
 
     const result =
       document.getElementById("result");
 
+
     const bmiValue =
       document.getElementById("bmi-value");
+
 
     const bmiCategory =
       document.getElementById("bmi-category");
 
+
     const bmiMessage =
       document.getElementById("bmi-message");
 
+
+
+    /* =====================================================
+       BMI MESSAGE
+    ====================================================== */
+
+    function getBMIMessage(bmi) {
+
+      if (bmi < 18.5) {
+
+        return (
+          "Dein BMI liegt unter dem üblichen Orientierungsbereich. " +
+          "Dein Ergebnis ist ein Ausgangspunkt, um deine Entwicklung " +
+          "bewusster zu verfolgen."
+        );
+
+      }
+
+
+      if (bmi < 25) {
+
+        return (
+          "Dein BMI liegt im üblichen Orientierungsbereich. " +
+          "Behalte deine Entwicklung im Blick und finde heraus, " +
+          "welche Gewohnheiten dir langfristig guttun."
+        );
+
+      }
+
+
+      if (bmi < 30) {
+
+        return (
+          "Dein BMI liegt über dem üblichen Orientierungsbereich. " +
+          "Das ist nur dein Ausgangspunkt – kleine, konsequente " +
+          "Veränderungen können einen Unterschied machen."
+        );
+
+      }
+
+
+      if (bmi < 35) {
+
+        return (
+          "Dein BMI liegt deutlich über dem üblichen Orientierungsbereich. " +
+          "Ein strukturierter Weg und realistische Ziele können dir helfen, " +
+          "deine Entwicklung Schritt für Schritt zu verfolgen."
+        );
+
+      }
+
+
+      if (bmi < 40) {
+
+        return (
+          "Dein BMI liegt deutlich über dem üblichen Orientierungsbereich. " +
+          "Eine persönliche fachliche Begleitung kann dir dabei helfen, " +
+          "passende und realistische nächste Schritte zu planen."
+        );
+
+      }
+
+
+      return (
+        "Dein BMI liegt stark über dem üblichen Orientierungsbereich. " +
+        "Eine individuelle fachliche Begleitung ist für die Planung " +
+        "der nächsten Schritte besonders sinnvoll."
+      );
+
+    }
+
+
+
+    /* =====================================================
+       FORM SUBMIT
+    ====================================================== */
 
     bmiForm.addEventListener(
       "submit",
@@ -934,96 +1095,87 @@
         event.preventDefault();
 
 
+
+        /* =================================================
+           INPUT VALUES
+        ================================================== */
+
         const weight =
-          parseFloat(weightInput.value);
+          Number(weightInput.value);
+
 
         const heightCm =
-          parseFloat(heightInput.value);
+          Number(heightInput.value);
 
+
+
+        /* =================================================
+           VALIDATION
+        ================================================== */
 
         if (
-          !weight ||
-          !heightCm ||
-          weight <= 0 ||
-          heightCm <= 0
+          !Number.isFinite(weight) ||
+          !Number.isFinite(heightCm) ||
+          weight < 20 ||
+          weight > 350 ||
+          heightCm < 100 ||
+          heightCm > 250
         ) {
           return;
         }
 
 
+
+        /* =================================================
+           CONVERT HEIGHT
+           user-data.js usa metros
+        ================================================== */
+
         const heightM =
           heightCm / 100;
 
 
+
+        /* =================================================
+           SAVE USER DATA
+        ================================================== */
+
+        setUserHeight(
+          heightM
+        );
+
+
+        const user =
+          setInitialWeight(
+            weight
+          );
+
+
+
+        /* =================================================
+           BMI
+        ================================================== */
+
         const bmi =
-          weight /
-          (heightM * heightM);
+          user.bmi;
 
 
-        let category = "";
-        let message = "";
+        const category =
+          getBMICategory(
+            bmi
+          );
 
 
-        if (bmi < 18.5) {
+        const message =
+          getBMIMessage(
+            bmi
+          );
 
-          category =
-            "Untergewicht";
 
-          message =
-            "Dein BMI liegt unter dem üblichen Orientierungsbereich. Dein Ergebnis ist ein Ausgangspunkt, um deine Entwicklung bewusster zu verfolgen.";
 
-        }
-
-        else if (bmi < 25) {
-
-          category =
-            "Normalgewicht";
-
-          message =
-            "Dein BMI liegt im üblichen Orientierungsbereich. Behalte deine Entwicklung im Blick und finde heraus, welche Gewohnheiten dir langfristig guttun.";
-
-        }
-
-        else if (bmi < 30) {
-
-          category =
-            "Übergewicht";
-
-          message =
-            "Dein BMI liegt über dem üblichen Orientierungsbereich. Das ist nur dein Ausgangspunkt – kleine, konsequente Veränderungen können einen Unterschied machen.";
-
-        }
-
-        else if (bmi < 35) {
-
-          category =
-            "Adipositas Grad I";
-
-          message =
-            "Dein BMI liegt deutlich über dem üblichen Orientierungsbereich. Ein strukturierter Weg und realistische Ziele können dir helfen, deine Entwicklung Schritt für Schritt zu verfolgen.";
-
-        }
-
-        else if (bmi < 40) {
-
-          category =
-            "Adipositas Grad II";
-
-          message =
-            "Dein BMI liegt deutlich über dem üblichen Orientierungsbereich. Eine persönliche fachliche Begleitung kann dir dabei helfen, passende und realistische nächste Schritte zu planen.";
-
-        }
-
-        else {
-
-          category =
-            "Adipositas Grad III";
-
-          message =
-            "Dein BMI liegt stark über dem üblichen Orientierungsbereich. Eine individuelle fachliche Begleitung ist für die Planung der nächsten Schritte besonders sinnvoll.";
-
-        }
-
+        /* =================================================
+           DISPLAY RESULT
+        ================================================== */
 
         bmiValue.textContent =
           bmi.toFixed(1);
@@ -1040,28 +1192,10 @@
         result.hidden = false;
 
 
-        /*
-          Speichert BMI vorübergehend.
 
-          motivation.html oder später dashboard.html
-          kann diesen Wert wieder auslesen.
-        */
-
-        localStorage.setItem(
-          "currentWeight",
-          weight
-        );
-
-        localStorage.setItem(
-          "currentHeight",
-          heightCm
-        );
-
-        localStorage.setItem(
-          "currentBMI",
-          bmi.toFixed(1)
-        );
-
+        /* =================================================
+           SCROLL TO RESULT
+        ================================================== */
 
         setTimeout(
           function () {
@@ -1077,7 +1211,54 @@
 
       }
     );
+
+
+
+    /* =====================================================
+       LOAD EXISTING DATA
+       Se a pessoa voltar ao Index, mostramos os dados atuais
+       nos campos sem alterar o peso inicial.
+    ====================================================== */
+
+    function loadExistingUserData() {
+
+      const user =
+        getUser();
+
+
+      if (
+        typeof user.currentWeight === "number"
+      ) {
+
+        weightInput.value =
+          user.currentWeight;
+
+      }
+
+
+      if (
+        typeof user.height === "number"
+      ) {
+
+        heightInput.value =
+          Math.round(
+            user.height * 100
+          );
+
+      }
+
+    }
+
+
+
+    /* =====================================================
+       INIT
+    ====================================================== */
+
+    loadExistingUserData();
+
   </script>
 
 </body>
+
 </html>
