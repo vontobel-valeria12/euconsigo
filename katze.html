@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Mein Begleiter</title>
+
+  <link rel="stylesheet" href="katze.css">
+</head>
+
+<body>
+
+  <main class="pet-page">
+
+    <!-- =========================
+         CABEÇALHO
+    ========================== -->
+
+    <header class="pet-header">
+
+      <div>
+        <span class="eyebrow">Mein Begleiter</span>
+        <h1>Miau 🐾</h1>
+      </div>
+
+      <div class="phase-badge" id="phaseBadge">
+        Kennenlernphase
+      </div>
+
+    </header>
+
+
+    <!-- =========================
+         CARD DO GATO
+    ========================== -->
+
+    <section class="pet-card">
+
+      <div class="pet-scene">
+
+        <div class="speech-bubble" id="speechBubble">
+          Ich habe Hunger! 🍔
+        </div>
+
+
+        <!-- GATO EM CSS -->
+
+        <div class="cat-wrapper" id="catWrapper">
+
+          <div class="cat" id="cat">
+
+            <div class="cat-tail"></div>
+
+            <div class="cat-body">
+
+              <div class="cat-belly"></div>
+
+              <div class="cat-leg left-leg"></div>
+              <div class="cat-leg right-leg"></div>
+
+            </div>
+
+            <div class="cat-head">
+
+              <div class="ear left-ear"></div>
+              <div class="ear right-ear"></div>
+
+              <div class="eye left-eye"></div>
+              <div class="eye right-eye"></div>
+
+              <div class="nose"></div>
+
+              <div class="mouth"></div>
+
+              <div class="whisker whisker-1"></div>
+              <div class="whisker whisker-2"></div>
+              <div class="whisker whisker-3"></div>
+
+              <div class="whisker whisker-4"></div>
+              <div class="whisker whisker-5"></div>
+              <div class="whisker whisker-6"></div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="activity-animation" id="activityAnimation"></div>
+
+      </div>
+
+
+      <!-- =========================
+           INFORMAÇÕES
+      ========================== -->
+
+      <div class="pet-info">
+
+        <div class="info-item">
+          <span>Dein Gewicht</span>
+          <strong id="userWeight">-- kg</strong>
+        </div>
+
+        <div class="info-item">
+          <span>Miaus Reise</span>
+          <strong id="catProgress">0 kg</strong>
+        </div>
+
+        <div class="info-item">
+          <span>Status</span>
+          <strong id="weightStatus">--</strong>
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           PRIMEIRA SEMANA
+      ========================== -->
+
+      <div class="food-area" id="firstWeekArea">
+
+        <h2>Was möchte Miau essen?</h2>
+
+        <div class="food-buttons">
+
+          <button
+            class="food-button burger-button"
+            id="burgerButton"
+            type="button">
+
+            <span class="food-icon">🍔</span>
+            Hamburger
+
+          </button>
+
+
+          <button
+            class="food-button salad-button"
+            id="saladButton"
+            type="button">
+
+            <span class="food-icon">🥬</span>
+            Salat
+
+          </button>
+
+        </div>
+
+
+        <div class="burger-counter">
+
+          🍔 Burger gegessen:
+          <strong id="burgerCount">0</strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           FASE DIETA
+      ========================== -->
+
+      <div class="diet-area hidden" id="dietArea">
+
+        <h2>Wir machen das zusammen ❤️</h2>
+
+        <p class="diet-description">
+          Was hast du heute gemacht?
+        </p>
+
+
+        <div class="habit-grid">
+
+          <button
+            class="habit-button"
+            data-habit="water"
+            type="button">
+
+            <span>💧</span>
+            Wasser
+
+          </button>
+
+
+          <button
+            class="habit-button"
+            data-habit="food"
+            type="button">
+
+            <span>🥗</span>
+            Ernährung
+
+          </button>
+
+
+          <button
+            class="habit-button"
+            data-habit="sport"
+            type="button">
+
+            <span>🏃</span>
+            Bewegung
+
+          </button>
+
+
+          <button
+            class="habit-button"
+            data-habit="weight"
+            type="button">
+
+            <span>⚖️</span>
+            Gewicht
+
+          </button>
+
+        </div>
+
+
+        <!-- ÁGUA -->
+
+        <div class="habit-panel hidden" id="waterPanel">
+
+          <h3>💧 Wie viel Wasser hast du heute getrunken?</h3>
+
+          <div class="quick-buttons">
+
+            <button data-water="250">250 ml</button>
+            <button data-water="500">500 ml</button>
+            <button data-water="750">750 ml</button>
+            <button data-water="1000">1 Liter</button>
+
+          </div>
+
+          <p>
+            Heute:
+            <strong id="waterToday">0 ml</strong>
+          </p>
+
+        </div>
+
+
+        <!-- COMIDA -->
+
+        <div class="habit-panel hidden" id="foodPanel">
+
+          <h3>🥗 Hast du deine Ernährung eingetragen?</h3>
+
+          <button
+            class="primary-action"
+            id="healthyMealButton"
+            type="button">
+
+            Mahlzeit eintragen
+
+          </button>
+
+        </div>
+
+
+        <!-- ESPORTE -->
+
+        <div class="habit-panel hidden" id="sportPanel">
+
+          <h3>🏃 Hast du dich heute bewegt?</h3>
+
+          <div class="quick-buttons">
+
+            <button data-sport="walk">
+              🚶 Spaziergang
+            </button>
+
+            <button data-sport="training">
+              🏃 Training
+            </button>
+
+            <button data-sport="cycling">
+              🚲 Fahrrad
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- PESO -->
+
+        <div class="habit-panel hidden" id="weightPanel">
+
+          <h3>⚖️ Neues Gewicht</h3>
+
+          <div class="weight-form">
+
+            <input
+              type="number"
+              id="newWeightInput"
+              min="30"
+              max="300"
+              step="0.1"
+              placeholder="z. B. 82.5">
+
+            <button
+              class="primary-action"
+              id="saveWeightButton"
+              type="button">
+
+              Speichern
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         DEMO / DESENVOLVIMENTO
+    ========================== -->
+
+    <section class="developer-card">
+
+      <strong>Nur zum Testen</strong>
+
+      <p>
+        Später entfernen wir diesen Bereich.
+      </p>
+
+      <button id="simulateWeekButton" type="button">
+        7 Tage simulieren
+      </button>
+
+      <button id="resetGameButton" type="button">
+        Spiel zurücksetzen
+      </button>
+
+    </section>
+
+  </main>
+
+
+  <script src="katze.js"></script>
+
+</body>
+
+</html>
