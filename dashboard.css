@@ -1884,8 +1884,14 @@ input:focus-visible {
    Peso e data sob cada ponto do gráfico
 ========================================================= */
 
+
+
 .weight-chart-labels {
   width: 100%;
+
+  margin-top: 8px !important;
+
+  padding-top: 6px;
 }
 
 
@@ -1898,25 +1904,31 @@ input:focus-visible {
 
   align-items: center;
 
+  justify-content: flex-start;
+
   text-align: center;
 }
 
 
 .weight-chart-label strong {
-  color:
-    var(--green-dark);
+  display: block;
+
+  color: var(--green-dark);
 
   font-size: 10px;
+
+  font-weight: 700;
 
   line-height: 1.2;
 }
 
 
 .weight-chart-label span {
-  margin-top: 2px;
+  display: block;
 
-  color:
-    var(--muted);
+  margin-top: 4px;
+
+  color: var(--muted);
 
   font-size: 8px;
 
@@ -1924,6 +1936,9 @@ input:focus-visible {
 
   white-space: nowrap;
 }
+
+
+
 
 
 /* =========================================================
