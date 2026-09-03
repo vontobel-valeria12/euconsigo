@@ -11,7 +11,7 @@
 
   <meta
     name="description"
-    content="Dein persönlicher Fortschritt mit Gewicht, Ernährung, Bewegung und deinem Begleiter."
+    content="Mein Fortschritt – Gewicht, Ernährung, Bewegung, Wasser und persönliche Begleitung."
   >
 
   <title>Mein Fortschritt</title>
@@ -21,6 +21,7 @@
 
 
 <body>
+
 
   <!-- =====================================================
        HEADER
@@ -35,7 +36,6 @@
         class="brand"
         aria-label="Mein Fortschritt"
       >
-
         <span class="brand-mark">
           ♥
         </span>
@@ -43,7 +43,6 @@
         <span class="brand-name">
           Mein Fortschritt
         </span>
-
       </a>
 
 
@@ -55,11 +54,9 @@
         aria-expanded="false"
         aria-controls="side-menu"
       >
-
         <span></span>
         <span></span>
         <span></span>
-
       </button>
 
     </div>
@@ -87,12 +84,12 @@
     <aside
       class="side-menu"
       id="side-menu"
+      aria-label="Hauptmenü"
     >
 
       <div class="side-menu-header">
 
         <div>
-
           <span class="section-kicker">
             Menü
           </span>
@@ -100,7 +97,6 @@
           <h2>
             Mein Bereich
           </h2>
-
         </div>
 
 
@@ -116,6 +112,8 @@
       </div>
 
 
+      <!-- USER -->
+
       <div class="menu-account-card">
 
         <div class="menu-avatar">
@@ -124,7 +122,6 @@
 
 
         <div>
-
           <strong id="menu-user-name">
             Valeria
           </strong>
@@ -132,11 +129,12 @@
           <span>
             Kostenloses Konto
           </span>
-
         </div>
 
       </div>
 
+
+      <!-- NAVIGATION -->
 
       <nav class="side-menu-navigation">
 
@@ -233,12 +231,12 @@
 
 
       <!-- =================================================
-           WELCOME
+           WELCOME + USER PHOTO
       ================================================== -->
 
       <section class="welcome-section">
 
-        <div>
+        <div class="welcome-copy">
 
           <h1 id="welcome-name">
             Guten Morgen, Valeria.
@@ -250,15 +248,30 @@
 
         </div>
 
+
+        <div class="user-photo-wrap">
+
+          <img
+            src="img/profile-placeholder.jpg"
+            alt="Profilbild"
+            class="user-photo"
+            id="user-photo"
+          >
+
+        </div>
+
       </section>
 
 
 
       <!-- =================================================
-           4 HAUPTBEREICHE ALS BOLINHAS
+           MAIN CIRCLE NAVIGATION
       ================================================== -->
 
-      <section class="circle-navigation">
+      <section
+        class="circle-navigation"
+        aria-label="Hauptbereiche"
+      >
 
 
         <!-- PREMIUM -->
@@ -393,7 +406,7 @@
 
 
       <!-- =================================================
-           AD
+           AD 1
       ================================================== -->
 
       <aside class="ad-area">
@@ -420,21 +433,33 @@
       >
 
 
-        <!-- HAUPTPROGRESS -->
+        <!-- =================================================
+             WEIGHT PROGRESS
+        ================================================== -->
 
         <article class="main-progress-card">
+
+
+          <!-- CURRENT WEIGHT -->
 
           <div class="progress-left">
 
             <span class="section-kicker">
-              Dein Ziel
+              Dein Fortschritt
             </span>
+
+
+            <span class="weight-label">
+              Aktuelles Gewicht
+            </span>
+
 
             <strong id="current-weight-main">
               87.0 kg
             </strong>
 
-            <span>
+
+            <span class="goal-weight-line">
               Zielgewicht:
               <b id="goal-weight-main">
                 70.0 kg
@@ -443,6 +468,8 @@
 
           </div>
 
+
+          <!-- PROGRESS BAR -->
 
           <div class="progress-right">
 
@@ -479,9 +506,15 @@
 
 
 
-        <!-- QUICK CARDS -->
+        <!-- =================================================
+             3 MAIN PILLARS
+             BMI / WATER / MOVEMENT
+        ================================================== -->
 
-        <section class="quick-grid">
+        <section
+          class="quick-grid"
+          aria-label="Tagesübersicht"
+        >
 
 
           <!-- BMI -->
@@ -513,7 +546,7 @@
 
 
 
-          <!-- WASSER -->
+          <!-- WATER -->
 
           <article class="quick-card">
 
@@ -549,7 +582,7 @@
 
 
 
-          <!-- BEWEGUNG -->
+          <!-- MOVEMENT -->
 
           <article class="quick-card">
 
@@ -584,11 +617,10 @@
 
 
         <!-- =================================================
-             GEWICHT ACCORDION
+             GEWICHT
         ================================================== -->
 
         <section class="compact-section">
-
 
           <button
             type="button"
@@ -629,6 +661,9 @@
 
             <div class="weight-layout">
 
+
+              <!-- HISTORY -->
+
               <div
                 class="chart-area"
                 id="weight-chart"
@@ -648,6 +683,8 @@
 
               </div>
 
+
+              <!-- FORM -->
 
               <form
                 class="simple-form"
@@ -696,11 +733,10 @@
 
 
         <!-- =================================================
-             ERNÄHRUNG ACCORDION
+             ERNÄHRUNG
         ================================================== -->
 
         <section class="compact-section">
-
 
           <button
             type="button"
@@ -741,17 +777,18 @@
 
             <div class="calorie-layout">
 
+
+              <!-- CALORIE SUMMARY -->
+
               <article class="calorie-summary">
 
                 <span>
                   Gegessen
                 </span>
 
-
                 <strong id="calories-consumed">
                   0
                 </strong>
-
 
                 <small>
                   kcal
@@ -759,6 +796,7 @@
 
 
                 <div class="calorie-details">
+
 
                   <div>
 
@@ -790,6 +828,9 @@
               </article>
 
 
+
+              <!-- FOOD FORM -->
+
               <form
                 class="food-form"
                 id="food-form"
@@ -816,6 +857,7 @@
                   <label for="food-calories">
                     Kalorien
                   </label>
+
 
                   <div class="input-unit">
 
@@ -848,6 +890,8 @@
             </div>
 
 
+            <!-- FOOD LIST -->
+
             <div
               class="food-list"
               id="food-list"
@@ -874,11 +918,10 @@
 
 
         <!-- =================================================
-             BEWEGUNG ACCORDION
+             BEWEGUNG
         ================================================== -->
 
         <section class="compact-section">
-
 
           <button
             type="button"
@@ -898,7 +941,7 @@
               </strong>
 
               <small>
-                Deine Aktivitäten und Fortschritt
+                Deine Aktivitäten und dein Fortschritt
               </small>
 
             </span>
@@ -916,6 +959,8 @@
             id="bewegung-content"
             hidden
           >
+
+            <!-- MOVEMENT FORM -->
 
             <form
               class="movement-form"
@@ -974,6 +1019,8 @@
             </form>
 
 
+            <!-- ACTIVITY LIST -->
+
             <div
               class="activity-list"
               id="activity-list"
@@ -1020,7 +1067,7 @@
 
 
       <!-- =================================================
-           PREMIUM CTA
+           PREMIUM BOTTOM
       ================================================== -->
 
       <section class="premium-bottom-section">
@@ -1076,12 +1123,18 @@
     ></div>
 
 
-    <div class="premium-modal-card">
+    <div
+      class="premium-modal-card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="premium-modal-title"
+    >
 
       <button
         type="button"
         class="modal-close"
         id="premium-modal-close"
+        aria-label="Fenster schliessen"
       >
         ×
       </button>
@@ -1092,7 +1145,7 @@
       </span>
 
 
-      <h2>
+      <h2 id="premium-modal-title">
         Alles, was Premium bietet.
       </h2>
 
@@ -1101,56 +1154,116 @@
 
 
         <div class="premium-feature-item">
-          <span>♡</span>
+
+          <span>
+            ♡
+          </span>
+
           <div>
-            <strong>Persönliche Begleitung</strong>
-            <small>Zusätzliche Unterstützung auf deinem Weg.</small>
+            <strong>
+              Persönliche Begleitung
+            </strong>
+
+            <small>
+              Zusätzliche Unterstützung auf deinem Weg.
+            </small>
           </div>
+
         </div>
 
 
         <div class="premium-feature-item">
-          <span>◫</span>
+
+          <span>
+            ◫
+          </span>
+
           <div>
-            <strong>Wochenanalyse</strong>
-            <small>Sieh deine Entwicklung der letzten Tage.</small>
+            <strong>
+              Wochenanalyse
+            </strong>
+
+            <small>
+              Sieh deine Entwicklung der letzten Tage.
+            </small>
           </div>
+
         </div>
 
 
         <div class="premium-feature-item">
-          <span>✦</span>
+
+          <span>
+            ✦
+          </span>
+
           <div>
-            <strong>Persönliche Strategie</strong>
-            <small>Deine nächsten Schritte passend zu deinem Fortschritt.</small>
+            <strong>
+              Persönliche Strategie
+            </strong>
+
+            <small>
+              Deine nächsten Schritte passend zu deinem Fortschritt.
+            </small>
           </div>
+
         </div>
 
 
         <div class="premium-feature-item">
-          <span>≋</span>
+
+          <span>
+            ≋
+          </span>
+
           <div>
-            <strong>Ernährungsplan</strong>
-            <small>Zusätzliche Planung für deine Ernährung.</small>
+            <strong>
+              Ernährungsplan
+            </strong>
+
+            <small>
+              Zusätzliche Planung für deine Ernährung.
+            </small>
           </div>
+
         </div>
 
 
         <div class="premium-feature-item">
-          <span>◎</span>
+
+          <span>
+            ◎
+          </span>
+
           <div>
-            <strong>Erweiterte Analyse</strong>
-            <small>Erkenne langfristige Entwicklungen.</small>
+            <strong>
+              Erweiterte Analyse
+            </strong>
+
+            <small>
+              Erkenne langfristige Entwicklungen.
+            </small>
           </div>
+
         </div>
 
 
         <div class="premium-feature-item">
-          <span>📷</span>
+
+          <span>
+            📷
+          </span>
+
           <div>
-            <strong>Fortschrittsfotos</strong>
-            <small>Dokumentiere deine Veränderung auch mit Bildern.</small>
+            <strong>
+              Fortschrittsfotos
+            </strong>
+
+            <small>
+              Dokumentiere deine Veränderung auch mit Bildern.
+            </small>
           </div>
+
         </div>
 
       </div>
@@ -1185,18 +1298,24 @@
     ></div>
 
 
-    <div class="share-modal-card">
+    <div
+      class="share-modal-card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="share-modal-title"
+    >
 
       <button
         type="button"
         class="modal-close"
         id="share-modal-close"
+        aria-label="Fenster schliessen"
       >
         ×
       </button>
 
 
-      <h2>
+      <h2 id="share-modal-title">
         Zusammen ist es leichter.
       </h2>
 
@@ -1231,6 +1350,7 @@
       <span
         class="share-message"
         id="share-message"
+        aria-live="polite"
       ></span>
 
     </div>
@@ -1238,6 +1358,10 @@
   </div>
 
 
+
+  <!-- =====================================================
+       JAVASCRIPT
+  ====================================================== -->
 
   <script src="dashboard.js"></script>
 
