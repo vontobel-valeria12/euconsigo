@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Verfolge deine Ernährung, deine Fortschritte und entwickle gesunde Gewohnheiten, die zu deinem Alltag passen."
+  >
+
+  <title>Mein Fortschritt</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+  <main class="onboarding">
+
+    <!-- =================================================
+         LOGO
+    ================================================== -->
+
+    <header class="onboarding-header">
+
+      <a
+        href="index.html"
+        class="brand"
+        aria-label="Mein Fortschritt"
+      >
+
+        <span class="brand-icon">
+          M
+        </span>
+
+        <span class="brand-name">
+          Mein Fortschritt
+        </span>
+
+      </a>
+
+    </header>
+
+
+    <!-- =================================================
+         SLIDER
+    ================================================== -->
+
+    <section
+      class="slider"
+      id="slider"
+    >
+
+      <div
+        class="slides"
+        id="slides"
+      >
+
+
+        <!-- =================================================
+             SLIDE 1
+        ================================================== -->
+
+        <article
+          class="slide active"
+          data-slide="0"
+        >
+
+          <div class="slide-visual">
+
+            <img
+              src="images/welcome.jpg"
+              alt="Gesunde Frau im Alltag"
+            >
+
+          </div>
+
+
+          <div class="slide-content">
+
+            <span class="welcome">
+              Herzlich willkommen bei Mein Fortschritt
+            </span>
+
+            <h1>
+              Bereit für deinen nächsten Schritt?
+            </h1>
+
+            <p>
+              Beginne damit, deine Entwicklung zu verfolgen.
+              Einfach, übersichtlich und in deinem eigenen Tempo.
+            </p>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- =================================================
+             SLIDE 2
+        ================================================== -->
+
+        <article
+          class="slide"
+          data-slide="1"
+        >
+
+          <div class="slide-visual dashboard-preview">
+
+            <div class="app-preview">
+
+              <div class="preview-header">
+
+                <span>
+                  Heute
+                </span>
+
+                <span class="preview-profile">
+                  LS
+                </span>
+
+              </div>
+
+
+              <div class="calorie-preview">
+
+                <span class="preview-small">
+                  Kalorien verbleibend
+                </span>
+
+                <strong>
+                  620
+                </strong>
+
+                <span>
+                  kcal
+                </span>
+
+              </div>
+
+
+              <div class="calorie-details">
+
+                <div>
+                  <span>
+                    Ziel
+                  </span>
+
+                  <strong>
+                    1'850
+                  </strong>
+                </div>
+
+
+                <div>
+                  <span>
+                    Nahrungsmittel
+                  </span>
+
+                  <strong>
+                    1'430
+                  </strong>
+                </div>
+
+
+                <div>
+                  <span>
+                    Training
+                  </span>
+
+                  <strong>
+                    +200
+                  </strong>
+                </div>
+
+              </div>
+
+
+              <div class="preview-progress">
+
+                <div class="preview-progress-bar">
+                  <span></span>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="slide-content">
+
+            <span class="slide-number">
+              01
+            </span>
+
+            <h2>
+              Verstehe deinen Alltag besser.
+            </h2>
+
+            <p>
+              Entdecke, wie Ernährung und Bewegung
+              deine tägliche Entwicklung beeinflussen.
+            </p>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- =================================================
+             SLIDE 3
+        ================================================== -->
+
+        <article
+          class="slide"
+          data-slide="2"
+        >
+
+          <div class="slide-visual">
+
+            <img
+              src="images/healthy-food.jpg"
+              alt="Gesunde und ausgewogene Mahlzeit"
+            >
+
+          </div>
+
+
+          <div class="slide-content">
+
+            <span class="slide-number">
+              02
+            </span>
+
+            <h2>
+              Kleine Entscheidungen verändern viel.
+            </h2>
+
+            <p>
+              Entwickle bewusste Essgewohnheiten,
+              die wirklich zu deinem Alltag passen.
+            </p>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- =================================================
+             SLIDE 4
+        ================================================== -->
+
+        <article
+          class="slide"
+          data-slide="3"
+        >
+
+          <div class="slide-visual">
+
+            <img
+              src="images/nutritionist.jpg"
+              alt="Persönliche Ernährungsberatung"
+            >
+
+            <span class="premium-label">
+              Premium
+            </span>
+
+          </div>
+
+
+          <div class="slide-content">
+
+            <span class="slide-number">
+              03
+            </span>
+
+            <h2>
+              Du musst deinen Weg nicht alleine gehen.
+            </h2>
+
+            <p>
+              Mit Premium erhältst du persönliche
+              Begleitung durch eine echte Ernährungsfachperson.
+            </p>
+
+          </div>
+
+        </article>
+
+      </div>
+
+
+
+      <!-- =================================================
+           SLIDER NAVIGATION
+      ================================================== -->
+
+      <button
+        class="slider-arrow slider-arrow-left"
+        id="previous-slide"
+        type="button"
+        aria-label="Vorherige Seite"
+      >
+        ‹
+      </button>
+
+
+      <button
+        class="slider-arrow slider-arrow-right"
+        id="next-slide"
+        type="button"
+        aria-label="Nächste Seite"
+      >
+        ›
+      </button>
+
+
+
+      <!-- =================================================
+           DOTS
+      ================================================== -->
+
+      <div
+        class="slider-dots"
+        aria-label="Seitennavigation"
+      >
+
+        <button
+          class="slider-dot active"
+          type="button"
+          data-slide="0"
+          aria-label="Seite 1"
+        ></button>
+
+
+        <button
+          class="slider-dot"
+          type="button"
+          data-slide="1"
+          aria-label="Seite 2"
+        ></button>
+
+
+        <button
+          class="slider-dot"
+          type="button"
+          data-slide="2"
+          aria-label="Seite 3"
+        ></button>
+
+
+        <button
+          class="slider-dot"
+          type="button"
+          data-slide="3"
+          aria-label="Seite 4"
+        ></button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+
+  <!-- =====================================================
+       AÇÕES FIXAS
+  ====================================================== -->
+
+  <footer class="onboarding-actions">
+
+    <div class="action-container">
+
+
+      <!-- NOVO USUÁRIO -->
+
+      <a
+        href="setup.html"
+        class="button button-primary"
+      >
+        Kostenlos einrichten
+      </a>
+
+
+      <!-- USUÁRIO EXISTENTE -->
+
+      <a
+        href="login.html"
+        class="button button-secondary"
+      >
+        Anmelden
+      </a>
+
+    </div>
+
+  </footer>
+
+
+
+  <!-- =====================================================
+       JAVASCRIPT
+  ====================================================== -->
+
+  <script src="script.js"></script>
+
+</body>
+
+</html>
