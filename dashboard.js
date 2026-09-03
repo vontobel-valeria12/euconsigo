@@ -1,15 +1,18 @@
 /* =========================================================
    DASHBOARD.JS
    Mein Fortschritt
+
+   IMPORTANTE:
+   user-data.js deve ser carregado ANTES deste arquivo.
 ========================================================= */
 
 
 /* =========================================================
    STORAGE
+   Dados específicos do Dashboard
 ========================================================= */
 
 const STORAGE_KEYS = {
-  user: "euConsigoUser",
   water: "euConsigoWater",
   food: "euConsigoFood",
   movement: "euConsigoMovement",
@@ -18,141 +21,312 @@ const STORAGE_KEYS = {
 
 
 /* =========================================================
-   DEFAULT USER
-========================================================= */
-
-const DEFAULT_USER = {
-  name: "Valeria",
-  height: 1.67,
-  startWeight: 88,
-  currentWeight: 87,
-  goalWeight: 70,
-  calorieGoal: 1800,
-  waterGoal: 2000,
-  movementGoal: 30,
-  premium: false
-};
-
-
-/* =========================================================
    HELPERS
 ========================================================= */
 
 function loadData(key, fallback) {
+
   try {
-    const saved = localStorage.getItem(key);
+
+    const saved =
+      localStorage.getItem(key);
+
 
     if (!saved) {
       return fallback;
     }
 
+
     return JSON.parse(saved);
 
   } catch (error) {
-    console.error("Fehler beim Laden:", key, error);
+
+    console.error(
+      "Fehler beim Laden:",
+      key,
+      error
+    );
+
+
     return fallback;
+
   }
+
 }
 
 
 function saveData(key, value) {
-  localStorage.setItem(
-    key,
-    JSON.stringify(value)
-  );
+
+  try {
+
+    localStorage.setItem(
+      key,
+      JSON.stringify(value)
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Fehler beim Speichern:",
+      key,
+      error
+    );
+
+  }
+
 }
 
 
 function getToday() {
-  const now = new Date();
 
-  const year = now.getFullYear();
+  const now =
+    new Date();
 
-  const month = String(
-    now.getMonth() + 1
-  ).padStart(2, "0");
 
-  const day = String(
-    now.getDate()
-  ).padStart(2, "0");
+  const year =
+    now.getFullYear();
 
-  return `${year}-${month}-${day}`;
+
+  const month =
+    String(
+      now.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  const day =
+    String(
+      now.getDate()
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  return (
+    `${year}-${month}-${day}`
+  );
+
 }
 
 
 function formatDate(dateString) {
-  const parts = dateString.split("-");
 
-  if (parts.length !== 3) {
+  const parts =
+    String(dateString).split("-");
+
+
+  if (
+    parts.length !== 3
+  ) {
+
     return dateString;
+
   }
 
-  return `${parts[2]}.${parts[1]}.${parts[0]}`;
+
+  return (
+    `${parts[2]}.${parts[1]}.${parts[0]}`
+  );
+
 }
 
 
 function escapeHTML(text) {
-  const element = document.createElement("div");
 
-  element.textContent = text;
+  const element =
+    document.createElement("div");
+
+
+  element.textContent =
+    String(text);
+
 
   return element.innerHTML;
+
+}
+
+
+function formatWeight(value) {
+
+  const number =
+    Number(value);
+
+
+  if (
+    !Number.isFinite(number)
+  ) {
+
+    return "—";
+
+  }
+
+
+  return (
+    `${number.toFixed(1)} kg`
+  );
+
+}
+
+
+/* =========================================================
+   USER
+   Fonte única: user-data.js
+========================================================= */
+
+let user =
+  getUser();
+
+
+/*
+  O Dashboard depende dos dados criados
+  no Index + Setup.
+
+  Se alguém acessar diretamente
+  sem ter os dados necessários,
+  retorna ao início.
+*/
+
+if (
+  !hasBasicUserData()
+) {
+
+  window.location.href =
+    "index.html";
+
 }
 
 
 /* =========================================================
    APP STATE
+   Água / alimentos / movimento / histórico
 ========================================================= */
 
-let user = loadData(
-  STORAGE_KEYS.user,
-  { ...DEFAULT_USER }
-);
+let waterData =
+  loadData(
+    STORAGE_KEYS.water,
+    {
+      date: getToday(),
+      amount: 0
+    }
+  );
 
 
-user = {
-  ...DEFAULT_USER,
-  ...user
-};
+let foodData =
+  loadData(
+    STORAGE_KEYS.food,
+    {
+      date: getToday(),
+      items: []
+    }
+  );
 
 
-let waterData = loadData(
-  STORAGE_KEYS.water,
-  {
-    date: getToday(),
-    amount: 0
+let movementData =
+  loadData(
+    STORAGE_KEYS.movement,
+    {
+      date: getToday(),
+      items: []
+    }
+  );
+
+
+let weightHistory =
+  loadData(
+    STORAGE_KEYS.weightHistory,
+    []
+  );
+
+
+/* =========================================================
+   NORMALIZE DAILY DATA
+========================================================= */
+
+function normalizeDailyData() {
+
+  if (
+    !waterData ||
+    typeof waterData !== "object"
+  ) {
+
+    waterData = {
+      date: getToday(),
+      amount: 0
+    };
+
   }
-);
 
 
-let foodData = loadData(
-  STORAGE_KEYS.food,
-  {
-    date: getToday(),
-    items: []
+  if (
+    !Number.isFinite(
+      Number(waterData.amount)
+    )
+  ) {
+
+    waterData.amount = 0;
+
   }
-);
 
 
-let movementData = loadData(
-  STORAGE_KEYS.movement,
-  {
-    date: getToday(),
-    items: []
+  if (
+    !foodData ||
+    typeof foodData !== "object"
+  ) {
+
+    foodData = {
+      date: getToday(),
+      items: []
+    };
+
   }
-);
 
 
-let weightHistory = loadData(
-  STORAGE_KEYS.weightHistory,
-  []
-);
+  if (
+    !Array.isArray(foodData.items)
+  ) {
+
+    foodData.items = [];
+
+  }
 
 
-saveData(
-  STORAGE_KEYS.user,
-  user
-);
+  if (
+    !movementData ||
+    typeof movementData !== "object"
+  ) {
+
+    movementData = {
+      date: getToday(),
+      items: []
+    };
+
+  }
+
+
+  if (
+    !Array.isArray(movementData.items)
+  ) {
+
+    movementData.items = [];
+
+  }
+
+
+  if (
+    !Array.isArray(weightHistory)
+  ) {
+
+    weightHistory = [];
+
+  }
+
+}
+
+
+normalizeDailyData();
 
 
 /* =========================================================
@@ -160,46 +334,64 @@ saveData(
 ========================================================= */
 
 function checkNewDay() {
-  const today = getToday();
+
+  const today =
+    getToday();
 
 
-  if (waterData.date !== today) {
+  if (
+    waterData.date !== today
+  ) {
+
     waterData = {
       date: today,
       amount: 0
     };
 
+
     saveData(
       STORAGE_KEYS.water,
       waterData
     );
+
   }
 
 
-  if (foodData.date !== today) {
+  if (
+    foodData.date !== today
+  ) {
+
     foodData = {
       date: today,
       items: []
     };
 
+
     saveData(
       STORAGE_KEYS.food,
       foodData
     );
+
   }
 
 
-  if (movementData.date !== today) {
+  if (
+    movementData.date !== today
+  ) {
+
     movementData = {
       date: today,
       items: []
     };
 
+
     saveData(
       STORAGE_KEYS.movement,
       movementData
     );
+
   }
+
 }
 
 
@@ -210,178 +402,338 @@ checkNewDay();
    DOM
 ========================================================= */
 
-const body = document.body;
+const body =
+  document.body;
 
 
-/* MENU */
+/* =========================================================
+   MENU
+========================================================= */
 
 const menuButton =
-  document.getElementById("menu-button");
+  document.getElementById(
+    "menu-button"
+  );
+
 
 const sideMenuWrapper =
-  document.getElementById("side-menu-wrapper");
+  document.getElementById(
+    "side-menu-wrapper"
+  );
+
 
 const sideMenuClose =
-  document.getElementById("side-menu-close");
+  document.getElementById(
+    "side-menu-close"
+  );
+
 
 const sideMenuBackdrop =
-  document.getElementById("side-menu-backdrop");
+  document.getElementById(
+    "side-menu-backdrop"
+  );
 
 
-/* USER */
+/* =========================================================
+   USER
+========================================================= */
 
 const welcomeName =
-  document.getElementById("welcome-name");
+  document.getElementById(
+    "welcome-name"
+  );
+
 
 const menuUserName =
-  document.getElementById("menu-user-name");
+  document.getElementById(
+    "menu-user-name"
+  );
 
 
-/* PREMIUM */
+const menuAvatar =
+  document.querySelector(
+    ".menu-avatar"
+  );
+
+
+/* =========================================================
+   PREMIUM
+========================================================= */
 
 const premiumMainButton =
-  document.getElementById("premium-main-button");
+  document.getElementById(
+    "premium-main-button"
+  );
+
 
 const premiumBottomButton =
-  document.getElementById("premium-bottom-button");
+  document.getElementById(
+    "premium-bottom-button"
+  );
+
 
 const menuPremiumButton =
-  document.getElementById("menu-premium-button");
+  document.getElementById(
+    "menu-premium-button"
+  );
+
 
 const premiumModal =
-  document.getElementById("premium-modal");
+  document.getElementById(
+    "premium-modal"
+  );
+
 
 const premiumModalClose =
-  document.getElementById("premium-modal-close");
+  document.getElementById(
+    "premium-modal-close"
+  );
+
 
 const premiumModalBackdrop =
-  document.getElementById("premium-modal-backdrop");
+  document.getElementById(
+    "premium-modal-backdrop"
+  );
 
 
-/* SHARE */
+/* =========================================================
+   SHARE
+========================================================= */
 
 const shareAppButton =
-  document.getElementById("share-app-button");
+  document.getElementById(
+    "share-app-button"
+  );
+
 
 const inviteFriendButton =
-  document.getElementById("invite-friend-button");
+  document.getElementById(
+    "invite-friend-button"
+  );
+
 
 const shareModal =
-  document.getElementById("share-modal");
+  document.getElementById(
+    "share-modal"
+  );
+
 
 const shareModalClose =
-  document.getElementById("share-modal-close");
+  document.getElementById(
+    "share-modal-close"
+  );
+
 
 const shareModalBackdrop =
-  document.getElementById("share-modal-backdrop");
+  document.getElementById(
+    "share-modal-backdrop"
+  );
+
 
 const nativeShareButton =
-  document.getElementById("native-share-button");
+  document.getElementById(
+    "native-share-button"
+  );
+
 
 const copyLinkButton =
-  document.getElementById("copy-link-button");
+  document.getElementById(
+    "copy-link-button"
+  );
+
 
 const shareMessage =
-  document.getElementById("share-message");
+  document.getElementById(
+    "share-message"
+  );
 
 
-/* SETTINGS / ACCOUNT / LOGOUT */
+/* =========================================================
+   SETTINGS / ACCOUNT / LOGOUT
+========================================================= */
 
 const settingsButton =
-  document.getElementById("settings-button");
+  document.getElementById(
+    "settings-button"
+  );
+
 
 const accountButton =
-  document.getElementById("account-button");
+  document.getElementById(
+    "account-button"
+  );
+
 
 const logoutButton =
-  document.getElementById("logout-button");
+  document.getElementById(
+    "logout-button"
+  );
 
 
-/* WEIGHT */
+/* =========================================================
+   WEIGHT
+========================================================= */
 
 const currentWeightMain =
-  document.getElementById("current-weight-main");
+  document.getElementById(
+    "current-weight-main"
+  );
+
 
 const goalWeightMain =
-  document.getElementById("goal-weight-main");
+  document.getElementById(
+    "goal-weight-main"
+  );
+
 
 const startWeightText =
-  document.getElementById("start-weight-text");
+  document.getElementById(
+    "start-weight-text"
+  );
+
 
 const currentWeightText =
-  document.getElementById("current-weight-text");
+  document.getElementById(
+    "current-weight-text"
+  );
+
 
 const goalWeightText =
-  document.getElementById("goal-weight-text");
+  document.getElementById(
+    "goal-weight-text"
+  );
+
 
 const goalFill =
-  document.getElementById("goal-fill");
+  document.getElementById(
+    "goal-fill"
+  );
+
 
 const currentBMI =
-  document.getElementById("current-bmi");
+  document.getElementById(
+    "current-bmi"
+  );
+
 
 const bmiStatus =
-  document.getElementById("bmi-status");
+  document.getElementById(
+    "bmi-status"
+  );
+
 
 const weightForm =
-  document.getElementById("weight-form");
+  document.getElementById(
+    "weight-form"
+  );
+
 
 const newWeightInput =
-  document.getElementById("new-weight");
+  document.getElementById(
+    "new-weight"
+  );
+
 
 const weightChart =
-  document.getElementById("weight-chart");
+  document.getElementById(
+    "weight-chart"
+  );
 
 
-/* WATER */
+/* =========================================================
+   WATER
+========================================================= */
 
 const waterCurrent =
-  document.getElementById("water-current");
+  document.getElementById(
+    "water-current"
+  );
+
 
 const addWaterButton =
-  document.getElementById("add-water-button");
+  document.getElementById(
+    "add-water-button"
+  );
 
 
-/* FOOD */
+/* =========================================================
+   FOOD
+========================================================= */
 
 const foodForm =
-  document.getElementById("food-form");
+  document.getElementById(
+    "food-form"
+  );
+
 
 const foodNameInput =
-  document.getElementById("food-name");
+  document.getElementById(
+    "food-name"
+  );
+
 
 const foodCaloriesInput =
-  document.getElementById("food-calories");
+  document.getElementById(
+    "food-calories"
+  );
+
 
 const caloriesConsumed =
-  document.getElementById("calories-consumed");
+  document.getElementById(
+    "calories-consumed"
+  );
 
-const calorieGoal =
-  document.getElementById("calorie-goal");
+
+const calorieGoalElement =
+  document.getElementById(
+    "calorie-goal"
+  );
+
 
 const caloriesRemaining =
-  document.getElementById("calories-remaining");
+  document.getElementById(
+    "calories-remaining"
+  );
+
 
 const foodList =
-  document.getElementById("food-list");
+  document.getElementById(
+    "food-list"
+  );
 
 
-/* MOVEMENT */
+/* =========================================================
+   MOVEMENT
+========================================================= */
 
 const movementForm =
-  document.getElementById("movement-form");
+  document.getElementById(
+    "movement-form"
+  );
+
 
 const activityNameInput =
-  document.getElementById("activity-name");
+  document.getElementById(
+    "activity-name"
+  );
+
 
 const activityMinutesInput =
-  document.getElementById("activity-minutes");
+  document.getElementById(
+    "activity-minutes"
+  );
+
 
 const movementMinutes =
-  document.getElementById("movement-minutes");
+  document.getElementById(
+    "movement-minutes"
+  );
+
 
 const activityList =
-  document.getElementById("activity-list");
+  document.getElementById(
+    "activity-list"
+  );
 
 
 /* =========================================================
@@ -389,67 +741,95 @@ const activityList =
 ========================================================= */
 
 function openMenu() {
+
   if (!sideMenuWrapper) {
     return;
   }
 
-  sideMenuWrapper.hidden = false;
 
-  body.classList.add("menu-open");
+  sideMenuWrapper.hidden =
+    false;
+
+
+  body.classList.add(
+    "menu-open"
+  );
+
 
   if (menuButton) {
+
     menuButton.setAttribute(
       "aria-expanded",
       "true"
     );
+
   }
+
 }
 
 
 function closeMenu() {
+
   if (!sideMenuWrapper) {
     return;
   }
 
-  sideMenuWrapper.hidden = true;
 
-  body.classList.remove("menu-open");
+  sideMenuWrapper.hidden =
+    true;
+
+
+  body.classList.remove(
+    "menu-open"
+  );
+
 
   if (menuButton) {
+
     menuButton.setAttribute(
       "aria-expanded",
       "false"
     );
+
   }
+
 }
 
 
 if (menuButton) {
+
   menuButton.addEventListener(
     "click",
     openMenu
   );
+
 }
 
 
 if (sideMenuClose) {
+
   sideMenuClose.addEventListener(
     "click",
     closeMenu
   );
+
 }
 
 
 if (sideMenuBackdrop) {
+
   sideMenuBackdrop.addEventListener(
     "click",
     closeMenu
   );
+
 }
 
 
 document
-  .querySelectorAll(".side-menu-link[href^='#']")
+  .querySelectorAll(
+    ".side-menu-link[href^='#']"
+  )
   .forEach(link => {
 
     link.addEventListener(
@@ -462,7 +842,6 @@ document
 
 /* =========================================================
    ACCORDION
-   GEWICHT / ERNÄHRUNG / BEWEGUNG
 ========================================================= */
 
 const compactSectionButtons =
@@ -471,96 +850,103 @@ const compactSectionButtons =
   );
 
 
-compactSectionButtons.forEach(button => {
+compactSectionButtons.forEach(
+  button => {
 
-  button.addEventListener(
-    "click",
-    function () {
+    button.addEventListener(
+      "click",
+      function () {
 
-      const targetId =
-        button.dataset.toggleSection;
-
-      const target =
-        document.getElementById(targetId);
+        const targetId =
+          button.dataset.toggleSection;
 
 
-      if (!target) {
-        return;
-      }
+        const target =
+          document.getElementById(
+            targetId
+          );
 
 
-      const isOpen =
-        !target.hidden;
+        if (!target) {
+          return;
+        }
 
 
-      /*
-        Fecha os outros antes.
-        Assim o dashboard não fica enorme.
-      */
-
-      compactSectionButtons.forEach(
-        otherButton => {
-
-          const otherTargetId =
-            otherButton.dataset.toggleSection;
-
-          const otherTarget =
-            document.getElementById(
-              otherTargetId
-            );
+        const isOpen =
+          !target.hidden;
 
 
-          if (
-            otherButton !== button &&
-            otherTarget
-          ) {
+        /*
+          Fecha todas as outras seções.
+        */
 
-            otherTarget.hidden = true;
+        compactSectionButtons.forEach(
+          otherButton => {
 
-            otherButton.classList.remove(
-              "active"
-            );
+            const otherTargetId =
+              otherButton.dataset.toggleSection;
+
+
+            const otherTarget =
+              document.getElementById(
+                otherTargetId
+              );
+
+
+            if (
+              otherButton !== button &&
+              otherTarget
+            ) {
+
+              otherTarget.hidden =
+                true;
+
+
+              otherButton.classList.remove(
+                "active"
+              );
+
+            }
 
           }
+        );
+
+
+        /*
+          Abre ou fecha a selecionada.
+        */
+
+        target.hidden =
+          isOpen;
+
+
+        button.classList.toggle(
+          "active",
+          !isOpen
+        );
+
+
+        if (!isOpen) {
+
+          setTimeout(
+            () => {
+
+              button.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest"
+              });
+
+            },
+            100
+          );
 
         }
-      );
-
-
-      /*
-        Abre ou fecha o selecionado.
-      */
-
-      target.hidden = isOpen;
-
-      button.classList.toggle(
-        "active",
-        !isOpen
-      );
-
-
-      /*
-        Quando abre,
-        faz uma rolagem suave.
-      */
-
-      if (!isOpen) {
-
-        setTimeout(() => {
-
-          button.scrollIntoView({
-            behavior: "smooth",
-            block: "nearest"
-          });
-
-        }, 100);
 
       }
+    );
 
-    }
-  );
-
-});
+  }
+);
 
 
 /* =========================================================
@@ -568,35 +954,98 @@ compactSectionButtons.forEach(button => {
 ========================================================= */
 
 function getGreeting() {
+
   const hour =
     new Date().getHours();
 
 
-  if (hour < 12) {
+  if (
+    hour < 12
+  ) {
+
     return "Guten Morgen";
+
   }
 
 
-  if (hour < 18) {
+  if (
+    hour < 18
+  ) {
+
     return "Guten Tag";
+
   }
 
 
   return "Guten Abend";
+
 }
 
 
+/* =========================================================
+   RENDER USER
+========================================================= */
+
 function renderUser() {
+
+  /*
+    Atualiza a referência do usuário.
+    Assim qualquer alteração feita por
+    user-data.js aparece no Dashboard.
+  */
+
+  user =
+    getUser();
+
+
+  const displayName =
+    user.name
+      ? user.name
+      : "Hallo";
+
+
   if (welcomeName) {
-    welcomeName.textContent =
-      `${getGreeting()}, ${user.name}.`;
+
+    if (user.name) {
+
+      welcomeName.textContent =
+        `${getGreeting()}, ${user.name}.`;
+
+    } else {
+
+      welcomeName.textContent =
+        `${getGreeting()}.`;
+
+    }
+
   }
 
 
   if (menuUserName) {
+
     menuUserName.textContent =
-      user.name;
+      displayName;
+
   }
+
+
+  /*
+    Avatar temporário:
+    usa apenas a primeira letra do nome.
+  */
+
+  if (
+    menuAvatar &&
+    user.name
+  ) {
+
+    menuAvatar.textContent =
+      user.name
+        .charAt(0)
+        .toUpperCase();
+
+  }
+
 }
 
 
@@ -605,6 +1054,7 @@ function renderUser() {
 ========================================================= */
 
 function openPremiumModal() {
+
   closeMenu();
 
 
@@ -613,25 +1063,32 @@ function openPremiumModal() {
   }
 
 
-  premiumModal.hidden = false;
+  premiumModal.hidden =
+    false;
+
 
   body.classList.add(
     "modal-open"
   );
+
 }
 
 
 function closePremiumModal() {
+
   if (!premiumModal) {
     return;
   }
 
 
-  premiumModal.hidden = true;
+  premiumModal.hidden =
+    true;
+
 
   body.classList.remove(
     "modal-open"
   );
+
 }
 
 
@@ -639,6 +1096,7 @@ function closePremiumModal() {
   premiumMainButton,
   premiumBottomButton,
   menuPremiumButton
+
 ].forEach(button => {
 
   if (!button) {
@@ -655,18 +1113,22 @@ function closePremiumModal() {
 
 
 if (premiumModalClose) {
+
   premiumModalClose.addEventListener(
     "click",
     closePremiumModal
   );
+
 }
 
 
 if (premiumModalBackdrop) {
+
   premiumModalBackdrop.addEventListener(
     "click",
     closePremiumModal
   );
+
 }
 
 
@@ -675,6 +1137,7 @@ if (premiumModalBackdrop) {
 ========================================================= */
 
 function openShareModal() {
+
   closeMenu();
 
 
@@ -683,7 +1146,9 @@ function openShareModal() {
   }
 
 
-  shareModal.hidden = false;
+  shareModal.hidden =
+    false;
+
 
   body.classList.add(
     "modal-open"
@@ -691,28 +1156,37 @@ function openShareModal() {
 
 
   if (shareMessage) {
-    shareMessage.textContent = "";
+
+    shareMessage.textContent =
+      "";
+
   }
+
 }
 
 
 function closeShareModal() {
+
   if (!shareModal) {
     return;
   }
 
 
-  shareModal.hidden = true;
+  shareModal.hidden =
+    true;
+
 
   body.classList.remove(
     "modal-open"
   );
+
 }
 
 
 [
   shareAppButton,
   inviteFriendButton
+
 ].forEach(button => {
 
   if (!button) {
@@ -729,18 +1203,22 @@ function closeShareModal() {
 
 
 if (shareModalClose) {
+
   shareModalClose.addEventListener(
     "click",
     closeShareModal
   );
+
 }
 
 
 if (shareModalBackdrop) {
+
   shareModalBackdrop.addEventListener(
     "click",
     closeShareModal
   );
+
 }
 
 
@@ -749,6 +1227,14 @@ if (shareModalBackdrop) {
 ========================================================= */
 
 function getShareData() {
+
+  const appURL =
+    new URL(
+      "index.html",
+      window.location.href
+    ).href;
+
+
   return {
 
     title:
@@ -758,10 +1244,10 @@ function getShareData() {
       "Zusammen ist es leichter. Starte deinen Weg mit mir bei Mein Fortschritt.",
 
     url:
-      window.location.origin +
-      window.location.pathname
+      appURL
 
   };
+
 }
 
 
@@ -779,7 +1265,9 @@ if (nativeShareButton) {
         getShareData();
 
 
-      if (navigator.share) {
+      if (
+        navigator.share
+      ) {
 
         try {
 
@@ -789,8 +1277,10 @@ if (nativeShareButton) {
 
 
           if (shareMessage) {
+
             shareMessage.textContent =
               "Danke fürs Teilen 💚";
+
           }
 
         } catch (error) {
@@ -868,7 +1358,7 @@ if (copyLinkButton) {
 
 
 /* =========================================================
-   SETTINGS / ACCOUNT
+   SETTINGS
 ========================================================= */
 
 if (settingsButton) {
@@ -879,8 +1369,9 @@ if (settingsButton) {
 
       closeMenu();
 
+
       alert(
-        "Einstellungen werden als Nächstes eingerichtet."
+        "Einstellungen werden später eingerichtet."
       );
 
     }
@@ -888,6 +1379,10 @@ if (settingsButton) {
 
 }
 
+
+/* =========================================================
+   ACCOUNT
+========================================================= */
 
 if (accountButton) {
 
@@ -897,8 +1392,9 @@ if (accountButton) {
 
       closeMenu();
 
+
       alert(
-        "Dein Konto wird als Nächstes eingerichtet."
+        "Dein Konto wird später eingerichtet."
       );
 
     }
@@ -929,9 +1425,14 @@ if (logoutButton) {
 
 
       /*
-        Por enquanto não apagamos os dados.
-        Mais tarde, com login real,
-        apagamos apenas a sessão.
+        Ainda não existe Firebase Auth.
+
+        Portanto não apagamos o perfil
+        nem os dados locais.
+
+        Quando o login real existir,
+        aqui será feito somente logout
+        da sessão.
       */
 
       closeMenu();
@@ -947,200 +1448,114 @@ if (logoutButton) {
 
 
 /* =========================================================
-   BMI
-========================================================= */
-
-function calculateBMI(weight) {
-
-  const height =
-    Number(user.height);
-
-
-  if (
-    !height ||
-    height <= 0
-  ) {
-
-    return 0;
-
-  }
-
-
-  return (
-    Number(weight) /
-    (height * height)
-  );
-
-}
-
-
-function getBMIStatus(bmi) {
-
-  if (bmi < 18.5) {
-    return "Untergewicht";
-  }
-
-  if (bmi < 25) {
-    return "Normalgewicht";
-  }
-
-  if (bmi < 30) {
-    return "Übergewicht";
-  }
-
-  if (bmi < 35) {
-    return "Adipositas Grad I";
-  }
-
-  if (bmi < 40) {
-    return "Adipositas Grad II";
-  }
-
-  return "Adipositas Grad III";
-
-}
-
-
-/* =========================================================
-   WEIGHT PROGRESS
-========================================================= */
-
-function calculateWeightProgress() {
-
-  const start =
-    Number(user.startWeight);
-
-  const current =
-    Number(user.currentWeight);
-
-  const goal =
-    Number(user.goalWeight);
-
-
-  /*
-    Caso normal:
-    o usuário quer perder peso.
-  */
-
-  if (start > goal) {
-
-    const total =
-      start - goal;
-
-    const completed =
-      start - current;
-
-    const progress =
-      (completed / total) * 100;
-
-
-    return Math.max(
-      0,
-      Math.min(
-        100,
-        progress
-      )
-    );
-
-  }
-
-
-  /*
-    Caso usuário queira ganhar peso.
-  */
-
-  if (start < goal) {
-
-    const total =
-      goal - start;
-
-    const completed =
-      current - start;
-
-    const progress =
-      (completed / total) * 100;
-
-
-    return Math.max(
-      0,
-      Math.min(
-        100,
-        progress
-      )
-    );
-
-  }
-
-
-  return 100;
-
-}
-
-
-/* =========================================================
    RENDER WEIGHT
 ========================================================= */
 
 function renderWeight() {
 
+  /*
+    Sempre buscamos a versão atualizada
+    do usuário.
+  */
+
+  user =
+    getUser();
+
+
   const current =
-    Number(user.currentWeight);
+    Number(
+      user.currentWeight
+    );
+
 
   const start =
-    Number(user.startWeight);
+    Number(
+      user.startWeight
+    );
+
 
   const goal =
-    Number(user.goalWeight);
+    Number(
+      user.goalWeight
+    );
 
+
+  /* CURRENT */
 
   if (currentWeightMain) {
 
     currentWeightMain.textContent =
-      `${current.toFixed(1)} kg`;
+      formatWeight(
+        user.currentWeight
+      );
 
   }
 
+
+  /* GOAL */
 
   if (goalWeightMain) {
 
     goalWeightMain.textContent =
-      `${goal.toFixed(1)} kg`;
+      formatWeight(
+        user.goalWeight
+      );
 
   }
 
+
+  /* START TEXT */
 
   if (startWeightText) {
 
     startWeightText.textContent =
-      `Start ${start.toFixed(1)} kg`;
+      Number.isFinite(start)
+        ? `Start ${start.toFixed(1)} kg`
+        : "Start —";
 
   }
 
+
+  /* CURRENT TEXT */
 
   if (currentWeightText) {
 
     currentWeightText.textContent =
-      `Aktuell ${current.toFixed(1)} kg`;
+      Number.isFinite(current)
+        ? `Aktuell ${current.toFixed(1)} kg`
+        : "Aktuell —";
 
   }
 
+
+  /* GOAL TEXT */
 
   if (goalWeightText) {
 
     goalWeightText.textContent =
-      `Ziel ${goal.toFixed(1)} kg`;
+      Number.isFinite(goal)
+        ? `Ziel ${goal.toFixed(1)} kg`
+        : "Ziel —";
 
   }
 
 
+  /* =====================================================
+     BMI
+  ====================================================== */
+
   const bmi =
-    calculateBMI(current);
+    Number(
+      user.bmi
+    );
 
 
   if (currentBMI) {
 
     currentBMI.textContent =
-      bmi.toFixed(1);
+      Number.isFinite(bmi)
+        ? bmi.toFixed(1)
+        : "—";
 
   }
 
@@ -1148,15 +1563,25 @@ function renderWeight() {
   if (bmiStatus) {
 
     bmiStatus.textContent =
-      getBMIStatus(bmi);
+      Number.isFinite(bmi)
+        ? getBMICategory(bmi)
+        : "Noch keine Daten";
 
   }
+
+
+  /* =====================================================
+     PROGRESS
+  ====================================================== */
+
+  const progress =
+    getUserWeightProgress();
 
 
   if (goalFill) {
 
     goalFill.style.width =
-      `${calculateWeightProgress()}%`;
+      `${progress}%`;
 
   }
 
@@ -1186,7 +1611,7 @@ if (
 
 
       if (
-        !newWeight ||
+        !Number.isFinite(newWeight) ||
         newWeight < 30 ||
         newWeight > 300
       ) {
@@ -1195,20 +1620,31 @@ if (
           "Bitte gib ein gültiges Gewicht ein."
         );
 
+
         return;
 
       }
 
 
-      user.currentWeight =
-        newWeight;
+      /*
+        IMPORTANTE:
+
+        Não salvamos mais diretamente
+        no euConsigoUser.
+
+        user-data.js faz isso.
+      */
+
+      user =
+        setCurrentWeight(
+          newWeight
+        );
 
 
-      saveData(
-        STORAGE_KEYS.user,
-        user
-      );
-
+      /*
+        Histórico é uma informação
+        separada do perfil principal.
+      */
 
       saveWeightHistory(
         newWeight
@@ -1219,9 +1655,16 @@ if (
         "";
 
 
+      /*
+        Atualizamos os componentes
+        dependentes do peso.
+      */
+
       renderWeight();
 
       renderWeightHistory();
+
+      renderUser();
 
     }
   );
@@ -1246,16 +1689,22 @@ function saveWeightHistory(weight) {
     );
 
 
+  /*
+    Se o usuário registrar novamente
+    no mesmo dia, atualiza o peso
+    daquele dia em vez de duplicar.
+  */
+
   if (existingEntry) {
 
     existingEntry.weight =
-      weight;
+      Number(weight);
 
   } else {
 
     weightHistory.push({
       date: today,
-      weight: weight
+      weight: Number(weight)
     });
 
   }
@@ -1263,8 +1712,8 @@ function saveWeightHistory(weight) {
 
   weightHistory.sort(
     (a, b) =>
-      a.date.localeCompare(
-        b.date
+      String(a.date).localeCompare(
+        String(b.date)
       )
   );
 
@@ -1289,6 +1738,7 @@ function renderWeightHistory() {
 
 
   if (
+    !Array.isArray(weightHistory) ||
     weightHistory.length === 0
   ) {
 
@@ -1308,16 +1758,53 @@ function renderWeightHistory() {
 
     `;
 
+
     return;
 
   }
 
 
   const recent =
-    weightHistory.slice(-7);
+    weightHistory
+      .filter(
+        entry =>
+          entry &&
+          entry.date &&
+          Number.isFinite(
+            Number(entry.weight)
+          )
+      )
+      .slice(-7);
 
 
-  weightChart.innerHTML = "";
+  if (
+    recent.length === 0
+  ) {
+
+    weightChart.innerHTML = `
+
+      <div class="empty-state">
+
+        <strong>
+          Dein Verlauf beginnt hier.
+        </strong>
+
+        <span>
+          Trage dein Gewicht regelmässig ein.
+        </span>
+
+      </div>
+
+    `;
+
+
+    return;
+
+  }
+
+
+  weightChart.innerHTML =
+    "";
 
 
   recent
@@ -1368,10 +1855,15 @@ function renderWater() {
   }
 
 
+  const amount =
+    Number(
+      waterData.amount
+    ) || 0;
+
+
   waterCurrent.textContent =
     (
-      waterData.amount /
-      1000
+      amount / 1000
     ).toFixed(2);
 
 }
@@ -1386,8 +1878,14 @@ if (addWaterButton) {
       checkNewDay();
 
 
-      waterData.amount +=
-        250;
+      const currentAmount =
+        Number(
+          waterData.amount
+        ) || 0;
+
+
+      waterData.amount =
+        currentAmount + 250;
 
 
       saveData(
@@ -1413,9 +1911,23 @@ function getConsumedCalories() {
   return foodData.items.reduce(
     (total, item) => {
 
+      const calories =
+        Number(
+          item.calories
+        );
+
+
+      if (
+        !Number.isFinite(calories)
+      ) {
+
+        return total;
+
+      }
+
+
       return (
-        total +
-        Number(item.calories)
+        total + calories
       );
 
     },
@@ -1425,7 +1937,15 @@ function getConsumedCalories() {
 }
 
 
+/* =========================================================
+   RENDER CALORIES
+========================================================= */
+
 function renderCalories() {
+
+  user =
+    getUser();
+
 
   const consumed =
     getConsumedCalories();
@@ -1434,13 +1954,6 @@ function renderCalories() {
   const goal =
     Number(
       user.calorieGoal
-    );
-
-
-  const remaining =
-    Math.max(
-      0,
-      goal - consumed
     );
 
 
@@ -1454,9 +1967,53 @@ function renderCalories() {
   }
 
 
-  if (calorieGoal) {
+  /*
+    Ainda não definimos como calcular
+    a meta de calorias.
 
-    calorieGoal.textContent =
+    Portanto, se calorieGoal for null,
+    não inventamos 1800 kcal.
+  */
+
+  if (
+    !Number.isFinite(goal) ||
+    goal <= 0
+  ) {
+
+    if (calorieGoalElement) {
+
+      calorieGoalElement.textContent =
+        "—";
+
+    }
+
+
+    if (caloriesRemaining) {
+
+      caloriesRemaining.textContent =
+        "—";
+
+    }
+
+
+    renderFoodList();
+
+
+    return;
+
+  }
+
+
+  const remaining =
+    Math.max(
+      0,
+      goal - consumed
+    );
+
+
+  if (calorieGoalElement) {
+
+    calorieGoalElement.textContent =
       goal.toLocaleString(
         "de-CH"
       );
@@ -1513,13 +2070,14 @@ if (
 
       if (
         !name ||
-        Number.isNaN(calories) ||
+        !Number.isFinite(calories) ||
         calories < 0
       ) {
 
         alert(
           "Bitte Lebensmittel und Kalorien eingeben."
         );
+
 
         return;
 
@@ -1541,6 +2099,7 @@ if (
 
       foodNameInput.value =
         "";
+
 
       foodCaloriesInput.value =
         "";
@@ -1566,7 +2125,7 @@ function renderFoodList() {
 
 
   if (
-    foodData.items.length === 0
+    !foodData.items.length
   ) {
 
     foodList.innerHTML = `
@@ -1585,61 +2144,65 @@ function renderFoodList() {
 
     `;
 
+
     return;
 
   }
 
 
-  foodList.innerHTML = "";
+  foodList.innerHTML =
+    "";
 
 
-  foodData.items.forEach(item => {
+  foodData.items.forEach(
+    item => {
 
-    const row =
-      document.createElement(
-        "div"
+      const row =
+        document.createElement(
+          "div"
+        );
+
+
+      row.className =
+        "food-item";
+
+
+      row.innerHTML = `
+
+        <div>
+
+          <strong>
+            ${escapeHTML(item.name)}
+          </strong>
+
+          <span>
+            ${Number(item.calories)} kcal
+          </span>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="delete-item"
+          data-food-id="${item.id}"
+          aria-label="Lebensmittel löschen"
+        >
+          ×
+        </button>
+
+      `;
+
+
+      foodList.appendChild(
+        row
       );
 
-
-    row.className =
-      "food-item";
-
-
-    row.innerHTML = `
-
-      <div>
-
-        <strong>
-          ${escapeHTML(item.name)}
-        </strong>
-
-        <span>
-          ${Number(item.calories)} kcal
-        </span>
-
-      </div>
+    }
+  );
 
 
-      <button
-        type="button"
-        class="delete-item"
-        data-food-id="${item.id}"
-        aria-label="Lebensmittel löschen"
-      >
-        ×
-      </button>
-
-    `;
-
-
-    foodList.appendChild(
-      row
-    );
-
-  });
-
-
-  document
+  foodList
     .querySelectorAll(
       "[data-food-id]"
     )
@@ -1658,7 +2221,7 @@ function renderFoodList() {
           foodData.items =
             foodData.items.filter(
               item =>
-                item.id !== id
+                Number(item.id) !== id
             );
 
 
@@ -1687,9 +2250,23 @@ function getMovementMinutes() {
   return movementData.items.reduce(
     (total, item) => {
 
+      const minutes =
+        Number(
+          item.minutes
+        );
+
+
+      if (
+        !Number.isFinite(minutes)
+      ) {
+
+        return total;
+
+      }
+
+
       return (
-        total +
-        Number(item.minutes)
+        total + minutes
       );
 
     },
@@ -1698,6 +2275,10 @@ function getMovementMinutes() {
 
 }
 
+
+/* =========================================================
+   RENDER MOVEMENT
+========================================================= */
 
 function renderMovement() {
 
@@ -1719,7 +2300,7 @@ function renderMovement() {
 
 
   if (
-    movementData.items.length === 0
+    !movementData.items.length
   ) {
 
     activityList.innerHTML = `
@@ -1738,61 +2319,65 @@ function renderMovement() {
 
     `;
 
+
     return;
 
   }
 
 
-  activityList.innerHTML = "";
+  activityList.innerHTML =
+    "";
 
 
-  movementData.items.forEach(item => {
+  movementData.items.forEach(
+    item => {
 
-    const row =
-      document.createElement(
-        "div"
+      const row =
+        document.createElement(
+          "div"
+        );
+
+
+      row.className =
+        "activity-item";
+
+
+      row.innerHTML = `
+
+        <div>
+
+          <strong>
+            ${escapeHTML(item.name)}
+          </strong>
+
+          <span>
+            ${Number(item.minutes)} Min.
+          </span>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="delete-item"
+          data-activity-id="${item.id}"
+          aria-label="Aktivität löschen"
+        >
+          ×
+        </button>
+
+      `;
+
+
+      activityList.appendChild(
+        row
       );
 
-
-    row.className =
-      "activity-item";
-
-
-    row.innerHTML = `
-
-      <div>
-
-        <strong>
-          ${escapeHTML(item.name)}
-        </strong>
-
-        <span>
-          ${Number(item.minutes)} Min.
-        </span>
-
-      </div>
+    }
+  );
 
 
-      <button
-        type="button"
-        class="delete-item"
-        data-activity-id="${item.id}"
-        aria-label="Aktivität löschen"
-      >
-        ×
-      </button>
-
-    `;
-
-
-    activityList.appendChild(
-      row
-    );
-
-  });
-
-
-  document
+  activityList
     .querySelectorAll(
       "[data-activity-id]"
     )
@@ -1811,7 +2396,7 @@ function renderMovement() {
           movementData.items =
             movementData.items.filter(
               item =>
-                item.id !== id
+                Number(item.id) !== id
             );
 
 
@@ -1865,13 +2450,14 @@ if (
 
       if (
         !name ||
-        !minutes ||
+        !Number.isFinite(minutes) ||
         minutes < 1
       ) {
 
         alert(
           "Bitte Aktivität und Dauer eingeben."
         );
+
 
         return;
 
@@ -1893,6 +2479,7 @@ if (
 
       activityNameInput.value =
         "";
+
 
       activityMinutesInput.value =
         "";
@@ -1917,7 +2504,9 @@ document.addEventListener(
     if (
       event.key !== "Escape"
     ) {
+
       return;
+
     }
 
 
@@ -1961,6 +2550,16 @@ document.addEventListener(
 function renderDashboard() {
 
   checkNewDay();
+
+
+  /*
+    Sempre pega os dados mais recentes
+    do perfil central.
+  */
+
+  user =
+    getUser();
+
 
   renderUser();
 
