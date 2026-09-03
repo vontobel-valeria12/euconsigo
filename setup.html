@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Richte dein persönliches Profil ein und definiere dein Ziel."
+  >
+
+  <title>Mein Fortschritt | Einrichtung</title>
+
+
+  <style>
+    :root {
+      --green: #2f8f5b;
+      --green-dark: #247249;
+      --green-soft: #eef8f2;
+
+      --white: #ffffff;
+      --black: #171717;
+      --text: #2c2c2c;
+      --muted: #727772;
+      --line: #e4e9e5;
+
+      --beige: #f7f3ec;
+
+      --shadow:
+        0 22px 55px rgba(25, 70, 45, 0.08);
+    }
+
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+
+    body {
+      min-height: 100vh;
+
+      font-family:
+        Inter,
+        "Helvetica Neue",
+        Helvetica,
+        Arial,
+        sans-serif;
+
+      background:
+        linear-gradient(
+          180deg,
+          #ffffff 0%,
+          #fbfcfb 100%
+        );
+
+      color: var(--text);
+
+      line-height: 1.5;
+    }
+
+
+    button,
+    input {
+      font: inherit;
+    }
+
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+
+    /* =====================================================
+       HEADER
+    ====================================================== */
+
+    .header {
+      height: 78px;
+
+      display: flex;
+      align-items: center;
+
+      border-bottom: 1px solid rgba(228, 233, 229, 0.75);
+
+      background: rgba(255, 255, 255, 0.94);
+    }
+
+
+    .header-inner {
+      width: min(1080px, calc(100% - 36px));
+
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+
+    .brand {
+      display: flex;
+      align-items: center;
+
+      gap: 11px;
+    }
+
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 50%;
+
+      background: var(--green);
+
+      color: white;
+
+      font-weight: 700;
+    }
+
+
+    .brand-name {
+      color: var(--black);
+
+      font-size: 17px;
+      font-weight: 700;
+
+      letter-spacing: -0.02em;
+    }
+
+
+    .back-link {
+      color: var(--muted);
+
+      font-size: 13px;
+      font-weight: 600;
+
+      transition: 0.2s ease;
+    }
+
+
+    .back-link:hover {
+      color: var(--green);
+    }
+
+
+    /* =====================================================
+       MAIN
+    ====================================================== */
+
+    main {
+      min-height: calc(100vh - 78px);
+
+      display: flex;
+      align-items: center;
+
+      padding: 60px 0 90px;
+    }
+
+
+    .setup-layout {
+      width: min(980px, calc(100% - 36px));
+
+      margin: 0 auto;
+
+      display: grid;
+      grid-template-columns: 1fr 470px;
+
+      gap: 70px;
+
+      align-items: center;
+    }
+
+
+    /* =====================================================
+       INTRO
+    ====================================================== */
+
+    .setup-intro {
+      max-width: 430px;
+    }
+
+
+    .eyebrow {
+      display: inline-block;
+
+      margin-bottom: 18px;
+
+      color: var(--green);
+
+      font-size: 12px;
+      font-weight: 700;
+
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+
+    .setup-intro h1 {
+      color: var(--black);
+
+      font-size: clamp(42px, 5vw, 62px);
+
+      line-height: 1;
+
+      letter-spacing: -0.05em;
+
+      font-weight: 600;
+    }
+
+
+    .setup-intro p {
+      margin-top: 22px;
+
+      color: var(--muted);
+
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+
+    /* =====================================================
+       SUMMARY
+    ====================================================== */
+
+    .summary-box {
+      margin-top: 30px;
+
+      padding: 20px;
+
+      border: 1px solid var(--line);
+      border-radius: 18px;
+
+      background: var(--green-soft);
+    }
+
+
+    .summary-title {
+      display: block;
+
+      margin-bottom: 15px;
+
+      color: var(--green-dark);
+
+      font-size: 12px;
+      font-weight: 700;
+
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 12px;
+    }
+
+
+    .summary-item {
+      min-width: 0;
+    }
+
+
+    .summary-item span {
+      display: block;
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+      margin-bottom: 3px;
+    }
+
+
+    .summary-item strong {
+      display: block;
+
+      color: var(--black);
+
+      font-size: 18px;
+      font-weight: 700;
+
+      overflow-wrap: anywhere;
+    }
+
+
+    /* =====================================================
+       CARD
+    ====================================================== */
+
+    .setup-card {
+      padding: 38px;
+
+      border: 1px solid var(--line);
+      border-radius: 26px;
+
+      background: var(--white);
+
+      box-shadow: var(--shadow);
+    }
+
+
+    .card-header {
+      margin-bottom: 28px;
+    }
+
+
+    .card-step {
+      display: inline-block;
+
+      margin-bottom: 8px;
+
+      color: var(--green);
+
+      font-size: 12px;
+      font-weight: 700;
+
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+
+    .card-header h2 {
+      color: var(--black);
+
+      font-size: 30px;
+      font-weight: 600;
+
+      letter-spacing: -0.035em;
+    }
+
+
+    .card-header p {
+      margin-top: 8px;
+
+      color: var(--muted);
+
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+
+    /* =====================================================
+       FORM
+    ====================================================== */
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+
+    .form-group label {
+      display: block;
+
+      margin-bottom: 8px;
+
+      color: var(--black);
+
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+
+    .form-help {
+      display: block;
+
+      margin-top: 7px;
+
+      color: #8a8e8a;
+
+      font-size: 11px;
+    }
+
+
+    .field {
+      position: relative;
+    }
+
+
+    .field input {
+      width: 100%;
+      height: 58px;
+
+      padding: 0 16px;
+
+      border: 1px solid #d8ded9;
+      border-radius: 13px;
+
+      outline: none;
+
+      background: white;
+
+      color: var(--black);
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+
+    .field input:focus {
+      border-color: var(--green);
+
+      box-shadow:
+        0 0 0 4px rgba(47, 143, 91, 0.10);
+    }
+
+
+    .field-with-unit input {
+      padding-right: 58px;
+    }
+
+
+    .field-unit {
+      position: absolute;
+
+      right: 16px;
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      color: var(--muted);
+
+      font-size: 13px;
+      font-weight: 600;
+
+      pointer-events: none;
+    }
+
+
+    /* =====================================================
+       GOAL PREVIEW
+    ====================================================== */
+
+    .goal-preview {
+      margin-top: 6px;
+      margin-bottom: 22px;
+
+      padding: 17px 18px;
+
+      border-radius: 15px;
+
+      background: var(--beige);
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+
+    .goal-preview-text span {
+      display: block;
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+      margin-bottom: 3px;
+    }
+
+
+    .goal-preview-text strong {
+      color: var(--black);
+
+      font-size: 16px;
+    }
+
+
+    .goal-difference {
+      flex-shrink: 0;
+
+      color: var(--green-dark);
+
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+
+    /* =====================================================
+       ERROR
+    ====================================================== */
+
+    .form-error {
+      margin-bottom: 18px;
+
+      padding: 13px 15px;
+
+      border-radius: 11px;
+
+      background: #fff3f1;
+      color: #a54137;
+
+      font-size: 13px;
+
+      line-height: 1.5;
+    }
+
+
+    .form-error[hidden] {
+      display: none;
+    }
+
+
+    /* =====================================================
+       BUTTON
+    ====================================================== */
+
+    .continue-button {
+      width: 100%;
+      min-height: 58px;
+
+      border: none;
+      border-radius: 13px;
+
+      background: var(--green);
+      color: white;
+
+      font-size: 15px;
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+    }
+
+
+    .continue-button:hover {
+      background: var(--green-dark);
+
+      transform: translateY(-1px);
+    }
+
+
+    .continue-button:active {
+      transform: translateY(0);
+    }
+
+
+    .privacy-note {
+      margin-top: 13px;
+
+      text-align: center;
+
+      color: #939793;
+
+      font-size: 11px;
+
+      line-height: 1.55;
+    }
+
+
+    /* =====================================================
+       TABLET
+    ====================================================== */
+
+    @media (max-width: 850px) {
+
+      main {
+        align-items: flex-start;
+
+        padding-top: 45px;
+      }
+
+
+      .setup-layout {
+        grid-template-columns: 1fr;
+
+        gap: 42px;
+      }
+
+
+      .setup-intro {
+        max-width: 600px;
+
+        margin: 0 auto;
+
+        text-align: center;
+      }
+
+
+      .summary-box {
+        max-width: 470px;
+
+        margin-left: auto;
+        margin-right: auto;
+
+        text-align: left;
+      }
+
+
+      .setup-card {
+        width: min(100%, 520px);
+
+        margin: 0 auto;
+      }
+
+    }
+
+
+    /* =====================================================
+       MOBILE
+    ====================================================== */
+
+    @media (max-width: 600px) {
+
+      .header {
+        height: 70px;
+      }
+
+
+      .header-inner {
+        width: calc(100% - 30px);
+      }
+
+
+      .brand-icon {
+        width: 38px;
+        height: 38px;
+      }
+
+
+      .brand-name {
+        font-size: 15px;
+      }
+
+
+      .back-link {
+        font-size: 12px;
+      }
+
+
+      main {
+        min-height: calc(100vh - 70px);
+
+        padding: 34px 0 65px;
+      }
+
+
+      .setup-layout {
+        width: calc(100% - 30px);
+
+        gap: 32px;
+      }
+
+
+      .setup-intro h1 {
+        font-size: 42px;
+      }
+
+
+      .setup-intro p {
+        margin-top: 17px;
+
+        font-size: 15px;
+      }
+
+
+      .summary-box {
+        margin-top: 24px;
+
+        padding: 17px;
+      }
+
+
+      .summary-grid {
+        gap: 8px;
+      }
+
+
+      .summary-item strong {
+        font-size: 16px;
+      }
+
+
+      .setup-card {
+        padding: 27px 21px;
+
+        border-radius: 21px;
+      }
+
+
+      .card-header h2 {
+        font-size: 27px;
+      }
+
+    }
+
+
+    @media (max-width: 380px) {
+
+      .summary-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+
+      .summary-item:last-child {
+        grid-column: 1 / -1;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <header class="header">
+
+    <div class="header-inner">
+
+      <a
+        href="index.html"
+        class="brand"
+        aria-label="Mein Fortschritt"
+      >
+
+        <span class="brand-icon">
+          M
+        </span>
+
+        <span class="brand-name">
+          Mein Fortschritt
+        </span>
+
+      </a>
+
+
+      <a
+        href="onboarding.html"
+        class="back-link"
+      >
+        Zurück
+      </a>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- =====================================================
+       MAIN
+  ====================================================== -->
+
+  <main>
+
+    <div class="setup-layout">
+
+
+      <!-- =================================================
+           INTRO
+      ================================================== -->
+
+      <section class="setup-intro">
+
+        <span class="eyebrow">
+          Dein persönlicher Weg
+        </span>
+
+
+        <h1>
+          Was möchtest du erreichen?
+        </h1>
+
+
+        <p>
+          Definiere dein Ziel. Dein Fortschritt wird später
+          auf Basis deines tatsächlichen Startgewichts verfolgt.
+        </p>
+
+
+
+        <!-- CURRENT DATA -->
+
+        <div class="summary-box">
+
+          <span class="summary-title">
+            Dein Ausgangspunkt
+          </span>
+
+
+          <div class="summary-grid">
+
+            <div class="summary-item">
+
+              <span>
+                Startgewicht
+              </span>
+
+              <strong id="summary-start-weight">
+                —
+              </strong>
+
+            </div>
+
+
+            <div class="summary-item">
+
+              <span>
+                Körpergrösse
+              </span>
+
+              <strong id="summary-height">
+                —
+              </strong>
+
+            </div>
+
+
+            <div class="summary-item">
+
+              <span>
+                BMI
+              </span>
+
+              <strong id="summary-bmi">
+                —
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================================
+           SETUP CARD
+      ================================================== -->
+
+      <section class="setup-card">
+
+        <div class="card-header">
+
+          <span class="card-step">
+            Profil einrichten
+          </span>
+
+
+          <h2>
+            Dein Ziel
+          </h2>
+
+
+          <p>
+            Diese Angaben helfen uns dabei,
+            deinen persönlichen Fortschritt übersichtlich darzustellen.
+          </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             FORM
+        ================================================== -->
+
+        <form id="setup-form">
+
+
+          <!-- NAME -->
+
+          <div class="form-group">
+
+            <label for="name">
+              Wie dürfen wir dich nennen?
+            </label>
+
+
+            <div class="field">
+
+              <input
+                type="text"
+                id="name"
+                autocomplete="given-name"
+                maxlength="50"
+                placeholder="Vorname"
+                required
+              >
+
+            </div>
+
+
+            <span class="form-help">
+              Dieser Name wird später in deiner persönlichen Begrüssung angezeigt.
+            </span>
+
+          </div>
+
+
+
+          <!-- GOAL WEIGHT -->
+
+          <div class="form-group">
+
+            <label for="goal-weight">
+              Dein Zielgewicht
+            </label>
+
+
+            <div class="field field-with-unit">
+
+              <input
+                type="number"
+                id="goal-weight"
+                min="30"
+                max="300"
+                step="0.1"
+                placeholder="70"
+                required
+              >
+
+
+              <span class="field-unit">
+                kg
+              </span>
+
+            </div>
+
+
+            <span class="form-help">
+              Du kannst dein Ziel später jederzeit anpassen.
+            </span>
+
+          </div>
+
+
+
+          <!-- GOAL PREVIEW -->
+
+          <div
+            class="goal-preview"
+            id="goal-preview"
+            hidden
+          >
+
+            <div class="goal-preview-text">
+
+              <span>
+                Dein Weg
+              </span>
+
+              <strong id="goal-preview-text">
+                —
+              </strong>
+
+            </div>
+
+
+            <span
+              class="goal-difference"
+              id="goal-difference"
+            >
+              —
+            </span>
+
+          </div>
+
+
+
+          <!-- ERROR -->
+
+          <div
+            class="form-error"
+            id="form-error"
+            role="alert"
+            hidden
+          ></div>
+
+
+
+          <!-- CONTINUE -->
+
+          <button
+            type="submit"
+            class="continue-button"
+          >
+            Mein Profil einrichten
+          </button>
+
+
+          <p class="privacy-note">
+            Deine Angaben werden momentan nur lokal
+            in deinem Browser gespeichert.
+          </p>
+
+        </form>
+
+      </section>
+
+    </div>
+
+  </main>
+
+
+
+  <!-- =====================================================
+       CENTRAL USER DATA
+  ====================================================== -->
+
+  <script src="user-data.js"></script>
+
+
+
+  <!-- =====================================================
+       SETUP JAVASCRIPT
+  ====================================================== -->
+
+  <script>
+
+    /* =====================================================
+       ELEMENTS
+    ====================================================== */
+
+    const setupForm =
+      document.getElementById("setup-form");
+
+
+    const nameInput =
+      document.getElementById("name");
+
+
+    const goalWeightInput =
+      document.getElementById("goal-weight");
+
+
+    const summaryStartWeight =
+      document.getElementById("summary-start-weight");
+
+
+    const summaryHeight =
+      document.getElementById("summary-height");
+
+
+    const summaryBMI =
+      document.getElementById("summary-bmi");
+
+
+    const goalPreview =
+      document.getElementById("goal-preview");
+
+
+    const goalPreviewText =
+      document.getElementById("goal-preview-text");
+
+
+    const goalDifference =
+      document.getElementById("goal-difference");
+
+
+    const formError =
+      document.getElementById("form-error");
+
+
+
+    /* =====================================================
+       SHOW ERROR
+    ====================================================== */
+
+    function showError(message) {
+
+      formError.textContent =
+        message;
+
+
+      formError.hidden =
+        false;
+
+    }
+
+
+
+    /* =====================================================
+       HIDE ERROR
+    ====================================================== */
+
+    function hideError() {
+
+      formError.textContent =
+        "";
+
+
+      formError.hidden =
+        true;
+
+    }
+
+
+
+    /* =====================================================
+       FORMAT WEIGHT
+    ====================================================== */
+
+    function formatWeight(value) {
+
+      if (
+        typeof value !== "number" ||
+        !Number.isFinite(value)
+      ) {
+        return "—";
+      }
+
+
+      return (
+        value.toFixed(1) +
+        " kg"
+      );
+
+    }
+
+
+
+    /* =====================================================
+       LOAD USER
+    ====================================================== */
+
+    function loadSetupData() {
+
+      const user =
+        getUser();
+
+
+
+      /*
+        O setup depende do Index.
+
+        Se não houver os dados básicos,
+        voltamos para o início.
+      */
+
+      if (
+        !hasBasicUserData()
+      ) {
+
+        window.location.href =
+          "index.html";
+
+        return;
+
+      }
+
+
+
+      /* START WEIGHT */
+
+      summaryStartWeight.textContent =
+        formatWeight(
+          user.startWeight
+        );
+
+
+
+      /* HEIGHT */
+
+      summaryHeight.textContent =
+        Math.round(
+          user.height * 100
+        ) + " cm";
+
+
+
+      /* BMI */
+
+      if (
+        typeof user.bmi === "number"
+      ) {
+
+        summaryBMI.textContent =
+          user.bmi.toFixed(1);
+
+      }
+
+      else {
+
+        summaryBMI.textContent =
+          "—";
+
+      }
+
+
+
+      /* NAME */
+
+      if (user.name) {
+
+        nameInput.value =
+          user.name;
+
+      }
+
+
+
+      /* EXISTING GOAL */
+
+      if (
+        typeof user.goalWeight === "number"
+      ) {
+
+        goalWeightInput.value =
+          user.goalWeight;
+
+
+        updateGoalPreview();
+
+      }
+
+    }
+
+
+
+    /* =====================================================
+       GOAL PREVIEW
+    ====================================================== */
+
+    function updateGoalPreview() {
+
+      const user =
+        getUser();
+
+
+      const currentWeight =
+        user.currentWeight;
+
+
+      const goalWeight =
+        Number(
+          goalWeightInput.value
+        );
+
+
+      if (
+        !Number.isFinite(currentWeight) ||
+        !Number.isFinite(goalWeight) ||
+        goalWeight <= 0
+      ) {
+
+        goalPreview.hidden =
+          true;
+
+        return;
+
+      }
+
+
+      const difference =
+        Math.abs(
+          currentWeight - goalWeight
+        );
+
+
+      /*
+        LOSE WEIGHT
+      */
+
+      if (
+        goalWeight < currentWeight
+      ) {
+
+        goalPreviewText.textContent =
+          "Gewicht reduzieren";
+
+
+        goalDifference.textContent =
+          "−" +
+          difference.toFixed(1) +
+          " kg";
+
+      }
+
+
+      /*
+        GAIN WEIGHT
+      */
+
+      else if (
+        goalWeight > currentWeight
+      ) {
+
+        goalPreviewText.textContent =
+          "Gewicht aufbauen";
+
+
+        goalDifference.textContent =
+          "+" +
+          difference.toFixed(1) +
+          " kg";
+
+      }
+
+
+      /*
+        MAINTAIN
+      */
+
+      else {
+
+        goalPreviewText.textContent =
+          "Gewicht halten";
+
+
+        goalDifference.textContent =
+          "0 kg";
+
+      }
+
+
+      goalPreview.hidden =
+        false;
+
+    }
+
+
+
+    /* =====================================================
+       GOAL INPUT EVENT
+    ====================================================== */
+
+    goalWeightInput.addEventListener(
+      "input",
+      function () {
+
+        hideError();
+
+        updateGoalPreview();
+
+      }
+    );
+
+
+
+    /* =====================================================
+       NAME INPUT EVENT
+    ====================================================== */
+
+    nameInput.addEventListener(
+      "input",
+      hideError
+    );
+
+
+
+    /* =====================================================
+       SUBMIT
+    ====================================================== */
+
+    setupForm.addEventListener(
+      "submit",
+      function (event) {
+
+        event.preventDefault();
+
+
+        hideError();
+
+
+
+        /* =================================================
+           VALUES
+        ================================================== */
+
+        const name =
+          nameInput.value.trim();
+
+
+        const goalWeight =
+          Number(
+            goalWeightInput.value
+          );
+
+
+        const user =
+          getUser();
+
+
+
+        /* =================================================
+           VALIDATION NAME
+        ================================================== */
+
+        if (
+          name.length < 2
+        ) {
+
+          showError(
+            "Bitte gib deinen Vornamen ein."
+          );
+
+          nameInput.focus();
+
+          return;
+
+        }
+
+
+
+        /* =================================================
+           VALIDATION GOAL
+        ================================================== */
+
+        if (
+          !Number.isFinite(goalWeight) ||
+          goalWeight < 30 ||
+          goalWeight > 300
+        ) {
+
+          showError(
+            "Bitte gib ein gültiges Zielgewicht ein."
+          );
+
+          goalWeightInput.focus();
+
+          return;
+
+        }
+
+
+
+        /*
+          Aqui permitimos:
+          - emagrecer
+          - ganhar peso
+          - manter peso
+
+          portanto o objetivo não precisa
+          obrigatoriamente ser menor que
+          o peso atual.
+        */
+
+
+
+        /* =================================================
+           SAVE NAME
+        ================================================== */
+
+        setUserName(
+          name
+        );
+
+
+
+        /* =================================================
+           SAVE GOAL
+        ================================================== */
+
+        setGoalWeight(
+          goalWeight
+        );
+
+
+
+        /* =================================================
+           NEXT PAGE
+        ================================================== */
+
+        window.location.href =
+          "dashboard.html";
+
+      }
+    );
+
+
+
+    /* =====================================================
+       INIT
+    ====================================================== */
+
+    loadSetupData();
+
+  </script>
+
+</body>
+
+</html>
