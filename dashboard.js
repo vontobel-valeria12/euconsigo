@@ -1,1101 +1,462 @@
-/* =========================================================
-   MEIN FORTSCHRITT
-   Dashboard Prototype
-========================================================= */
+<!DOCTYPE html>
+<html lang="de-CH">
 
+<head>
+  <meta charset="UTF-8">
 
-/* =========================================================
-   DADOS DO USUÁRIO
-========================================================= */
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-const user = {
-  name: "Valeria",
+  <meta
+    name="description"
+    content="Verfolge Gewicht, Ziele, Kalorien, Wasser und Bewegung und entdecke zusätzliche Premium-Funktionen."
+  >
 
-  startWeight: 88,
-  currentWeight: 87,
-  goalWeight: 70,
+  <title>Mein Fortschritt | Dashboard</title>
 
-  height: 1.67,
+  <link rel="stylesheet" href="dashboard.css">
+</head>
 
-  water: 1.45,
-  waterGoal: 2.0,
 
-  movementMinutes: 0,
-  movementGoal: 30,
+<body>
 
-  caloriesConsumed: 0,
-  calorieGoal: 1800,
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
 
-  weightHistory: [],
+  <header class="app-header">
 
-  foods: [],
+    <div class="top-header">
 
-  activities: []
-};
+      <a
+        href="dashboard.html"
+        class="brand"
+        aria-label="Mein Fortschritt"
+      >
 
-
-/* =========================================================
-   LOCAL STORAGE
-========================================================= */
-
-const STORAGE_KEY = "meinFortschrittDashboardV2";
-
-
-function saveUserData() {
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(user)
-  );
-}
-
-
-function loadUserData() {
-  const savedData = localStorage.getItem(STORAGE_KEY);
-
-  if (!savedData) {
-    return;
-  }
-
-  try {
-    const data = JSON.parse(savedData);
-
-    Object.assign(user, data);
-  } catch (error) {
-    console.error(
-      "Gespeicherte Daten konnten nicht geladen werden.",
-      error
-    );
-  }
-}
-
-
-/* =========================================================
-   BMI
-========================================================= */
-
-function calculateBMI() {
-  const bmi =
-    user.currentWeight /
-    (user.height * user.height);
-
-  return Number(
-    bmi.toFixed(1)
-  );
-}
-
-
-function getBMICategory(bmi) {
-  if (bmi < 18.5) {
-    return "Untergewicht";
-  }
-
-  if (bmi < 25) {
-    return "Normalgewicht";
-  }
-
-  if (bmi < 30) {
-    return "Übergewicht";
-  }
-
-  if (bmi < 35) {
-    return "Adipositas Grad I";
-  }
-
-  if (bmi < 40) {
-    return "Adipositas Grad II";
-  }
-
-  return "Adipositas Grad III";
-}
-
-
-/* =========================================================
-   PROGRESSO DA META
-========================================================= */
-
-function calculateGoalProgress() {
-  const totalDifference =
-    user.startWeight - user.goalWeight;
-
-  const currentDifference =
-    user.startWeight - user.currentWeight;
-
-  if (totalDifference <= 0) {
-    return 0;
-  }
-
-  let progress =
-    (currentDifference / totalDifference) * 100;
-
-  progress = Math.max(
-    0,
-    Math.min(100, progress)
-  );
-
-  return Math.round(progress);
-}
-
-
-/* =========================================================
-   ATUALIZAR PAINEL
-========================================================= */
-
-function updateDashboard() {
-  /* -------------------------
-     BMI
-  ------------------------- */
-
-  const bmi = calculateBMI();
-
-  const bmiElement =
-    document.getElementById("current-bmi");
-
-  if (bmiElement) {
-    bmiElement.textContent =
-      bmi.toFixed(1);
-  }
-
-
-  /* -------------------------
-     PROGRESSO
-  ------------------------- */
-
-  const goalFill =
-    document.getElementById("goal-fill");
-
-  if (goalFill) {
-    const progress =
-      calculateGoalProgress();
-
-    goalFill.style.width =
-      `${progress}%`;
-  }
-
-
-  /* -------------------------
-     ÁGUA
-  ------------------------- */
-
-  const waterCurrent =
-    document.getElementById("water-current");
-
-  if (waterCurrent) {
-    waterCurrent.textContent =
-      formatDecimal(user.water);
-  }
-
-
-  /* -------------------------
-     MOVIMENTO
-  ------------------------- */
-
-  const movementMinutes =
-    document.getElementById(
-      "movement-minutes"
-    );
-
-  if (movementMinutes) {
-    movementMinutes.textContent =
-      user.movementMinutes;
-  }
-
-
-  /* -------------------------
-     CALORIAS
-  ------------------------- */
-
-  const caloriesConsumed =
-    document.getElementById(
-      "calories-consumed"
-    );
-
-  const caloriesRemaining =
-    document.getElementById(
-      "calories-remaining"
-    );
-
-  if (caloriesConsumed) {
-    caloriesConsumed.textContent =
-      user.caloriesConsumed;
-  }
-
-  if (caloriesRemaining) {
-    const remaining =
-      user.calorieGoal -
-      user.caloriesConsumed;
-
-    caloriesRemaining.textContent =
-      Math.max(0, remaining);
-  }
-}
-
-
-/* =========================================================
-   ÁGUA
-========================================================= */
-
-const addWaterButton =
-  document.getElementById(
-    "add-water-button"
-  );
-
-
-if (addWaterButton) {
-  addWaterButton.addEventListener(
-    "click",
-    function () {
-      user.water += 0.25;
-
-      user.water =
-        Number(
-          user.water.toFixed(2)
-        );
-
-      saveUserData();
-
-      updateDashboard();
-    }
-  );
-}
-
-
-/* =========================================================
-   PESO
-========================================================= */
-
-const weightForm =
-  document.getElementById(
-    "weight-form"
-  );
-
-
-if (weightForm) {
-  weightForm.addEventListener(
-    "submit",
-    function (event) {
-      event.preventDefault();
-
-      const input =
-        document.getElementById(
-          "new-weight"
-        );
-
-      const weight =
-        Number(input.value);
-
-      if (
-        !weight ||
-        weight < 30 ||
-        weight > 300
-      ) {
-        alert(
-          "Bitte gib ein gültiges Gewicht ein."
-        );
-
-        return;
-      }
-
-      user.currentWeight =
-        weight;
-
-      user.weightHistory.push({
-        weight: weight,
-        date: new Date().toISOString()
-      });
-
-      if (
-        user.weightHistory.length > 12
-      ) {
-        user.weightHistory =
-          user.weightHistory.slice(-12);
-      }
-
-      input.value = "";
-
-      saveUserData();
-
-      updateDashboard();
-
-      renderWeightChart();
-    }
-  );
-}
-
-
-/* =========================================================
-   GRÁFICO DE PESO
-========================================================= */
-
-function renderWeightChart() {
-  const chart =
-    document.getElementById(
-      "weight-chart"
-    );
-
-  if (!chart) {
-    return;
-  }
-
-  if (
-    user.weightHistory.length === 0
-  ) {
-    chart.innerHTML = `
-
-      <div class="empty-state">
-
-        <strong>
-          Dein Verlauf beginnt hier.
-        </strong>
-
-        <span>
-          Trage dein Gewicht einmal pro Woche ein.
+        <span class="brand-mark">
+          M
         </span>
 
-      </div>
+        <span class="brand-name">
+          Mein Fortschritt
+        </span>
 
-    `;
+      </a>
 
-    return;
-  }
 
-  const values =
-    user.weightHistory.map(
-      entry => entry.weight
-    );
-
-  const max =
-    Math.max(...values);
-
-  const min =
-    Math.min(...values);
-
-  const difference =
-    max - min || 1;
-
-  let points = "";
-
-  user.weightHistory.forEach(
-    function (entry, index) {
-      const x =
-        user.weightHistory.length === 1
-          ? 50
-          : (
-              index /
-              (
-                user.weightHistory.length - 1
-              )
-            ) * 100;
-
-      const y =
-        80 -
-        (
-          (
-            entry.weight - min
-          ) /
-          difference
-        ) * 60;
-
-      points +=
-        `${x},${y} `;
-    }
-  );
-
-  chart.innerHTML = `
-
-    <svg
-      viewBox="0 0 100 100"
-      preserveAspectRatio="none"
-      style="
-        width: 100%;
-        height: 190px;
-        display: block;
-      "
-      aria-hidden="true"
-    >
-
-      <polyline
-        points="${points}"
-        fill="none"
-        stroke="#7fa889"
-        stroke-width="2.2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        vector-effect="non-scaling-stroke"
-      ></polyline>
-
-    </svg>
-
-    <div
-      style="
-        display:flex;
-        justify-content:space-between;
-        margin-top:8px;
-        color:#7b7771;
-        font-size:11px;
-      "
-    >
-
-      <span>
-        ${formatNumber(values[0])} kg
-      </span>
-
-      <span>
-        ${formatNumber(
-          values[values.length - 1]
-        )} kg
-      </span>
+      <button
+        class="profile-button"
+        id="profile-button"
+        type="button"
+        aria-label="Profil öffnen"
+      >
+        V
+      </button>
 
     </div>
 
-  `;
-}
 
 
-/* =========================================================
-   ALIMENTOS / CALORIAS
-========================================================= */
+    <!-- =================================================
+         MENU HORIZONTAL
+    ================================================== -->
 
-const foodForm =
-  document.getElementById(
-    "food-form"
-  );
-
-
-if (foodForm) {
-  foodForm.addEventListener(
-    "submit",
-    function (event) {
-      event.preventDefault();
-
-      const nameInput =
-        document.getElementById(
-          "food-name"
-        );
-
-      const caloriesInput =
-        document.getElementById(
-          "food-calories"
-        );
-
-      const name =
-        nameInput.value.trim();
-
-      const calories =
-        Number(
-          caloriesInput.value
-        );
-
-      if (
-        name === "" ||
-        !Number.isFinite(calories) ||
-        calories < 0
-      ) {
-        alert(
-          "Bitte Lebensmittel und Kalorien eintragen."
-        );
-
-        return;
-      }
-
-      user.foods.push({
-        id: Date.now(),
-        name: name,
-        calories: calories
-      });
-
-      calculateCalories();
-
-      nameInput.value = "";
-      caloriesInput.value = "";
-
-      saveUserData();
-
-      updateDashboard();
-
-      renderFoodList();
-    }
-  );
-}
+    <nav
+      class="function-menu"
+      aria-label="Funktionen"
+    >
 
 
-/* =========================================================
-   CALCULAR CALORIAS
-========================================================= */
+      <!-- BEGLEITUNG -->
 
-function calculateCalories() {
-  user.caloriesConsumed =
-    user.foods.reduce(
-      function (total, food) {
-        return total +
-          Number(food.calories);
-      },
-      0
-    );
-}
+      <button
+        class="function-item premium-function"
+        type="button"
+        data-premium="true"
+        data-feature="Begleitung"
+      >
 
+        <div class="function-circle premium-circle">
+          ♡
+        </div>
 
-/* =========================================================
-   LISTA DE ALIMENTOS
-========================================================= */
-
-function renderFoodList() {
-  const list =
-    document.getElementById(
-      "food-list"
-    );
-
-  if (!list) {
-    return;
-  }
-
-  if (
-    user.foods.length === 0
-  ) {
-    list.innerHTML = `
-
-      <div class="empty-state">
-
-        <strong>
-          Noch nichts eingetragen.
-        </strong>
-
-        <span>
-          Deine Lebensmittel erscheinen hier.
+        <span class="function-name">
+          Begleitung
         </span>
 
-      </div>
+        <small class="premium-badge">
+          👑 Premium
+        </small>
 
-    `;
+      </button>
 
-    return;
-  }
 
-  list.innerHTML = "";
 
-  user.foods.forEach(
-    function (food) {
-      const item =
-        document.createElement("div");
+      <!-- SHOP -->
 
-      item.className =
-        "food-item";
+      <a
+        href="shop.html"
+        class="function-item"
+      >
 
-      item.innerHTML = `
+        <div class="function-circle">
+          ◇
+        </div>
 
-        <div>
+        <span class="function-name">
+          Shop
+        </span>
 
-          <strong>
-            ${escapeHTML(food.name)}
-          </strong>
+      </a>
 
-          <span>
-            ${food.calories} kcal
+
+
+      <!-- KALORIEN -->
+
+      <a
+        href="#kalorien"
+        class="function-item"
+      >
+
+        <div class="function-circle">
+          +
+        </div>
+
+        <span class="function-name">
+          Kalorien
+        </span>
+
+      </a>
+
+
+
+      <!-- WASSER -->
+
+      <a
+        href="#wasser"
+        class="function-item"
+      >
+
+        <div class="function-circle">
+          ◉
+        </div>
+
+        <span class="function-name">
+          Wasser
+        </span>
+
+      </a>
+
+
+
+      <!-- BEWEGUNG -->
+
+      <a
+        href="#bewegung"
+        class="function-item"
+      >
+
+        <div class="function-circle">
+          ↗
+        </div>
+
+        <span class="function-name">
+          Bewegung
+        </span>
+
+      </a>
+
+
+
+      <!-- GEWICHT -->
+
+      <a
+        href="#gewicht"
+        class="function-item"
+      >
+
+        <div class="function-circle">
+          ↓
+        </div>
+
+        <span class="function-name">
+          Gewicht
+        </span>
+
+      </a>
+
+
+
+      <!-- ZIELE -->
+
+      <a
+        href="#ziele"
+        class="function-item"
+      >
+
+        <div class="function-circle">
+          ✓
+        </div>
+
+        <span class="function-name">
+          Ziele
+        </span>
+
+      </a>
+
+
+
+      <!-- WOCHENANALYSE -->
+
+      <button
+        class="function-item premium-function"
+        type="button"
+        data-premium="true"
+        data-feature="Wochenanalyse"
+      >
+
+        <div class="function-circle premium-circle">
+          ◫
+        </div>
+
+        <span class="function-name">
+          Wochenanalyse
+        </span>
+
+        <small class="premium-badge">
+          👑 Premium
+        </small>
+
+      </button>
+
+
+
+      <!-- STRATEGIE -->
+
+      <button
+        class="function-item premium-function"
+        type="button"
+        data-premium="true"
+        data-feature="Strategie"
+      >
+
+        <div class="function-circle premium-circle">
+          ✦
+        </div>
+
+        <span class="function-name">
+          Strategie
+        </span>
+
+        <small class="premium-badge">
+          👑 Premium
+        </small>
+
+      </button>
+
+
+
+      <!-- ERNÄHRUNGSPLAN -->
+
+      <button
+        class="function-item premium-function"
+        type="button"
+        data-premium="true"
+        data-feature="Ernährungsplan"
+      >
+
+        <div class="function-circle premium-circle">
+          ≋
+        </div>
+
+        <span class="function-name">
+          Ernährungsplan
+        </span>
+
+        <small class="premium-badge">
+          👑 Premium
+        </small>
+
+      </button>
+
+
+
+      <!-- ANALYSE -->
+
+      <button
+        class="function-item premium-function"
+        type="button"
+        data-premium="true"
+        data-feature="Analyse"
+      >
+
+        <div class="function-circle premium-circle">
+          ◎
+        </div>
+
+        <span class="function-name">
+          Analyse
+        </span>
+
+        <small class="premium-badge">
+          👑 Premium
+        </small>
+
+      </button>
+
+    </nav>
+
+  </header>
+
+
+
+  <!-- =====================================================
+       MAIN
+  ====================================================== -->
+
+  <main class="dashboard-main">
+
+    <div class="dashboard-container">
+
+
+      <!-- =================================================
+           WELCOME
+      ================================================== -->
+
+      <section
+        class="welcome-section"
+        id="uebersicht"
+      >
+
+        <div class="welcome-copy">
+
+          <span class="section-kicker">
+            Dein Fortschritt
           </span>
+
+          <h1 id="welcome-name">
+            Guten Morgen, Valeria.
+          </h1>
+
+          <p>
+            Heute ist ein neuer Schritt in Richtung deines Ziels.
+          </p>
 
         </div>
 
-        <button
-          type="button"
-          class="remove-item"
-          aria-label="Lebensmittel entfernen"
-        >
-          ×
-        </button>
-
-      `;
-
-      const removeButton =
-        item.querySelector(
-          ".remove-item"
-        );
-
-      removeButton.addEventListener(
-        "click",
-        function () {
-          removeFood(
-            food.id
-          );
-        }
-      );
-
-      list.appendChild(item);
-    }
-  );
-}
+      </section>
 
 
-/* =========================================================
-   REMOVER ALIMENTO
-========================================================= */
 
-function removeFood(id) {
-  user.foods =
-    user.foods.filter(
-      food =>
-        food.id !== id
-    );
+      <!-- =================================================
+           PRINCIPAL PROGRESS CARD
+      ================================================== -->
 
-  calculateCalories();
+      <section class="main-progress-card">
 
-  saveUserData();
+        <div class="progress-copy">
 
-  updateDashboard();
-
-  renderFoodList();
-}
-
-
-/* =========================================================
-   MOVIMENTO
-========================================================= */
-
-const movementForm =
-  document.getElementById(
-    "movement-form"
-  );
-
-
-if (movementForm) {
-  movementForm.addEventListener(
-    "submit",
-    function (event) {
-      event.preventDefault();
-
-      const activityInput =
-        document.getElementById(
-          "activity-name"
-        );
-
-      const minutesInput =
-        document.getElementById(
-          "activity-minutes"
-        );
-
-      const activity =
-        activityInput.value.trim();
-
-      const minutes =
-        Number(
-          minutesInput.value
-        );
-
-      if (
-        activity === "" ||
-        !minutes ||
-        minutes <= 0
-      ) {
-        alert(
-          "Bitte Aktivität und Dauer eintragen."
-        );
-
-        return;
-      }
-
-      user.activities.push({
-        id: Date.now(),
-        name: activity,
-        minutes: minutes
-      });
-
-      calculateMovement();
-
-      activityInput.value = "";
-      minutesInput.value = "";
-
-      saveUserData();
-
-      updateDashboard();
-
-      renderActivityList();
-    }
-  );
-}
-
-
-/* =========================================================
-   CALCULAR MOVIMENTO
-========================================================= */
-
-function calculateMovement() {
-  user.movementMinutes =
-    user.activities.reduce(
-      function (
-        total,
-        activity
-      ) {
-        return total +
-          Number(
-            activity.minutes
-          );
-      },
-      0
-    );
-}
-
-
-/* =========================================================
-   LISTA DE ATIVIDADES
-========================================================= */
-
-function renderActivityList() {
-  const list =
-    document.getElementById(
-      "activity-list"
-    );
-
-  if (!list) {
-    return;
-  }
-
-  if (
-    user.activities.length === 0
-  ) {
-    list.innerHTML = `
-
-      <div class="empty-state">
-
-        <strong>
-          Noch keine Aktivität.
-        </strong>
-
-        <span>
-          Auch kleine Bewegungen zählen.
-        </span>
-
-      </div>
-
-    `;
-
-    return;
-  }
-
-  list.innerHTML = "";
-
-  user.activities.forEach(
-    function (activity) {
-      const item =
-        document.createElement("div");
-
-      item.className =
-        "activity-item";
-
-      item.innerHTML = `
-
-        <div>
-
-          <strong>
-            ${escapeHTML(activity.name)}
-          </strong>
-
-          <span>
-            ${activity.minutes} Min.
+          <span class="section-kicker">
+            Dein Ziel
           </span>
+
+          <h2 id="current-weight-main">
+            87 kg
+          </h2>
+
+          <p>
+            Zielgewicht:
+            <strong id="goal-weight-main">
+              70 kg
+            </strong>
+          </p>
 
         </div>
 
-        <button
-          type="button"
-          class="remove-item"
-          aria-label="Aktivität entfernen"
+
+        <div class="progress-visual">
+
+          <div class="goal-track">
+
+            <div
+              class="goal-fill"
+              id="goal-fill"
+              style="width: 6%;"
+            ></div>
+
+          </div>
+
+
+          <div class="goal-numbers">
+
+            <span id="start-weight-text">
+              Start 88 kg
+            </span>
+
+            <span id="current-weight-text">
+              Aktuell 87 kg
+            </span>
+
+            <span id="goal-weight-text">
+              Ziel 70 kg
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================================
+           MEIN BEGLEITER
+      ================================================== -->
+
+      <section class="pet-dashboard-section">
+
+        <a
+          href="katze/katze.html"
+          class="pet-card-link"
         >
-          ×
-        </button>
+          🐱 Mein Begleiter
+        </a>
 
-      `;
+      </section>
 
-      const removeButton =
-        item.querySelector(
-          ".remove-item"
-        );
 
-      removeButton.addEventListener(
-        "click",
-        function () {
-          removeActivity(
-            activity.id
-          );
-        }
-      );
 
-      list.appendChild(item);
-    }
-  );
-}
+      <!-- =================================================
+           QUICK OVERVIEW
+      ================================================== -->
 
+      <section class="quick-grid">
 
-/* =========================================================
-   REMOVER ATIVIDADE
-========================================================= */
 
-function removeActivity(id) {
-  user.activities =
-    user.activities.filter(
-      activity =>
-        activity.id !== id
-    );
+        <!-- BMI -->
 
-  calculateMovement();
+        <article class="quick-card">
 
-  saveUserData();
+          <span class="quick-label">
+            BMI
+          </span>
 
-  updateDashboard();
+          <strong id="current-bmi">
+            31.2
+          </strong>
 
-  renderActivityList();
-}
+          <span
+            class="quick-text"
+            id="bmi-status"
+          >
+            Adipositas Grad I
+          </span>
 
+        </article>
 
-/* =========================================================
-   PREMIUM MODAL
-========================================================= */
 
-const premiumButtons =
-  document.querySelectorAll(
-    ".premium-function"
-  );
 
-const premiumModal =
-  document.getElementById(
-    "premium-modal"
-  );
-
-const premiumModalClose =
-  document.getElementById(
-    "premium-modal-close"
-  );
-
-const premiumModalTitle =
-  document.getElementById(
-    "premium-modal-title"
-  );
-
-const premiumModalText =
-  document.getElementById(
-    "premium-modal-text"
-  );
-
-
-premiumButtons.forEach(
-  function (button) {
-    button.addEventListener(
-      "click",
-      function () {
-        const feature =
-          this.dataset.feature ||
-          "Premium";
-
-        openPremiumModal(
-          feature
-        );
-      }
-    );
-  }
-);
-
-
-/* =========================================================
-   ABRIR PREMIUM MODAL
-========================================================= */
-
-function openPremiumModal(
-  feature
-) {
-  if (!premiumModal) {
-    return;
-  }
-
-  premiumModalTitle.textContent =
-    feature;
-
-  premiumModalText.textContent =
-    getPremiumMessage(
-      feature
-    );
-
-  premiumModal.hidden =
-    false;
-
-  document.body.style.overflow =
-    "hidden";
-}
-
-
-/* =========================================================
-   TEXTO PREMIUM
-========================================================= */
-
-function getPremiumMessage(
-  feature
-) {
-  const messages = {
-    Begleitung:
-      "Mit Premium erhältst du persönliche Begleitung durch eine Ernährungsfachperson.",
-
-    Wochenanalyse:
-      "Deine Woche wird gemeinsam ausgewertet, damit du erkennst, was funktioniert und wo Anpassungen sinnvoll sind.",
-
-    Strategie:
-      "Erhalte eine persönliche Strategie, die zu deinem Alltag, deinen Zielen und deiner Entwicklung passt.",
-
-    Ernährungsplan:
-      "Erhalte individuelle Empfehlungen und eine strukturierte Planung für deine Ernährung.",
-
-    Analyse:
-      "Mit erweiterten Auswertungen erkennst du Entwicklungen, Muster und Veränderungen besser."
-  };
-
-  return (
-    messages[feature] ||
-    "Diese Funktion ist Teil des Premium-Bereichs."
-  );
-}
-
-
-/* =========================================================
-   FECHAR MODAL
-========================================================= */
-
-if (
-  premiumModalClose &&
-  premiumModal
-) {
-  premiumModalClose.addEventListener(
-    "click",
-    closePremiumModal
-  );
-}
-
-
-const premiumBackdrop =
-  premiumModal
-    ? premiumModal.querySelector(
-        ".premium-modal-backdrop"
-      )
-    : null;
-
-
-if (premiumBackdrop) {
-  premiumBackdrop.addEventListener(
-    "click",
-    closePremiumModal
-  );
-}
-
-
-function closePremiumModal() {
-  if (!premiumModal) {
-    return;
-  }
-
-  premiumModal.hidden =
-    true;
-
-  document.body.style.overflow =
-    "";
-}
-
-
-/* =========================================================
-   ESC FECHA MODAL
-========================================================= */
-
-document.addEventListener(
-  "keydown",
-  function (event) {
-    if (
-      event.key === "Escape" &&
-      premiumModal &&
-      !premiumModal.hidden
-    ) {
-      closePremiumModal();
-    }
-  }
-);
-
-
-/* =========================================================
-   MENU HORIZONTAL
-   roda do mouse vira rolagem horizontal
-========================================================= */
-
-const functionMenu =
-  document.querySelector(
-    ".function-menu"
-  );
-
-
-if (functionMenu) {
-  functionMenu.addEventListener(
-    "wheel",
-    function (event) {
-      if (
-        Math.abs(event.deltaY) >
-        Math.abs(event.deltaX)
-      ) {
-        functionMenu.scrollLeft +=
-          event.deltaY;
-      }
-    },
-    {
-      passive: true
-    }
-  );
-}
-
-
-/* =========================================================
-   SEGURANÇA
-========================================================= */
-
-function escapeHTML(value) {
-  const element =
-    document.createElement("div");
-
-  element.textContent =
-    value;
-
-  return element.innerHTML;
-}
-
-
-/* =========================================================
-   FORMATAÇÃO
-========================================================= */
-
-function formatNumber(value) {
-  return Number(value)
-    .toFixed(1)
-    .replace(".0", "")
-    .replace(".", ",");
-}
-
-
-function formatDecimal(value) {
-  return Number(value)
-    .toFixed(2)
-    .replace(/0$/, "")
-    .replace(".", ",");
-}
-
-
-/* =========================================================
-   INICIAR
-========================================================= */
-
-function initializeDashboard() {
-  loadUserData();
-
-  calculateCalories();
-
-  calculateMovement();
-
-  updateDashboard();
-
-  renderWeightChart();
-
-  renderFoodList();
-
-  renderActivityList();
-}
-
-
-initializeDashboard();
+        <!-- WASSER -->
