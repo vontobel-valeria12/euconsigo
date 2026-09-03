@@ -28,8 +28,6 @@
 
   <header class="app-header">
 
-    <!-- TOPO -->
-
     <div class="top-header">
 
       <a
@@ -309,7 +307,6 @@
 
       </button>
 
-
     </nav>
 
   </header>
@@ -340,7 +337,7 @@
             Dein Fortschritt
           </span>
 
-          <h1>
+          <h1 id="welcome-name">
             Guten Morgen, Valeria.
           </h1>
 
@@ -366,13 +363,15 @@
             Dein Ziel
           </span>
 
-          <h2>
+          <h2 id="current-weight-main">
             87 kg
           </h2>
 
           <p>
             Zielgewicht:
-            <strong>70 kg</strong>
+            <strong id="goal-weight-main">
+              70 kg
+            </strong>
           </p>
 
         </div>
@@ -393,15 +392,15 @@
 
           <div class="goal-numbers">
 
-            <span>
+            <span id="start-weight-text">
               Start 88 kg
             </span>
 
-            <span>
+            <span id="current-weight-text">
               Aktuell 87 kg
             </span>
 
-            <span>
+            <span id="goal-weight-text">
               Ziel 70 kg
             </span>
 
@@ -411,13 +410,23 @@
 
       </section>
 
+
+
       <!-- =================================================
-           MEU COMPANHEIRO 
+           MEIN BEGLEITER
       ================================================== -->
 
-<a href="katze.html" class="pet-card-link">
-  🐱 Mein Begleiter
-</a>
+      <section class="pet-dashboard-section">
+
+        <a
+          href="katze/katze.html"
+          class="pet-card-link"
+        >
+          🐱 Mein Begleiter
+        </a>
+
+      </section>
+
 
 
       <!-- =================================================
@@ -439,7 +448,10 @@
             31.2
           </strong>
 
-          <span class="quick-text">
+          <span
+            class="quick-text"
+            id="bmi-status"
+          >
             Adipositas Grad I
           </span>
 
@@ -479,10 +491,7 @@
 
         <!-- BEWEGUNG -->
 
-        <article
-          class="quick-card"
-          id="bewegung"
-        >
+        <article class="quick-card">
 
           <span class="quick-label">
             Bewegung
@@ -573,6 +582,7 @@
                 max="300"
                 step="0.1"
                 placeholder="z. B. 86.8"
+                required
               >
 
               <span>
@@ -590,6 +600,94 @@
             </button>
 
           </form>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================================
+           ZIELE
+      ================================================== -->
+
+      <section
+        class="content-section"
+        id="ziele"
+      >
+
+        <div class="section-header">
+
+          <div>
+
+            <span class="section-kicker">
+              Ziele
+            </span>
+
+            <h2>
+              Deine täglichen Ziele.
+            </h2>
+
+            <p>
+              Kleine Schritte bringen dich deinem Ziel näher.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="quick-grid">
+
+          <article class="quick-card">
+
+            <span class="quick-label">
+              Zielgewicht
+            </span>
+
+            <strong id="goal-weight-card">
+              70 kg
+            </strong>
+
+            <span class="quick-text">
+              Dein persönliches Ziel
+            </span>
+
+          </article>
+
+
+          <article class="quick-card">
+
+            <span class="quick-label">
+              Wasser
+            </span>
+
+            <strong>
+              2 L
+            </strong>
+
+            <span class="quick-text">
+              Tagesziel
+            </span>
+
+          </article>
+
+
+          <article class="quick-card">
+
+            <span class="quick-label">
+              Bewegung
+            </span>
+
+            <strong>
+              30 Min.
+            </strong>
+
+            <span class="quick-text">
+              Tagesziel
+            </span>
+
+          </article>
 
         </div>
 
@@ -666,15 +764,28 @@
             <div class="calorie-details">
 
               <div>
-                <span>Ziel</span>
-                <strong>1'800</strong>
+
+                <span>
+                  Ziel
+                </span>
+
+                <strong id="calorie-goal">
+                  1'800
+                </strong>
+
               </div>
 
+
               <div>
-                <span>Verbleibend</span>
+
+                <span>
+                  Verbleibend
+                </span>
+
                 <strong id="calories-remaining">
                   1'800
                 </strong>
+
               </div>
 
             </div>
@@ -698,6 +809,7 @@
                 type="text"
                 id="food-name"
                 placeholder="z. B. Banane"
+                required
               >
 
             </div>
@@ -716,6 +828,7 @@
                   id="food-calories"
                   min="0"
                   placeholder="100"
+                  required
                 >
 
                 <span>
@@ -766,7 +879,10 @@
            BEWEGUNG
       ================================================== -->
 
-      <section class="content-section">
+      <section
+        class="content-section"
+        id="bewegung"
+      >
 
         <div class="section-header">
 
@@ -800,6 +916,7 @@
               type="text"
               id="activity-name"
               placeholder="z. B. Spaziergang"
+              required
             >
 
           </div>
@@ -818,6 +935,7 @@
                 id="activity-minutes"
                 min="1"
                 placeholder="30"
+                required
               >
 
               <span>
@@ -931,7 +1049,6 @@
 
       </section>
 
-
     </div>
 
   </main>
@@ -995,6 +1112,10 @@
   </div>
 
 
+
+  <!-- =====================================================
+       JAVASCRIPT
+  ====================================================== -->
 
   <script src="dashboard.js"></script>
 
