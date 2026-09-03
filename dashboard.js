@@ -4,15 +4,20 @@
 
    IMPORTANTE:
    user-data.js deve ser carregado ANTES deste arquivo.
+
+   Ordem correta no dashboard.html:
+
+   <script src="user-data.js"></script>
+   <script src="dashboard.js"></script>
 ========================================================= */
 
 
 /* =========================================================
-   STORAGE
+   01. STORAGE KEYS
    Dados específicos do Dashboard
 ========================================================= */
 
-const STORAGE_KEYS = {
+const DASHBOARD_STORAGE_KEYS = {
   water: "euConsigoWater",
   food: "euConsigoFood",
   movement: "euConsigoMovement",
@@ -21,10 +26,14 @@ const STORAGE_KEYS = {
 
 
 /* =========================================================
-   HELPERS
+   02. GENERAL HELPERS
 ========================================================= */
 
-function loadData(key, fallback) {
+/**
+ * Carrega dados do localStorage.
+ * Se não houver dados válidos, retorna o fallback.
+ */
+function loadDashboardData(key, fallback) {
 
   try {
 
@@ -55,7 +64,10 @@ function loadData(key, fallback) {
 }
 
 
-function saveData(key, value) {
+/**
+ * Salva dados específicos do Dashboard.
+ */
+function saveDashboardData(key, value) {
 
   try {
 
@@ -77,6 +89,10 @@ function saveData(key, value) {
 }
 
 
+/**
+ * Retorna a data local no formato:
+ * YYYY-MM-DD
+ */
 function getToday() {
 
   const now =
@@ -90,28 +106,27 @@ function getToday() {
   const month =
     String(
       now.getMonth() + 1
-    ).padStart(
-      2,
-      "0"
-    );
+    ).padStart(2, "0");
 
 
   const day =
     String(
       now.getDate()
-    ).padStart(
-      2,
-      "0"
-    );
+    ).padStart(2, "0");
 
 
-  return (
-    `${year}-${month}-${day}`
-  );
+  return `${year}-${month}-${day}`;
 
 }
 
 
+/**
+ * Converte:
+ * 2026-09-03
+ *
+ * para:
+ * 03.09.2026
+ */
 function formatDate(dateString) {
 
   const parts =
@@ -121,19 +136,44 @@ function formatDate(dateString) {
   if (
     parts.length !== 3
   ) {
-
-    return dateString;
-
+    return String(dateString);
   }
 
 
-  return (
-    `${parts[2]}.${parts[1]}.${parts[0]}`
-  );
+  return `${parts[2]}.${parts[1]}.${parts[0]}`;
 
 }
 
 
+/**
+ * Converte:
+ * 2026-09-03
+ *
+ * para:
+ * 03.09.
+ */
+function formatShortDate(dateString) {
+
+  const parts =
+    String(dateString).split("-");
+
+
+  if (
+    parts.length !== 3
+  ) {
+    return String(dateString);
+  }
+
+
+  return `${parts[2]}.${parts[1]}.`;
+
+}
+
+
+/**
+ * Protege textos adicionados ao HTML
+ * contra caracteres interpretados como código.
+ */
 function escapeHTML(text) {
 
   const element =
@@ -141,7 +181,7 @@ function escapeHTML(text) {
 
 
   element.textContent =
-    String(text);
+    String(text ?? "");
 
 
   return element.innerHTML;
@@ -149,7 +189,57 @@ function escapeHTML(text) {
 }
 
 
+/**
+ * Verifica se realmente existe
+ * um número utilizável.
+ *
+ * Importante:
+ * Number(null) seria 0.
+ * Por isso verificamos null e vazio antes.
+ */
+function hasValidNumber(value) {
+
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
+    return false;
+  }
+
+
+  return Number.isFinite(
+    Number(value)
+  );
+
+}
+
+
+/**
+ * Formata peso para exibição.
+ *
+ * Exemplo:
+ * 87 -> 87.0 kg
+ */
 function formatWeight(value) {
+
+  if (
+    !hasValidNumber(value)
+  ) {
+    return "—";
+  }
+
+
+  return `${Number(value).toFixed(1)} kg`;
+
+}
+
+
+/**
+ * Garante que uma porcentagem
+ * fique sempre entre 0 e 100.
+ */
+function clampPercentage(value) {
 
   const number =
     Number(value);
@@ -158,21 +248,23 @@ function formatWeight(value) {
   if (
     !Number.isFinite(number)
   ) {
-
-    return "—";
-
+    return 0;
   }
 
 
-  return (
-    `${number.toFixed(1)} kg`
+  return Math.max(
+    0,
+    Math.min(
+      100,
+      number
+    )
   );
 
 }
 
 
 /* =========================================================
-   USER
+   03. USER DATA
    Fonte única: user-data.js
 ========================================================= */
 
@@ -180,15 +272,10 @@ let user =
   getUser();
 
 
-/*
-  O Dashboard depende dos dados criados
-  no Index + Setup.
-
-  Se alguém acessar diretamente
-  sem ter os dados necessários,
-  retorna ao início.
-*/
-
+/**
+ * O Dashboard precisa dos dados básicos
+ * criados anteriormente no Index.
+ */
 if (
   !hasBasicUserData()
 ) {
@@ -199,14 +286,32 @@ if (
 }
 
 
+/**
+ * O objetivo de peso é preenchido no Setup.
+ *
+ * Se a pessoa possui os dados básicos,
+ * mas ainda não possui objetivo,
+ * ela deve terminar o Setup.
+ */
+if (
+  hasBasicUserData() &&
+  !hasWeightGoal()
+) {
+
+  window.location.href =
+    "setup.html";
+
+}
+
+
 /* =========================================================
-   APP STATE
-   Água / alimentos / movimento / histórico
+   04. DASHBOARD STATE
+   Água / Alimentação / Movimento / Histórico
 ========================================================= */
 
 let waterData =
-  loadData(
-    STORAGE_KEYS.water,
+  loadDashboardData(
+    DASHBOARD_STORAGE_KEYS.water,
     {
       date: getToday(),
       amount: 0
@@ -215,8 +320,8 @@ let waterData =
 
 
 let foodData =
-  loadData(
-    STORAGE_KEYS.food,
+  loadDashboardData(
+    DASHBOARD_STORAGE_KEYS.food,
     {
       date: getToday(),
       items: []
@@ -225,8 +330,8 @@ let foodData =
 
 
 let movementData =
-  loadData(
-    STORAGE_KEYS.movement,
+  loadDashboardData(
+    DASHBOARD_STORAGE_KEYS.movement,
     {
       date: getToday(),
       items: []
@@ -235,25 +340,36 @@ let movementData =
 
 
 let weightHistory =
-  loadData(
-    STORAGE_KEYS.weightHistory,
+  loadDashboardData(
+    DASHBOARD_STORAGE_KEYS.weightHistory,
     []
   );
 
 
 /* =========================================================
-   NORMALIZE DAILY DATA
+   05. NORMALIZE DASHBOARD DATA
 ========================================================= */
 
-function normalizeDailyData() {
+/**
+ * Corrige estruturas inválidas ou antigas
+ * antes de o Dashboard começar a trabalhar.
+ */
+function normalizeDashboardData() {
+
+  const today =
+    getToday();
+
+
+  /* WATER */
 
   if (
     !waterData ||
-    typeof waterData !== "object"
+    typeof waterData !== "object" ||
+    Array.isArray(waterData)
   ) {
 
     waterData = {
-      date: getToday(),
+      date: today,
       amount: 0
     };
 
@@ -261,23 +377,29 @@ function normalizeDailyData() {
 
 
   if (
-    !Number.isFinite(
-      Number(waterData.amount)
-    )
+    !hasValidNumber(waterData.amount)
   ) {
 
     waterData.amount = 0;
 
+  } else {
+
+    waterData.amount =
+      Number(waterData.amount);
+
   }
 
 
+  /* FOOD */
+
   if (
     !foodData ||
-    typeof foodData !== "object"
+    typeof foodData !== "object" ||
+    Array.isArray(foodData)
   ) {
 
     foodData = {
-      date: getToday(),
+      date: today,
       items: []
     };
 
@@ -293,13 +415,16 @@ function normalizeDailyData() {
   }
 
 
+  /* MOVEMENT */
+
   if (
     !movementData ||
-    typeof movementData !== "object"
+    typeof movementData !== "object" ||
+    Array.isArray(movementData)
   ) {
 
     movementData = {
-      date: getToday(),
+      date: today,
       items: []
     };
 
@@ -315,6 +440,8 @@ function normalizeDailyData() {
   }
 
 
+  /* WEIGHT HISTORY */
+
   if (
     !Array.isArray(weightHistory)
   ) {
@@ -326,18 +453,29 @@ function normalizeDailyData() {
 }
 
 
-normalizeDailyData();
+normalizeDashboardData();
 
 
 /* =========================================================
-   DAILY RESET
+   06. DAILY RESET
+   Água / Alimentação / Movimento
 ========================================================= */
 
+/**
+ * Água, alimentação e movimento
+ * são registros diários.
+ *
+ * Ao mudar o dia, os três são reiniciados.
+ *
+ * Histórico de peso NÃO é apagado.
+ */
 function checkNewDay() {
 
   const today =
     getToday();
 
+
+  /* WATER */
 
   if (
     waterData.date !== today
@@ -349,13 +487,15 @@ function checkNewDay() {
     };
 
 
-    saveData(
-      STORAGE_KEYS.water,
+    saveDashboardData(
+      DASHBOARD_STORAGE_KEYS.water,
       waterData
     );
 
   }
 
+
+  /* FOOD */
 
   if (
     foodData.date !== today
@@ -367,13 +507,15 @@ function checkNewDay() {
     };
 
 
-    saveData(
-      STORAGE_KEYS.food,
+    saveDashboardData(
+      DASHBOARD_STORAGE_KEYS.food,
       foodData
     );
 
   }
 
+
+  /* MOVEMENT */
 
   if (
     movementData.date !== today
@@ -385,8 +527,8 @@ function checkNewDay() {
     };
 
 
-    saveData(
-      STORAGE_KEYS.movement,
+    saveDashboardData(
+      DASHBOARD_STORAGE_KEYS.movement,
       movementData
     );
 
@@ -399,7 +541,7 @@ checkNewDay();
 
 
 /* =========================================================
-   DOM
+   07. DOM REFERENCES
 ========================================================= */
 
 const body =
@@ -407,7 +549,7 @@ const body =
 
 
 /* =========================================================
-   MENU
+   07.1 MENU DOM
 ========================================================= */
 
 const menuButton =
@@ -435,7 +577,7 @@ const sideMenuBackdrop =
 
 
 /* =========================================================
-   USER
+   07.2 USER DOM
 ========================================================= */
 
 const welcomeName =
@@ -457,7 +599,7 @@ const menuAvatar =
 
 
 /* =========================================================
-   PREMIUM
+   07.3 PREMIUM DOM
 ========================================================= */
 
 const premiumMainButton =
@@ -497,7 +639,7 @@ const premiumModalBackdrop =
 
 
 /* =========================================================
-   SHARE
+   07.4 SHARE DOM
 ========================================================= */
 
 const shareAppButton =
@@ -549,7 +691,7 @@ const shareMessage =
 
 
 /* =========================================================
-   SETTINGS / ACCOUNT / LOGOUT
+   07.5 SETTINGS / ACCOUNT / LOGOUT DOM
 ========================================================= */
 
 const settingsButton =
@@ -571,7 +713,7 @@ const logoutButton =
 
 
 /* =========================================================
-   WEIGHT
+   07.6 WEIGHT DOM
 ========================================================= */
 
 const currentWeightMain =
@@ -641,7 +783,7 @@ const weightChart =
 
 
 /* =========================================================
-   WATER
+   07.7 WATER DOM
 ========================================================= */
 
 const waterCurrent =
@@ -657,7 +799,7 @@ const addWaterButton =
 
 
 /* =========================================================
-   FOOD
+   07.8 FOOD DOM
 ========================================================= */
 
 const foodForm =
@@ -703,7 +845,7 @@ const foodList =
 
 
 /* =========================================================
-   MOVEMENT
+   07.9 MOVEMENT DOM
 ========================================================= */
 
 const movementForm =
@@ -737,7 +879,7 @@ const activityList =
 
 
 /* =========================================================
-   HAMBURGER MENU
+   08. HAMBURGER MENU
 ========================================================= */
 
 function openMenu() {
@@ -841,7 +983,8 @@ document
 
 
 /* =========================================================
-   ACCORDION
+   09. ACCORDION SECTIONS
+   Gewicht / Ernährung / Bewegung
 ========================================================= */
 
 const compactSectionButtons =
@@ -913,7 +1056,7 @@ compactSectionButtons.forEach(
 
 
         /*
-          Abre ou fecha a selecionada.
+          Abre ou fecha a seção selecionada.
         */
 
         target.hidden =
@@ -925,6 +1068,11 @@ compactSectionButtons.forEach(
           !isOpen
         );
 
+
+        /*
+          Faz uma rolagem suave
+          quando a seção é aberta.
+        */
 
         if (!isOpen) {
 
@@ -950,7 +1098,7 @@ compactSectionButtons.forEach(
 
 
 /* =========================================================
-   GREETING
+   10. USER GREETING
 ========================================================= */
 
 function getGreeting() {
@@ -983,40 +1131,27 @@ function getGreeting() {
 
 
 /* =========================================================
-   RENDER USER
+   11. RENDER USER
 ========================================================= */
 
 function renderUser() {
-
-  /*
-    Atualiza a referência do usuário.
-    Assim qualquer alteração feita por
-    user-data.js aparece no Dashboard.
-  */
 
   user =
     getUser();
 
 
-  const displayName =
-    user.name
-      ? user.name
-      : "Hallo";
+  const userName =
+    String(
+      user.name || ""
+    ).trim();
 
 
   if (welcomeName) {
 
-    if (user.name) {
-
-      welcomeName.textContent =
-        `${getGreeting()}, ${user.name}.`;
-
-    } else {
-
-      welcomeName.textContent =
-        `${getGreeting()}.`;
-
-    }
+    welcomeName.textContent =
+      userName
+        ? `${getGreeting()}, ${userName}.`
+        : `${getGreeting()}.`;
 
   }
 
@@ -1024,25 +1159,27 @@ function renderUser() {
   if (menuUserName) {
 
     menuUserName.textContent =
-      displayName;
+      userName || "Mein Konto";
 
   }
 
 
   /*
     Avatar temporário:
-    usa apenas a primeira letra do nome.
+    mostra a primeira letra do nome.
+
+    Futuramente será substituído
+    pela foto real do perfil.
   */
 
-  if (
-    menuAvatar &&
-    user.name
-  ) {
+  if (menuAvatar) {
 
     menuAvatar.textContent =
-      user.name
-        .charAt(0)
-        .toUpperCase();
+      userName
+        ? userName
+            .charAt(0)
+            .toUpperCase()
+        : "♥";
 
   }
 
@@ -1050,7 +1187,7 @@ function renderUser() {
 
 
 /* =========================================================
-   PREMIUM
+   12. PREMIUM MODAL
 ========================================================= */
 
 function openPremiumModal() {
@@ -1096,7 +1233,6 @@ function closePremiumModal() {
   premiumMainButton,
   premiumBottomButton,
   menuPremiumButton
-
 ].forEach(button => {
 
   if (!button) {
@@ -1133,7 +1269,7 @@ if (premiumModalBackdrop) {
 
 
 /* =========================================================
-   SHARE
+   13. SHARE MODAL
 ========================================================= */
 
 function openShareModal() {
@@ -1186,7 +1322,6 @@ function closeShareModal() {
 [
   shareAppButton,
   inviteFriendButton
-
 ].forEach(button => {
 
   if (!button) {
@@ -1223,7 +1358,7 @@ if (shareModalBackdrop) {
 
 
 /* =========================================================
-   SHARE DATA
+   14. SHARE DATA
 ========================================================= */
 
 function getShareData() {
@@ -1252,7 +1387,7 @@ function getShareData() {
 
 
 /* =========================================================
-   NATIVE SHARE
+   15. NATIVE SHARE
 ========================================================= */
 
 if (nativeShareButton) {
@@ -1304,7 +1439,7 @@ if (nativeShareButton) {
 
 
 /* =========================================================
-   COPY LINK
+   16. COPY SHARE LINK
 ========================================================= */
 
 async function copyShareLink() {
@@ -1358,7 +1493,7 @@ if (copyLinkButton) {
 
 
 /* =========================================================
-   SETTINGS
+   17. SETTINGS BUTTON
 ========================================================= */
 
 if (settingsButton) {
@@ -1381,7 +1516,7 @@ if (settingsButton) {
 
 
 /* =========================================================
-   ACCOUNT
+   18. ACCOUNT BUTTON
 ========================================================= */
 
 if (accountButton) {
@@ -1404,7 +1539,7 @@ if (accountButton) {
 
 
 /* =========================================================
-   LOGOUT
+   19. LOGOUT
 ========================================================= */
 
 if (logoutButton) {
@@ -1427,12 +1562,12 @@ if (logoutButton) {
       /*
         Ainda não existe Firebase Auth.
 
-        Portanto não apagamos o perfil
-        nem os dados locais.
+        Por enquanto não apagamos
+        nenhum dado do usuário.
 
-        Quando o login real existir,
-        aqui será feito somente logout
-        da sessão.
+        Quando o login real for criado,
+        aqui será encerrada somente
+        a sessão autenticada.
       */
 
       closeMenu();
@@ -1448,39 +1583,118 @@ if (logoutButton) {
 
 
 /* =========================================================
-   RENDER WEIGHT
+   20. WEIGHT - ENSURE INITIAL HISTORY
 ========================================================= */
 
-function renderWeight() {
-
-  /*
-    Sempre buscamos a versão atualizada
-    do usuário.
-  */
+/**
+ * Garante que o peso inicial
+ * tenha uma entrada no histórico.
+ *
+ * Essa função roda somente quando
+ * ainda não existe nenhum registro.
+ */
+function ensureInitialWeightHistory() {
 
   user =
     getUser();
 
 
-  const current =
-    Number(
-      user.currentWeight
-    );
+  if (
+    !hasValidNumber(
+      user.startWeight
+    )
+  ) {
+    return;
+  }
 
 
-  const start =
+  if (
+    weightHistory.length > 0
+  ) {
+    return;
+  }
+
+
+  const startWeight =
     Number(
       user.startWeight
     );
 
 
-  const goal =
-    Number(
-      user.goalWeight
-    );
+  let startDate =
+    getToday();
 
 
-  /* CURRENT */
+  /*
+    Tenta usar a data de criação
+    do perfil como data inicial.
+  */
+
+  if (user.createdAt) {
+
+    const createdDate =
+      new Date(
+        user.createdAt
+      );
+
+
+    if (
+      !Number.isNaN(
+        createdDate.getTime()
+      )
+    ) {
+
+      const year =
+        createdDate.getFullYear();
+
+
+      const month =
+        String(
+          createdDate.getMonth() + 1
+        ).padStart(2, "0");
+
+
+      const day =
+        String(
+          createdDate.getDate()
+        ).padStart(2, "0");
+
+
+      startDate =
+        `${year}-${month}-${day}`;
+
+    }
+
+  }
+
+
+  weightHistory.push({
+    date: startDate,
+    weight: startWeight
+  });
+
+
+  saveDashboardData(
+    DASHBOARD_STORAGE_KEYS.weightHistory,
+    weightHistory
+  );
+
+}
+
+
+/* =========================================================
+   21. WEIGHT - RENDER CURRENT DATA
+========================================================= */
+
+function renderWeight() {
+
+  user =
+    getUser();
+
+
+  /* =====================================================
+     CURRENT WEIGHT
+  ====================================================== */
 
   if (currentWeightMain) {
 
@@ -1492,7 +1706,9 @@ function renderWeight() {
   }
 
 
-  /* GOAL */
+  /* =====================================================
+     GOAL WEIGHT
+  ====================================================== */
 
   if (goalWeightMain) {
 
@@ -1504,37 +1720,49 @@ function renderWeight() {
   }
 
 
-  /* START TEXT */
+  /* =====================================================
+     START WEIGHT TEXT
+  ====================================================== */
 
   if (startWeightText) {
 
     startWeightText.textContent =
-      Number.isFinite(start)
-        ? `Start ${start.toFixed(1)} kg`
+      hasValidNumber(
+        user.startWeight
+      )
+        ? `Start ${Number(user.startWeight).toFixed(1)} kg`
         : "Start —";
 
   }
 
 
-  /* CURRENT TEXT */
+  /* =====================================================
+     CURRENT WEIGHT TEXT
+  ====================================================== */
 
   if (currentWeightText) {
 
     currentWeightText.textContent =
-      Number.isFinite(current)
-        ? `Aktuell ${current.toFixed(1)} kg`
+      hasValidNumber(
+        user.currentWeight
+      )
+        ? `Aktuell ${Number(user.currentWeight).toFixed(1)} kg`
         : "Aktuell —";
 
   }
 
 
-  /* GOAL TEXT */
+  /* =====================================================
+     GOAL WEIGHT TEXT
+  ====================================================== */
 
   if (goalWeightText) {
 
     goalWeightText.textContent =
-      Number.isFinite(goal)
-        ? `Ziel ${goal.toFixed(1)} kg`
+      hasValidNumber(
+        user.goalWeight
+      )
+        ? `Ziel ${Number(user.goalWeight).toFixed(1)} kg`
         : "Ziel —";
 
   }
@@ -1544,38 +1772,54 @@ function renderWeight() {
      BMI
   ====================================================== */
 
-  const bmi =
-    Number(
+  if (
+    currentBMI &&
+    hasValidNumber(
       user.bmi
-    );
-
-
-  if (currentBMI) {
+    )
+  ) {
 
     currentBMI.textContent =
-      Number.isFinite(bmi)
-        ? bmi.toFixed(1)
-        : "—";
+      Number(
+        user.bmi
+      ).toFixed(1);
+
+  } else if (currentBMI) {
+
+    currentBMI.textContent =
+      "—";
 
   }
 
 
-  if (bmiStatus) {
+  if (
+    bmiStatus &&
+    hasValidNumber(
+      user.bmi
+    )
+  ) {
 
     bmiStatus.textContent =
-      Number.isFinite(bmi)
-        ? getBMICategory(bmi)
-        : "Noch keine Daten";
+      getBMICategory(
+        Number(user.bmi)
+      );
+
+  } else if (bmiStatus) {
+
+    bmiStatus.textContent =
+      "Noch keine Daten";
 
   }
 
 
   /* =====================================================
-     PROGRESS
+     WEIGHT PROGRESS
   ====================================================== */
 
   const progress =
-    getUserWeightProgress();
+    clampPercentage(
+      getUserWeightProgress()
+    );
 
 
   if (goalFill) {
@@ -1589,7 +1833,7 @@ function renderWeight() {
 
 
 /* =========================================================
-   SAVE WEIGHT
+   22. WEIGHT - SAVE CURRENT WEIGHT
 ========================================================= */
 
 if (
@@ -1627,12 +1871,15 @@ if (
 
 
       /*
-        IMPORTANTE:
+        O peso principal é salvo
+        exclusivamente através de
+        user-data.js.
 
-        Não salvamos mais diretamente
-        no euConsigoUser.
-
-        user-data.js faz isso.
+        setCurrentWeight():
+        - atualiza currentWeight
+        - mantém startWeight
+        - recalcula BMI
+        - atualiza updatedAt
       */
 
       user =
@@ -1642,8 +1889,8 @@ if (
 
 
       /*
-        Histórico é uma informação
-        separada do perfil principal.
+        Atualiza também
+        o histórico diário.
       */
 
       saveWeightHistory(
@@ -1656,15 +1903,15 @@ if (
 
 
       /*
-        Atualizamos os componentes
-        dependentes do peso.
+        Atualiza somente as áreas
+        afetadas pelo novo peso.
       */
+
+      renderUser();
 
       renderWeight();
 
       renderWeightHistory();
-
-      renderUser();
 
     }
   );
@@ -1673,10 +1920,30 @@ if (
 
 
 /* =========================================================
-   SAVE WEIGHT HISTORY
+   23. WEIGHT - SAVE HISTORY
 ========================================================= */
 
+/**
+ * Salva apenas um peso por dia.
+ *
+ * Se a pessoa registrar novamente
+ * no mesmo dia, o valor daquele dia
+ * é atualizado.
+ */
 function saveWeightHistory(weight) {
+
+  const numericWeight =
+    Number(weight);
+
+
+  if (
+    !Number.isFinite(
+      numericWeight
+    )
+  ) {
+    return;
+  }
+
 
   const today =
     getToday();
@@ -1685,26 +1952,21 @@ function saveWeightHistory(weight) {
   const existingEntry =
     weightHistory.find(
       item =>
+        item &&
         item.date === today
     );
 
 
-  /*
-    Se o usuário registrar novamente
-    no mesmo dia, atualiza o peso
-    daquele dia em vez de duplicar.
-  */
-
   if (existingEntry) {
 
     existingEntry.weight =
-      Number(weight);
+      numericWeight;
 
   } else {
 
     weightHistory.push({
       date: today,
-      weight: Number(weight)
+      weight: numericWeight
     });
 
   }
@@ -1718,8 +1980,8 @@ function saveWeightHistory(weight) {
   );
 
 
-  saveData(
-    STORAGE_KEYS.weightHistory,
+  saveDashboardData(
+    DASHBOARD_STORAGE_KEYS.weightHistory,
     weightHistory
   );
 
@@ -1727,9 +1989,61 @@ function saveWeightHistory(weight) {
 
 
 /* =========================================================
-   WEIGHT HISTORY
+   24. WEIGHT - PREPARE HISTORY
 ========================================================= */
 
+/**
+ * Retorna somente registros válidos
+ * e ordenados pela data.
+ */
+function getValidWeightHistory() {
+
+  if (
+    !Array.isArray(weightHistory)
+  ) {
+    return [];
+  }
+
+
+  return weightHistory
+    .filter(
+      entry =>
+        entry &&
+        entry.date &&
+        hasValidNumber(
+          entry.weight
+        )
+    )
+    .map(
+      entry => ({
+        date: String(
+          entry.date
+        ),
+        weight: Number(
+          entry.weight
+        )
+      })
+    )
+    .sort(
+      (a, b) =>
+        a.date.localeCompare(
+          b.date
+        )
+    );
+
+}
+
+
+/* =========================================================
+   25. WEIGHT - RENDER HISTORY AND CHART
+========================================================= */
+
+/**
+ * Exibe os últimos 7 registros
+ * em um gráfico simples.
+ *
+ * Não utiliza biblioteca externa.
+ */
 function renderWeightHistory() {
 
   if (!weightChart) {
@@ -1737,9 +2051,16 @@ function renderWeightHistory() {
   }
 
 
+  const validHistory =
+    getValidWeightHistory();
+
+
+  /* =====================================================
+     EMPTY STATE
+  ====================================================== */
+
   if (
-    !Array.isArray(weightHistory) ||
-    weightHistory.length === 0
+    validHistory.length === 0
   ) {
 
     weightChart.innerHTML = `
@@ -1764,88 +2085,437 @@ function renderWeightHistory() {
   }
 
 
-  const recent =
-    weightHistory
-      .filter(
-        entry =>
-          entry &&
-          entry.date &&
-          Number.isFinite(
-            Number(entry.weight)
-          )
+  /*
+    O gráfico mostra no máximo
+    os últimos 7 registros.
+  */
+
+  const recentHistory =
+    validHistory.slice(-7);
+
+
+  const weights =
+    recentHistory.map(
+      entry =>
+        entry.weight
+    );
+
+
+  let minimumWeight =
+    Math.min(
+      ...weights
+    );
+
+
+  let maximumWeight =
+    Math.max(
+      ...weights
+    );
+
+
+  /*
+    Se houver apenas um peso
+    ou todos forem iguais,
+    criamos uma pequena faixa
+    para o gráfico continuar visível.
+  */
+
+  if (
+    minimumWeight ===
+    maximumWeight
+  ) {
+
+    minimumWeight -= 1;
+
+    maximumWeight += 1;
+
+  }
+
+
+  /* =====================================================
+     CHART DIMENSIONS
+  ====================================================== */
+
+  const chartWidth =
+    600;
+
+
+  const chartHeight =
+    210;
+
+
+  const paddingLeft =
+    42;
+
+
+  const paddingRight =
+    20;
+
+
+  const paddingTop =
+    24;
+
+
+  const paddingBottom =
+    38;
+
+
+  const usableWidth =
+    chartWidth -
+    paddingLeft -
+    paddingRight;
+
+
+  const usableHeight =
+    chartHeight -
+    paddingTop -
+    paddingBottom;
+
+
+  /* =====================================================
+     CHART POINTS
+  ====================================================== */
+
+  const points =
+    recentHistory.map(
+      (entry, index) => {
+
+        const x =
+          recentHistory.length === 1
+            ? paddingLeft +
+              usableWidth / 2
+            : paddingLeft +
+              (
+                index /
+                (
+                  recentHistory.length - 1
+                )
+              ) *
+              usableWidth;
+
+
+        const normalizedWeight =
+          (
+            entry.weight -
+            minimumWeight
+          ) /
+          (
+            maximumWeight -
+            minimumWeight
+          );
+
+
+        const y =
+          paddingTop +
+          usableHeight -
+          (
+            normalizedWeight *
+            usableHeight
+          );
+
+
+        return {
+          x,
+          y,
+          date: entry.date,
+          weight: entry.weight
+        };
+
+      }
+    );
+
+
+  const polylinePoints =
+    points
+      .map(
+        point =>
+          `${point.x},${point.y}`
       )
-      .slice(-7);
+      .join(" ");
+
+
+  /* =====================================================
+     CHART POINT CIRCLES
+  ====================================================== */
+
+  const pointElements =
+    points
+      .map(
+        point => `
+
+          <circle
+            cx="${point.x}"
+            cy="${point.y}"
+            r="5"
+            fill="currentColor"
+          ></circle>
+
+        `
+      )
+      .join("");
+
+
+  /* =====================================================
+     CHART LABELS
+  ====================================================== */
+
+  const chartLabels =
+    points
+      .map(
+        point => `
+
+          <div class="weight-chart-label">
+
+            <strong>
+              ${point.weight.toFixed(1)}
+            </strong>
+
+            <span>
+              ${formatShortDate(point.date)}
+            </span>
+
+          </div>
+
+        `
+      )
+      .join("");
+
+
+  /* =====================================================
+     CHANGE IN DISPLAYED PERIOD
+  ====================================================== */
+
+  const firstWeight =
+    recentHistory[0].weight;
+
+
+  const lastWeight =
+    recentHistory[
+      recentHistory.length - 1
+    ].weight;
+
+
+  const periodDifference =
+    lastWeight -
+    firstWeight;
+
+
+  let periodDifferenceText =
+    "±0.0 kg";
 
 
   if (
-    recent.length === 0
+    periodDifference < 0
   ) {
 
-    weightChart.innerHTML = `
-
-      <div class="empty-state">
-
-        <strong>
-          Dein Verlauf beginnt hier.
-        </strong>
-
-        <span>
-          Trage dein Gewicht regelmässig ein.
-        </span>
-
-      </div>
-
-    `;
-
-
-    return;
+    periodDifferenceText =
+      `${periodDifference.toFixed(1)} kg`;
 
   }
 
 
-  weightChart.innerHTML =
-    "";
+  if (
+    periodDifference > 0
+  ) {
+
+    periodDifferenceText =
+      `+${periodDifference.toFixed(1)} kg`;
+
+  }
 
 
-  recent
-    .slice()
-    .reverse()
-    .forEach(entry => {
+  /* =====================================================
+     TOTAL CHANGE SINCE START
+  ====================================================== */
 
-      const row =
-        document.createElement(
-          "div"
-        );
+  let totalDifferenceText =
+    "—";
 
 
-      row.className =
-        "weight-history-row";
+  if (
+    hasValidNumber(
+      user.startWeight
+    ) &&
+    hasValidNumber(
+      user.currentWeight
+    )
+  ) {
 
-
-      row.innerHTML = `
-
-        <span>
-          ${formatDate(entry.date)}
-        </span>
-
-        <strong>
-          ${Number(entry.weight).toFixed(1)} kg
-        </strong>
-
-      `;
-
-
-      weightChart.appendChild(
-        row
+    const totalDifference =
+      Number(
+        user.currentWeight
+      ) -
+      Number(
+        user.startWeight
       );
 
-    });
+
+    if (
+      totalDifference === 0
+    ) {
+
+      totalDifferenceText =
+        "±0.0 kg";
+
+    } else if (
+      totalDifference > 0
+    ) {
+
+      totalDifferenceText =
+        `+${totalDifference.toFixed(1)} kg`;
+
+    } else {
+
+      totalDifferenceText =
+        `${totalDifference.toFixed(1)} kg`;
+
+    }
+
+  }
+
+
+  /* =====================================================
+     RENDER CHART
+  ====================================================== */
+
+  weightChart.innerHTML = `
+
+    <div class="weight-chart-header">
+
+      <div>
+
+        <span>
+          Gewichtsverlauf
+        </span>
+
+        <strong>
+          ${recentHistory.length}
+          ${
+            recentHistory.length === 1
+              ? "Eintrag"
+              : "Einträge"
+          }
+        </strong>
+
+      </div>
+
+
+      <div class="weight-chart-change">
+
+        <span>
+          Seit dem Start
+        </span>
+
+        <strong>
+          ${totalDifferenceText}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="weight-chart-svg-wrap"
+      style="
+        width: 100%;
+        overflow: hidden;
+        margin-top: 20px;
+      "
+    >
+
+      <svg
+        viewBox="0 0 ${chartWidth} ${chartHeight}"
+        width="100%"
+        role="img"
+        aria-label="Gewichtsverlauf"
+        style="
+          display: block;
+          color: #2f8f5b;
+          overflow: visible;
+        "
+      >
+
+        <line
+          x1="${paddingLeft}"
+          y1="${paddingTop + usableHeight}"
+          x2="${chartWidth - paddingRight}"
+          y2="${paddingTop + usableHeight}"
+          stroke="#e4e9e5"
+          stroke-width="2"
+        ></line>
+
+
+        ${
+          recentHistory.length > 1
+            ? `
+
+              <polyline
+                points="${polylinePoints}"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></polyline>
+
+            `
+            : ""
+        }
+
+
+        ${pointElements}
+
+      </svg>
+
+    </div>
+
+
+    <div
+      class="weight-chart-labels"
+      style="
+        display: grid;
+        grid-template-columns:
+          repeat(${recentHistory.length}, 1fr);
+        gap: 4px;
+        margin-top: -24px;
+      "
+    >
+
+      ${chartLabels}
+
+    </div>
+
+
+    ${
+      recentHistory.length > 1
+        ? `
+
+          <div
+            class="weight-chart-period"
+            style="
+              margin-top: 18px;
+              font-size: 0.85rem;
+              opacity: 0.72;
+            "
+          >
+            Veränderung in diesem Verlauf:
+            <strong>
+              ${periodDifferenceText}
+            </strong>
+          </div>
+
+        `
+        : ""
+    }
+
+  `;
 
 }
 
 
 /* =========================================================
-   WATER
+   26. WATER - RENDER
 ========================================================= */
 
 function renderWater() {
@@ -1856,9 +2526,13 @@ function renderWater() {
 
 
   const amount =
-    Number(
+    hasValidNumber(
       waterData.amount
-    ) || 0;
+    )
+      ? Number(
+          waterData.amount
+        )
+      : 0;
 
 
   waterCurrent.textContent =
@@ -1868,6 +2542,10 @@ function renderWater() {
 
 }
 
+
+/* =========================================================
+   27. WATER - ADD 250 ML
+========================================================= */
 
 if (addWaterButton) {
 
@@ -1879,17 +2557,21 @@ if (addWaterButton) {
 
 
       const currentAmount =
-        Number(
+        hasValidNumber(
           waterData.amount
-        ) || 0;
+        )
+          ? Number(
+              waterData.amount
+            )
+          : 0;
 
 
       waterData.amount =
         currentAmount + 250;
 
 
-      saveData(
-        STORAGE_KEYS.water,
+      saveDashboardData(
+        DASHBOARD_STORAGE_KEYS.water,
         waterData
       );
 
@@ -1903,7 +2585,7 @@ if (addWaterButton) {
 
 
 /* =========================================================
-   CALORIES
+   28. FOOD - CALCULATE CONSUMED CALORIES
 ========================================================= */
 
 function getConsumedCalories() {
@@ -1926,9 +2608,7 @@ function getConsumedCalories() {
       }
 
 
-      return (
-        total + calories
-      );
+      return total + calories;
 
     },
     0
@@ -1938,7 +2618,7 @@ function getConsumedCalories() {
 
 
 /* =========================================================
-   RENDER CALORIES
+   29. FOOD - RENDER CALORIES
 ========================================================= */
 
 function renderCalories() {
@@ -1949,12 +2629,6 @@ function renderCalories() {
 
   const consumed =
     getConsumedCalories();
-
-
-  const goal =
-    Number(
-      user.calorieGoal
-    );
 
 
   if (caloriesConsumed) {
@@ -1968,16 +2642,21 @@ function renderCalories() {
 
 
   /*
-    Ainda não definimos como calcular
-    a meta de calorias.
+    Ainda não definimos oficialmente
+    como a meta individual de calorias
+    será calculada.
 
-    Portanto, se calorieGoal for null,
-    não inventamos 1800 kcal.
+    Por isso:
+    calorieGoal null = não inventar valor.
   */
 
   if (
-    !Number.isFinite(goal) ||
-    goal <= 0
+    !hasValidNumber(
+      user.calorieGoal
+    ) ||
+    Number(
+      user.calorieGoal
+    ) <= 0
   ) {
 
     if (calorieGoalElement) {
@@ -1998,10 +2677,15 @@ function renderCalories() {
 
     renderFoodList();
 
-
     return;
 
   }
+
+
+  const goal =
+    Number(
+      user.calorieGoal
+    );
 
 
   const remaining =
@@ -2037,7 +2721,7 @@ function renderCalories() {
 
 
 /* =========================================================
-   ADD FOOD
+   30. FOOD - ADD ITEM
 ========================================================= */
 
 if (
@@ -2086,13 +2770,13 @@ if (
 
       foodData.items.push({
         id: Date.now(),
-        name: name,
-        calories: calories
+        name,
+        calories
       });
 
 
-      saveData(
-        STORAGE_KEYS.food,
+      saveDashboardData(
+        DASHBOARD_STORAGE_KEYS.food,
         foodData
       );
 
@@ -2114,7 +2798,7 @@ if (
 
 
 /* =========================================================
-   FOOD LIST
+   31. FOOD - RENDER ITEM LIST
 ========================================================= */
 
 function renderFoodList() {
@@ -2125,7 +2809,7 @@ function renderFoodList() {
 
 
   if (
-    !foodData.items.length
+    foodData.items.length === 0
   ) {
 
     foodList.innerHTML = `
@@ -2225,8 +2909,8 @@ function renderFoodList() {
             );
 
 
-          saveData(
-            STORAGE_KEYS.food,
+          saveDashboardData(
+            DASHBOARD_STORAGE_KEYS.food,
             foodData
           );
 
@@ -2242,7 +2926,7 @@ function renderFoodList() {
 
 
 /* =========================================================
-   MOVEMENT
+   32. MOVEMENT - CALCULATE TOTAL MINUTES
 ========================================================= */
 
 function getMovementMinutes() {
@@ -2265,9 +2949,7 @@ function getMovementMinutes() {
       }
 
 
-      return (
-        total + minutes
-      );
+      return total + minutes;
 
     },
     0
@@ -2277,7 +2959,7 @@ function getMovementMinutes() {
 
 
 /* =========================================================
-   RENDER MOVEMENT
+   33. MOVEMENT - RENDER
 ========================================================= */
 
 function renderMovement() {
@@ -2300,7 +2982,7 @@ function renderMovement() {
 
 
   if (
-    !movementData.items.length
+    movementData.items.length === 0
   ) {
 
     activityList.innerHTML = `
@@ -2400,8 +3082,8 @@ function renderMovement() {
             );
 
 
-          saveData(
-            STORAGE_KEYS.movement,
+          saveDashboardData(
+            DASHBOARD_STORAGE_KEYS.movement,
             movementData
           );
 
@@ -2417,7 +3099,7 @@ function renderMovement() {
 
 
 /* =========================================================
-   ADD MOVEMENT
+   34. MOVEMENT - ADD ACTIVITY
 ========================================================= */
 
 if (
@@ -2466,13 +3148,13 @@ if (
 
       movementData.items.push({
         id: Date.now(),
-        name: name,
-        minutes: minutes
+        name,
+        minutes
       });
 
 
-      saveData(
-        STORAGE_KEYS.movement,
+      saveDashboardData(
+        DASHBOARD_STORAGE_KEYS.movement,
         movementData
       );
 
@@ -2494,7 +3176,8 @@ if (
 
 
 /* =========================================================
-   ESC KEY
+   35. ESCAPE KEY
+   Fecha menu e modais
 ========================================================= */
 
 document.addEventListener(
@@ -2504,9 +3187,7 @@ document.addEventListener(
     if (
       event.key !== "Escape"
     ) {
-
       return;
-
     }
 
 
@@ -2544,22 +3225,38 @@ document.addEventListener(
 
 
 /* =========================================================
-   RENDER DASHBOARD
+   36. RENDER DASHBOARD
 ========================================================= */
 
 function renderDashboard() {
+
+  /*
+    Verifica se começou um novo dia.
+  */
 
   checkNewDay();
 
 
   /*
-    Sempre pega os dados mais recentes
-    do perfil central.
+    Busca novamente os dados atuais
+    do usuário no user-data.js.
   */
 
   user =
     getUser();
 
+
+  /*
+    Garante que o peso inicial
+    esteja presente no histórico.
+  */
+
+  ensureInitialWeightHistory();
+
+
+  /*
+    Renderiza todas as áreas.
+  */
 
   renderUser();
 
@@ -2577,7 +3274,7 @@ function renderDashboard() {
 
 
 /* =========================================================
-   START
+   37. START DASHBOARD
 ========================================================= */
 
 renderDashboard();
