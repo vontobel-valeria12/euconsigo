@@ -5,7 +5,7 @@
 
 
 /* =========================================================
-   CONFIGURAÇÃO
+   STORAGE
 ========================================================= */
 
 const STORAGE_KEYS = {
@@ -17,11 +17,9 @@ const STORAGE_KEYS = {
 };
 
 
-/*
-  DADOS INICIAIS DE TESTE
-
-  Mais tarde estes dados virão do cadastro/login.
-*/
+/* =========================================================
+   DEFAULT USER
+========================================================= */
 
 const DEFAULT_USER = {
   name: "Valeria",
@@ -31,18 +29,17 @@ const DEFAULT_USER = {
   goalWeight: 70,
   calorieGoal: 1800,
   waterGoal: 2000,
-  movementGoal: 30
+  movementGoal: 30,
+  premium: false
 };
 
 
 /* =========================================================
-   FUNÇÕES DE STORAGE
+   HELPERS
 ========================================================= */
 
 function loadData(key, fallback) {
-
   try {
-
     const saved = localStorage.getItem(key);
 
     if (!saved) {
@@ -52,62 +49,73 @@ function loadData(key, fallback) {
     return JSON.parse(saved);
 
   } catch (error) {
-
-    console.error(
-      "Fehler beim Laden:",
-      key,
-      error
-    );
+    console.error("Fehler beim Laden:", key, error);
 
     return fallback;
-
   }
-
 }
 
 
 function saveData(key, value) {
-
   localStorage.setItem(
     key,
     JSON.stringify(value)
   );
-
 }
 
-
-/* =========================================================
-   DATA DE HOJE
-========================================================= */
 
 function getToday() {
-
   const now = new Date();
 
-  const year =
-    now.getFullYear();
+  const year = now.getFullYear();
 
-  const month =
-    String(now.getMonth() + 1)
-      .padStart(2, "0");
+  const month = String(
+    now.getMonth() + 1
+  ).padStart(2, "0");
 
-  const day =
-    String(now.getDate())
-      .padStart(2, "0");
+  const day = String(
+    now.getDate()
+  ).padStart(2, "0");
 
   return `${year}-${month}-${day}`;
+}
 
+
+function formatDate(dateString) {
+  const parts = dateString.split("-");
+
+  if (parts.length !== 3) {
+    return dateString;
+  }
+
+  return `${parts[2]}.${parts[1]}.${parts[0]}`;
+}
+
+
+function escapeHTML(text) {
+  const element =
+    document.createElement("div");
+
+  element.textContent = text;
+
+  return element.innerHTML;
 }
 
 
 /* =========================================================
-   ESTADO DO APLICATIVO
+   APP STATE
 ========================================================= */
 
 let user = loadData(
   STORAGE_KEYS.user,
   { ...DEFAULT_USER }
 );
+
+
+user = {
+  ...DEFAULT_USER,
+  ...user
+};
 
 
 let waterData = loadData(
@@ -143,15 +151,6 @@ let weightHistory = loadData(
 );
 
 
-/* =========================================================
-   GARANTIR DADOS DO USUÁRIO
-========================================================= */
-
-user = {
-  ...DEFAULT_USER,
-  ...user
-};
-
 saveData(
   STORAGE_KEYS.user,
   user
@@ -159,18 +158,14 @@ saveData(
 
 
 /* =========================================================
-   NOVO DIA
+   DAILY RESET
 ========================================================= */
 
 function checkNewDay() {
-
   const today = getToday();
 
 
-  /* ÁGUA */
-
   if (waterData.date !== today) {
-
     waterData = {
       date: today,
       amount: 0
@@ -180,14 +175,10 @@ function checkNewDay() {
       STORAGE_KEYS.water,
       waterData
     );
-
   }
 
 
-  /* ALIMENTAÇÃO */
-
   if (foodData.date !== today) {
-
     foodData = {
       date: today,
       items: []
@@ -197,14 +188,10 @@ function checkNewDay() {
       STORAGE_KEYS.food,
       foodData
     );
-
   }
 
 
-  /* MOVIMENTO */
-
   if (movementData.date !== today) {
-
     movementData = {
       date: today,
       items: []
@@ -214,9 +201,7 @@ function checkNewDay() {
       STORAGE_KEYS.movement,
       movementData
     );
-
   }
-
 }
 
 
@@ -224,73 +209,365 @@ checkNewDay();
 
 
 /* =========================================================
-   ELEMENTOS DO DASHBOARD
+   DOM
 ========================================================= */
 
-const welcomeName =
-  document.getElementById("welcome-name");
+const body =
+  document.body;
 
+
+/* HEADER / MENU */
+
+const menuButton =
+  document.getElementById(
+    "menu-button"
+  );
+
+const sideMenuWrapper =
+  document.getElementById(
+    "side-menu-wrapper"
+  );
+
+const sideMenuClose =
+  document.getElementById(
+    "side-menu-close"
+  );
+
+const sideMenuBackdrop =
+  document.getElementById(
+    "side-menu-backdrop"
+  );
+
+
+/* USER */
+
+const welcomeName =
+  document.getElementById(
+    "welcome-name"
+  );
+
+const menuUserName =
+  document.getElementById(
+    "menu-user-name"
+  );
+
+
+/* PREMIUM */
+
+const premiumMainButton =
+  document.getElementById(
+    "premium-main-button"
+  );
+
+const premiumBottomButton =
+  document.getElementById(
+    "premium-bottom-button"
+  );
+
+const menuPremiumButton =
+  document.getElementById(
+    "menu-premium-button"
+  );
+
+const premiumModal =
+  document.getElementById(
+    "premium-modal"
+  );
+
+const premiumModalClose =
+  document.getElementById(
+    "premium-modal-close"
+  );
+
+const premiumModalBackdrop =
+  document.getElementById(
+    "premium-modal-backdrop"
+  );
+
+
+/* SHARE */
+
+const shareAppButton =
+  document.getElementById(
+    "share-app-button"
+  );
+
+const inviteFriendButton =
+  document.getElementById(
+    "invite-friend-button"
+  );
+
+const shareModal =
+  document.getElementById(
+    "share-modal"
+  );
+
+const shareModalClose =
+  document.getElementById(
+    "share-modal-close"
+  );
+
+const shareModalBackdrop =
+  document.getElementById(
+    "share-modal-backdrop"
+  );
+
+const nativeShareButton =
+  document.getElementById(
+    "native-share-button"
+  );
+
+const copyLinkButton =
+  document.getElementById(
+    "copy-link-button"
+  );
+
+const shareMessage =
+  document.getElementById(
+    "share-message"
+  );
+
+
+/* SETTINGS / ACCOUNT / LOGOUT */
+
+const settingsButton =
+  document.getElementById(
+    "settings-button"
+  );
+
+const accountButton =
+  document.getElementById(
+    "account-button"
+  );
+
+const logoutButton =
+  document.getElementById(
+    "logout-button"
+  );
+
+
+/* WEIGHT */
 
 const currentWeightMain =
   document.getElementById(
     "current-weight-main"
   );
 
-
 const goalWeightMain =
   document.getElementById(
     "goal-weight-main"
   );
-
 
 const startWeightText =
   document.getElementById(
     "start-weight-text"
   );
 
-
 const currentWeightText =
   document.getElementById(
     "current-weight-text"
   );
-
 
 const goalWeightText =
   document.getElementById(
     "goal-weight-text"
   );
 
-
-const goalWeightCard =
-  document.getElementById(
-    "goal-weight-card"
-  );
-
-
 const goalFill =
   document.getElementById(
     "goal-fill"
   );
-
 
 const currentBMI =
   document.getElementById(
     "current-bmi"
   );
 
-
 const bmiStatus =
   document.getElementById(
     "bmi-status"
   );
 
+const weightForm =
+  document.getElementById(
+    "weight-form"
+  );
+
+const newWeightInput =
+  document.getElementById(
+    "new-weight"
+  );
+
+const weightChart =
+  document.getElementById(
+    "weight-chart"
+  );
+
+
+/* WATER */
+
+const waterCurrent =
+  document.getElementById(
+    "water-current"
+  );
+
+const addWaterButton =
+  document.getElementById(
+    "add-water-button"
+  );
+
+
+/* FOOD */
+
+const foodForm =
+  document.getElementById(
+    "food-form"
+  );
+
+const foodNameInput =
+  document.getElementById(
+    "food-name"
+  );
+
+const foodCaloriesInput =
+  document.getElementById(
+    "food-calories"
+  );
+
+const caloriesConsumed =
+  document.getElementById(
+    "calories-consumed"
+  );
+
+const calorieGoal =
+  document.getElementById(
+    "calorie-goal"
+  );
+
+const caloriesRemaining =
+  document.getElementById(
+    "calories-remaining"
+  );
+
+const foodList =
+  document.getElementById(
+    "food-list"
+  );
+
+
+/* MOVEMENT */
+
+const movementForm =
+  document.getElementById(
+    "movement-form"
+  );
+
+const activityNameInput =
+  document.getElementById(
+    "activity-name"
+  );
+
+const activityMinutesInput =
+  document.getElementById(
+    "activity-minutes"
+  );
+
+const movementMinutes =
+  document.getElementById(
+    "movement-minutes"
+  );
+
+const activityList =
+  document.getElementById(
+    "activity-list"
+  );
+
 
 /* =========================================================
-   SAUDAÇÃO
+   MENU
+========================================================= */
+
+function openMenu() {
+  if (!sideMenuWrapper) {
+    return;
+  }
+
+  sideMenuWrapper.hidden = false;
+
+  body.classList.add(
+    "menu-open"
+  );
+
+  if (menuButton) {
+    menuButton.setAttribute(
+      "aria-expanded",
+      "true"
+    );
+  }
+}
+
+
+function closeMenu() {
+  if (!sideMenuWrapper) {
+    return;
+  }
+
+  sideMenuWrapper.hidden = true;
+
+  body.classList.remove(
+    "menu-open"
+  );
+
+  if (menuButton) {
+    menuButton.setAttribute(
+      "aria-expanded",
+      "false"
+    );
+  }
+}
+
+
+if (menuButton) {
+  menuButton.addEventListener(
+    "click",
+    openMenu
+  );
+}
+
+
+if (sideMenuClose) {
+  sideMenuClose.addEventListener(
+    "click",
+    closeMenu
+  );
+}
+
+
+if (sideMenuBackdrop) {
+  sideMenuBackdrop.addEventListener(
+    "click",
+    closeMenu
+  );
+}
+
+
+document
+  .querySelectorAll(
+    ".side-menu-link[href^='#']"
+  )
+  .forEach(link => {
+    link.addEventListener(
+      "click",
+      closeMenu
+    );
+  });
+
+
+/* =========================================================
+   GREETING
 ========================================================= */
 
 function getGreeting() {
-
   const hour =
     new Date().getHours();
 
@@ -306,19 +583,328 @@ function getGreeting() {
 
 
   return "Guten Abend";
-
 }
 
 
-function renderGreeting() {
+function renderUser() {
+  if (welcomeName) {
+    welcomeName.textContent =
+      `${getGreeting()}, ${user.name}.`;
+  }
 
-  if (!welcomeName) {
+
+  if (menuUserName) {
+    menuUserName.textContent =
+      user.name;
+  }
+}
+
+
+/* =========================================================
+   PREMIUM MODAL
+========================================================= */
+
+function openPremiumModal() {
+  closeMenu();
+
+  if (!premiumModal) {
     return;
   }
 
-  welcomeName.textContent =
-    `${getGreeting()}, ${user.name}.`;
+  premiumModal.hidden = false;
 
+  body.classList.add(
+    "modal-open"
+  );
+}
+
+
+function closePremiumModal() {
+  if (!premiumModal) {
+    return;
+  }
+
+  premiumModal.hidden = true;
+
+  body.classList.remove(
+    "modal-open"
+  );
+}
+
+
+[
+  premiumMainButton,
+  premiumBottomButton,
+  menuPremiumButton
+].forEach(button => {
+  if (!button) {
+    return;
+  }
+
+  button.addEventListener(
+    "click",
+    openPremiumModal
+  );
+});
+
+
+if (premiumModalClose) {
+  premiumModalClose.addEventListener(
+    "click",
+    closePremiumModal
+  );
+}
+
+
+if (premiumModalBackdrop) {
+  premiumModalBackdrop.addEventListener(
+    "click",
+    closePremiumModal
+  );
+}
+
+
+/* =========================================================
+   SHARE MODAL
+========================================================= */
+
+function openShareModal() {
+  closeMenu();
+
+  if (!shareModal) {
+    return;
+  }
+
+  shareModal.hidden = false;
+
+  body.classList.add(
+    "modal-open"
+  );
+
+
+  if (shareMessage) {
+    shareMessage.textContent = "";
+  }
+}
+
+
+function closeShareModal() {
+  if (!shareModal) {
+    return;
+  }
+
+  shareModal.hidden = true;
+
+  body.classList.remove(
+    "modal-open"
+  );
+}
+
+
+[
+  shareAppButton,
+  inviteFriendButton
+].forEach(button => {
+  if (!button) {
+    return;
+  }
+
+  button.addEventListener(
+    "click",
+    openShareModal
+  );
+});
+
+
+if (shareModalClose) {
+  shareModalClose.addEventListener(
+    "click",
+    closeShareModal
+  );
+}
+
+
+if (shareModalBackdrop) {
+  shareModalBackdrop.addEventListener(
+    "click",
+    closeShareModal
+  );
+}
+
+
+/* =========================================================
+   SHARE APP
+========================================================= */
+
+function getShareData() {
+  return {
+    title: "Mein Fortschritt",
+
+    text:
+      "Gemeinsam ist es leichter. Starte deinen Weg mit mir bei Mein Fortschritt.",
+
+    url:
+      window.location.origin +
+      window.location.pathname
+  };
+}
+
+
+if (nativeShareButton) {
+  nativeShareButton.addEventListener(
+    "click",
+    async function () {
+
+      const shareData =
+        getShareData();
+
+
+      if (navigator.share) {
+
+        try {
+          await navigator.share(
+            shareData
+          );
+
+          if (shareMessage) {
+            shareMessage.textContent =
+              "Danke fürs Teilen 💚";
+          }
+
+        } catch (error) {
+          console.log(
+            "Teilen abgebrochen."
+          );
+        }
+
+      } else {
+
+        copyShareLink();
+
+      }
+
+    }
+  );
+}
+
+
+async function copyShareLink() {
+  const shareData =
+    getShareData();
+
+
+  try {
+
+    await navigator.clipboard.writeText(
+      shareData.url
+    );
+
+
+    if (shareMessage) {
+      shareMessage.textContent =
+        "Link kopiert ✓";
+    }
+
+  } catch (error) {
+
+    console.error(
+      "Link konnte nicht kopiert werden.",
+      error
+    );
+
+
+    if (shareMessage) {
+      shareMessage.textContent =
+        "Link konnte nicht kopiert werden.";
+    }
+
+  }
+}
+
+
+if (copyLinkButton) {
+  copyLinkButton.addEventListener(
+    "click",
+    copyShareLink
+  );
+}
+
+
+/* =========================================================
+   SETTINGS / ACCOUNT
+========================================================= */
+
+if (settingsButton) {
+  settingsButton.addEventListener(
+    "click",
+    function () {
+
+      closeMenu();
+
+      alert(
+        "Einstellungen werden als Nächstes eingerichtet."
+      );
+
+    }
+  );
+}
+
+
+if (accountButton) {
+  accountButton.addEventListener(
+    "click",
+    function () {
+
+      closeMenu();
+
+      alert(
+        "Dein Konto wird als Nächstes eingerichtet."
+      );
+
+    }
+  );
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+if (logoutButton) {
+  logoutButton.addEventListener(
+    "click",
+    function () {
+
+      const confirmed =
+        window.confirm(
+          "Möchtest du dich wirklich abmelden?"
+        );
+
+
+      if (!confirmed) {
+        return;
+      }
+
+
+      /*
+        IMPORTANTE:
+        por enquanto NÃO apagamos
+        peso, água, refeições etc.
+
+        Quando conectarmos o login real,
+        aqui vamos apagar somente
+        a sessão de autenticação.
+      */
+
+
+      closeMenu();
+
+
+      window.location.href =
+        "index.html";
+
+    }
+  );
 }
 
 
@@ -327,28 +913,26 @@ function renderGreeting() {
 ========================================================= */
 
 function calculateBMI(weight) {
+  const height =
+    Number(user.height);
+
 
   if (
-    !user.height ||
-    user.height <= 0
+    !height ||
+    height <= 0
   ) {
     return 0;
   }
 
-  return (
-    weight /
-    (user.height * user.height)
-  );
 
+  return (
+    Number(weight) /
+    (height * height)
+  );
 }
 
 
-/* =========================================================
-   CLASSIFICAÇÃO BMI
-========================================================= */
-
 function getBMIStatus(bmi) {
-
   if (bmi < 18.5) {
     return "Untergewicht";
   }
@@ -370,16 +954,14 @@ function getBMIStatus(bmi) {
   }
 
   return "Adipositas Grad III";
-
 }
 
 
 /* =========================================================
-   PROGRESSO DO PESO
+   WEIGHT PROGRESS
 ========================================================= */
 
-function calculateProgress() {
-
+function calculateWeightProgress() {
   const start =
     Number(user.startWeight);
 
@@ -390,46 +972,38 @@ function calculateProgress() {
     Number(user.goalWeight);
 
 
-  const totalDifference =
-    Math.abs(start - goal);
+  const total =
+    start - goal;
 
 
-  if (totalDifference === 0) {
-    return 100;
+  if (total <= 0) {
+    return 0;
   }
 
 
-  const completed =
-    Math.abs(start - current);
+  const lost =
+    start - current;
 
 
-  let progress =
-    (completed / totalDifference) * 100;
+  const progress =
+    (lost / total) * 100;
 
 
-  /*
-    Evita barra menor que zero
-    ou maior que 100%.
-  */
-
-  progress =
-    Math.max(
-      0,
-      Math.min(100, progress)
-    );
-
-
-  return progress;
-
+  return Math.max(
+    0,
+    Math.min(
+      100,
+      progress
+    )
+  );
 }
 
 
 /* =========================================================
-   RENDER PESO
+   RENDER WEIGHT
 ========================================================= */
 
 function renderWeight() {
-
   const current =
     Number(user.currentWeight);
 
@@ -441,102 +1015,61 @@ function renderWeight() {
 
 
   if (currentWeightMain) {
-
     currentWeightMain.textContent =
       `${current.toFixed(1)} kg`;
-
   }
 
 
   if (goalWeightMain) {
-
     goalWeightMain.textContent =
       `${goal.toFixed(1)} kg`;
-
   }
 
 
   if (startWeightText) {
-
     startWeightText.textContent =
       `Start ${start.toFixed(1)} kg`;
-
   }
 
 
   if (currentWeightText) {
-
     currentWeightText.textContent =
       `Aktuell ${current.toFixed(1)} kg`;
-
   }
 
 
   if (goalWeightText) {
-
     goalWeightText.textContent =
       `Ziel ${goal.toFixed(1)} kg`;
-
   }
 
-
-  if (goalWeightCard) {
-
-    goalWeightCard.textContent =
-      `${goal.toFixed(1)} kg`;
-
-  }
-
-
-  /* BMI */
 
   const bmi =
     calculateBMI(current);
 
 
   if (currentBMI) {
-
     currentBMI.textContent =
       bmi.toFixed(1);
-
   }
 
 
   if (bmiStatus) {
-
     bmiStatus.textContent =
       getBMIStatus(bmi);
-
   }
 
-
-  /* BARRA */
 
   if (goalFill) {
-
     goalFill.style.width =
-      `${calculateProgress()}%`;
-
+      `${calculateWeightProgress()}%`;
   }
-
 }
 
 
 /* =========================================================
-   FORMULÁRIO DE PESO
+   SAVE WEIGHT
 ========================================================= */
-
-const weightForm =
-  document.getElementById(
-    "weight-form"
-  );
-
-
-const newWeightInput =
-  document.getElementById(
-    "new-weight"
-  );
-
 
 if (
   weightForm &&
@@ -567,19 +1100,6 @@ if (
         );
 
         return;
-
-      }
-
-
-      /* PRIMEIRO REGISTRO */
-
-      if (
-        !user.startWeight
-      ) {
-
-        user.startWeight =
-          newWeight;
-
       }
 
 
@@ -593,20 +1113,8 @@ if (
       );
 
 
-      /* HISTÓRICO */
-
-      weightHistory.push({
-
-        date: getToday(),
-
-        weight: newWeight
-
-      });
-
-
-      saveData(
-        STORAGE_KEYS.weightHistory,
-        weightHistory
+      saveWeightHistory(
+        newWeight
       );
 
 
@@ -618,11 +1126,6 @@ if (
 
       renderWeightHistory();
 
-
-      alert(
-        "Gewicht gespeichert! 🐱"
-      );
-
     }
   );
 
@@ -630,17 +1133,56 @@ if (
 
 
 /* =========================================================
-   HISTÓRICO DE PESO
+   SAVE WEIGHT HISTORY
 ========================================================= */
 
-const weightChart =
-  document.getElementById(
-    "weight-chart"
+function saveWeightHistory(weight) {
+  const today =
+    getToday();
+
+
+  const existingEntry =
+    weightHistory.find(
+      item =>
+        item.date === today
+    );
+
+
+  if (existingEntry) {
+
+    existingEntry.weight =
+      weight;
+
+  } else {
+
+    weightHistory.push({
+      date: today,
+      weight: weight
+    });
+
+  }
+
+
+  weightHistory.sort(
+    (a, b) =>
+      a.date.localeCompare(
+        b.date
+      )
   );
 
 
-function renderWeightHistory() {
+  saveData(
+    STORAGE_KEYS.weightHistory,
+    weightHistory
+  );
+}
 
+
+/* =========================================================
+   WEIGHT HISTORY
+========================================================= */
+
+function renderWeightHistory() {
   if (!weightChart) {
     return;
   }
@@ -658,111 +1200,76 @@ function renderWeightHistory() {
         </strong>
 
         <span>
-          Trage dein Gewicht einmal pro Woche ein.
+          Trage dein Gewicht regelmässig ein.
         </span>
 
       </div>
     `;
 
     return;
-
   }
 
 
   const recent =
-    weightHistory.slice(-6);
+    weightHistory.slice(-7);
 
 
   weightChart.innerHTML = "";
 
 
-  recent.forEach(entry => {
+  recent
+    .slice()
+    .reverse()
+    .forEach(entry => {
 
-    const row =
-      document.createElement("div");
-
-
-    row.className =
-      "weight-history-row";
-
-
-    row.innerHTML = `
-      <span>
-        ${formatDate(entry.date)}
-      </span>
-
-      <strong>
-        ${Number(entry.weight).toFixed(1)} kg
-      </strong>
-    `;
+      const row =
+        document.createElement(
+          "div"
+        );
 
 
-    weightChart.appendChild(row);
+      row.className =
+        "weight-history-row";
 
-  });
 
+      row.innerHTML = `
+        <span>
+          ${formatDate(entry.date)}
+        </span>
+
+        <strong>
+          ${Number(entry.weight).toFixed(1)} kg
+        </strong>
+      `;
+
+
+      weightChart.appendChild(
+        row
+      );
+
+    });
 }
 
 
 /* =========================================================
-   FORMATAR DATA
+   WATER
 ========================================================= */
-
-function formatDate(dateString) {
-
-  const parts =
-    dateString.split("-");
-
-
-  if (parts.length !== 3) {
-    return dateString;
-  }
-
-
-  return (
-    `${parts[2]}.${parts[1]}.${parts[0]}`
-  );
-
-}
-
-
-/* =========================================================
-   ÁGUA
-========================================================= */
-
-const waterCurrent =
-  document.getElementById(
-    "water-current"
-  );
-
-
-const addWaterButton =
-  document.getElementById(
-    "add-water-button"
-  );
-
 
 function renderWater() {
-
   if (!waterCurrent) {
     return;
   }
 
 
-  const liters =
-    waterData.amount / 1000;
-
-
   waterCurrent.textContent =
-    liters.toFixed(2);
-
+    (
+      waterData.amount /
+      1000
+    ).toFixed(2);
 }
 
 
-/* + 250 ML */
-
 if (addWaterButton) {
-
   addWaterButton.addEventListener(
     "click",
     function () {
@@ -781,70 +1288,16 @@ if (addWaterButton) {
 
       renderWater();
 
-
-      /*
-        O gatinho poderá ler estes mesmos
-        dados quando integrarmos as páginas.
-      */
-
     }
   );
-
 }
 
 
 /* =========================================================
-   CALORIAS
-========================================================= */
-
-const foodForm =
-  document.getElementById(
-    "food-form"
-  );
-
-
-const foodNameInput =
-  document.getElementById(
-    "food-name"
-  );
-
-
-const foodCaloriesInput =
-  document.getElementById(
-    "food-calories"
-  );
-
-
-const caloriesConsumed =
-  document.getElementById(
-    "calories-consumed"
-  );
-
-
-const caloriesRemaining =
-  document.getElementById(
-    "calories-remaining"
-  );
-
-
-const calorieGoal =
-  document.getElementById(
-    "calorie-goal"
-  );
-
-
-const foodList =
-  document.getElementById(
-    "food-list"
-  );
-
-
-/* =========================================================
-   SOMAR CALORIAS
+   CALORIES
 ========================================================= */
 
 function getConsumedCalories() {
-
   return foodData.items.reduce(
     (total, item) => {
 
@@ -856,22 +1309,18 @@ function getConsumedCalories() {
     },
     0
   );
-
 }
 
 
-/* =========================================================
-   RENDER CALORIAS
-========================================================= */
-
 function renderCalories() {
-
   const consumed =
     getConsumedCalories();
 
 
   const goal =
-    Number(user.calorieGoal);
+    Number(
+      user.calorieGoal
+    );
 
 
   const remaining =
@@ -879,42 +1328,35 @@ function renderCalories() {
 
 
   if (caloriesConsumed) {
-
     caloriesConsumed.textContent =
       consumed.toLocaleString(
         "de-CH"
       );
-
   }
 
 
   if (calorieGoal) {
-
     calorieGoal.textContent =
       goal.toLocaleString(
         "de-CH"
       );
-
   }
 
 
   if (caloriesRemaining) {
-
     caloriesRemaining.textContent =
       remaining.toLocaleString(
         "de-CH"
       );
-
   }
 
 
   renderFoodList();
-
 }
 
 
 /* =========================================================
-   ADICIONAR ALIMENTO
+   ADD FOOD
 ========================================================= */
 
 if (
@@ -933,7 +1375,9 @@ if (
 
 
       const name =
-        foodNameInput.value.trim();
+        foodNameInput
+          .value
+          .trim();
 
 
       const calories =
@@ -944,7 +1388,7 @@ if (
 
       if (
         !name ||
-        !calories ||
+        Number.isNaN(calories) ||
         calories < 0
       ) {
 
@@ -953,22 +1397,14 @@ if (
         );
 
         return;
-
       }
 
 
-      const item = {
-
+      foodData.items.push({
         id: Date.now(),
-
         name: name,
-
         calories: calories
-
-      };
-
-
-      foodData.items.push(item);
+      });
 
 
       saveData(
@@ -988,16 +1424,14 @@ if (
 
     }
   );
-
 }
 
 
 /* =========================================================
-   LISTA DE ALIMENTOS
+   FOOD LIST
 ========================================================= */
 
 function renderFoodList() {
-
   if (!foodList) {
     return;
   }
@@ -1022,7 +1456,6 @@ function renderFoodList() {
     `;
 
     return;
-
   }
 
 
@@ -1032,7 +1465,9 @@ function renderFoodList() {
   foodData.items.forEach(item => {
 
     const row =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
 
     row.className =
@@ -1048,7 +1483,7 @@ function renderFoodList() {
         </strong>
 
         <span>
-          ${item.calories} kcal
+          ${Number(item.calories)} kcal
         </span>
 
       </div>
@@ -1066,7 +1501,9 @@ function renderFoodList() {
     `;
 
 
-    foodList.appendChild(row);
+    foodList.appendChild(
+      row
+    );
 
   });
 
@@ -1087,98 +1524,33 @@ function renderFoodList() {
             );
 
 
-          deleteFood(id);
+          foodData.items =
+            foodData.items.filter(
+              item =>
+                item.id !== id
+            );
+
+
+          saveData(
+            STORAGE_KEYS.food,
+            foodData
+          );
+
+
+          renderCalories();
 
         }
       );
 
     });
-
 }
 
 
 /* =========================================================
-   APAGAR ALIMENTO
-========================================================= */
-
-function deleteFood(id) {
-
-  foodData.items =
-    foodData.items.filter(
-      item => item.id !== id
-    );
-
-
-  saveData(
-    STORAGE_KEYS.food,
-    foodData
-  );
-
-
-  renderCalories();
-
-}
-
-
-/* =========================================================
-   SEGURANÇA PARA TEXTO
-========================================================= */
-
-function escapeHTML(text) {
-
-  const element =
-    document.createElement("div");
-
-
-  element.textContent =
-    text;
-
-
-  return element.innerHTML;
-
-}
-
-
-/* =========================================================
-   MOVIMENTO
-========================================================= */
-
-const movementForm =
-  document.getElementById(
-    "movement-form"
-  );
-
-
-const activityNameInput =
-  document.getElementById(
-    "activity-name"
-  );
-
-
-const activityMinutesInput =
-  document.getElementById(
-    "activity-minutes"
-  );
-
-
-const movementMinutes =
-  document.getElementById(
-    "movement-minutes"
-  );
-
-
-const activityList =
-  document.getElementById(
-    "activity-list"
-  );
-
-
-/* =========================================================
-   TOTAL DE MOVIMENTO
+   MOVEMENT
 ========================================================= */
 
 function getMovementMinutes() {
-
   return movementData.items.reduce(
     (total, item) => {
 
@@ -1190,101 +1562,17 @@ function getMovementMinutes() {
     },
     0
   );
-
 }
 
-
-/* =========================================================
-   ADICIONAR MOVIMENTO
-========================================================= */
-
-if (
-  movementForm &&
-  activityNameInput &&
-  activityMinutesInput
-) {
-
-  movementForm.addEventListener(
-    "submit",
-    function (event) {
-
-      event.preventDefault();
-
-      checkNewDay();
-
-
-      const name =
-        activityNameInput.value.trim();
-
-
-      const minutes =
-        Number(
-          activityMinutesInput.value
-        );
-
-
-      if (
-        !name ||
-        !minutes ||
-        minutes < 1
-      ) {
-
-        alert(
-          "Bitte Aktivität und Dauer eingeben."
-        );
-
-        return;
-
-      }
-
-
-      movementData.items.push({
-
-        id: Date.now(),
-
-        name: name,
-
-        minutes: minutes
-
-      });
-
-
-      saveData(
-        STORAGE_KEYS.movement,
-        movementData
-      );
-
-
-      activityNameInput.value =
-        "";
-
-      activityMinutesInput.value =
-        "";
-
-
-      renderMovement();
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   RENDER MOVIMENTO
-========================================================= */
 
 function renderMovement() {
-
   const total =
     getMovementMinutes();
 
 
   if (movementMinutes) {
-
     movementMinutes.textContent =
       total;
-
   }
 
 
@@ -1312,7 +1600,6 @@ function renderMovement() {
     `;
 
     return;
-
   }
 
 
@@ -1322,7 +1609,9 @@ function renderMovement() {
   movementData.items.forEach(item => {
 
     const row =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
 
     row.className =
@@ -1338,7 +1627,7 @@ function renderMovement() {
         </strong>
 
         <span>
-          ${item.minutes} Min.
+          ${Number(item.minutes)} Min.
         </span>
 
       </div>
@@ -1356,7 +1645,9 @@ function renderMovement() {
     `;
 
 
-    activityList.appendChild(row);
+    activityList.appendChild(
+      row
+    );
 
   });
 
@@ -1377,223 +1668,136 @@ function renderMovement() {
             );
 
 
-          deleteActivity(id);
+          movementData.items =
+            movementData.items.filter(
+              item =>
+                item.id !== id
+            );
+
+
+          saveData(
+            STORAGE_KEYS.movement,
+            movementData
+          );
+
+
+          renderMovement();
 
         }
       );
 
     });
-
 }
 
 
 /* =========================================================
-   APAGAR ATIVIDADE
+   ADD MOVEMENT
 ========================================================= */
 
-function deleteActivity(id) {
+if (
+  movementForm &&
+  activityNameInput &&
+  activityMinutesInput
+) {
 
-  movementData.items =
-    movementData.items.filter(
-      item => item.id !== id
-    );
+  movementForm.addEventListener(
+    "submit",
+    function (event) {
 
+      event.preventDefault();
 
-  saveData(
-    STORAGE_KEYS.movement,
-    movementData
-  );
-
-
-  renderMovement();
-
-}
+      checkNewDay();
 
 
-/* =========================================================
-   PREMIUM MODAL
-========================================================= */
-
-const premiumModal =
-  document.getElementById(
-    "premium-modal"
-  );
+      const name =
+        activityNameInput
+          .value
+          .trim();
 
 
-const premiumModalClose =
-  document.getElementById(
-    "premium-modal-close"
-  );
+      const minutes =
+        Number(
+          activityMinutesInput.value
+        );
 
 
-const premiumModalTitle =
-  document.getElementById(
-    "premium-modal-title"
-  );
+      if (
+        !name ||
+        !minutes ||
+        minutes < 1
+      ) {
 
+        alert(
+          "Bitte Aktivität und Dauer eingeben."
+        );
 
-const premiumModalText =
-  document.getElementById(
-    "premium-modal-text"
-  );
-
-
-/* TEXTOS PREMIUM */
-
-const premiumTexts = {
-
-  Begleitung: {
-    title: "Persönliche Begleitung",
-    text:
-      "Mit Premium erhältst du zusätzliche persönliche Unterstützung auf deinem Weg."
-  },
-
-  Wochenanalyse: {
-    title: "Deine Wochenanalyse",
-    text:
-      "Sieh, wie sich Gewicht, Ernährung, Wasser und Bewegung in deiner Woche entwickelt haben."
-  },
-
-  Strategie: {
-    title: "Deine persönliche Strategie",
-    text:
-      "Premium hilft dir dabei, deine nächsten Schritte passend zu deinem Fortschritt zu planen."
-  },
-
-  Ernährungsplan: {
-    title: "Dein Ernährungsplan",
-    text:
-      "Erhalte zusätzliche Werkzeuge für die Planung deiner Ernährung."
-  },
-
-  Analyse: {
-    title: "Deine Analyse",
-    text:
-      "Erkenne langfristige Entwicklungen und Zusammenhänge in deinen Daten."
-  }
-
-};
-
-
-/* ABRIR PREMIUM */
-
-document
-  .querySelectorAll(
-    ".premium-function"
-  )
-  .forEach(button => {
-
-    button.addEventListener(
-      "click",
-      function () {
-
-        const feature =
-          button.dataset.feature;
-
-
-        const information =
-          premiumTexts[feature];
-
-
-        if (information) {
-
-          if (premiumModalTitle) {
-
-            premiumModalTitle.textContent =
-              information.title;
-
-          }
-
-
-          if (premiumModalText) {
-
-            premiumModalText.textContent =
-              information.text;
-
-          }
-
-        }
-
-
-        if (premiumModal) {
-
-          premiumModal.hidden =
-            false;
-
-          document.body.style.overflow =
-            "hidden";
-
-        }
-
+        return;
       }
-    );
 
-  });
+
+      movementData.items.push({
+        id: Date.now(),
+        name: name,
+        minutes: minutes
+      });
+
+
+      saveData(
+        STORAGE_KEYS.movement,
+        movementData
+      );
+
+
+      activityNameInput.value =
+        "";
+
+      activityMinutesInput.value =
+        "";
+
+
+      renderMovement();
+
+    }
+  );
+}
 
 
 /* =========================================================
-   FECHAR PREMIUM
+   ESC KEY
 ========================================================= */
-
-function closePremiumModal() {
-
-  if (!premiumModal) {
-    return;
-  }
-
-
-  premiumModal.hidden =
-    true;
-
-
-  document.body.style.overflow =
-    "";
-
-}
-
-
-if (premiumModalClose) {
-
-  premiumModalClose.addEventListener(
-    "click",
-    closePremiumModal
-  );
-
-}
-
-
-/* BACKDROP */
-
-const premiumBackdrop =
-  document.querySelector(
-    ".premium-modal-backdrop"
-  );
-
-
-if (premiumBackdrop) {
-
-  premiumBackdrop.addEventListener(
-    "click",
-    closePremiumModal
-  );
-
-}
-
-
-/* ESC */
 
 document.addEventListener(
   "keydown",
   function (event) {
 
     if (
-      event.key === "Escape" &&
+      event.key !== "Escape"
+    ) {
+      return;
+    }
+
+
+    if (
+      sideMenuWrapper &&
+      !sideMenuWrapper.hidden
+    ) {
+      closeMenu();
+    }
+
+
+    if (
       premiumModal &&
       !premiumModal.hidden
     ) {
-
       closePremiumModal();
+    }
 
+
+    if (
+      shareModal &&
+      !shareModal.hidden
+    ) {
+      closeShareModal();
     }
 
   }
@@ -1601,47 +1805,13 @@ document.addEventListener(
 
 
 /* =========================================================
-   PROFILE BUTTON
-========================================================= */
-
-const profileButton =
-  document.getElementById(
-    "profile-button"
-  );
-
-
-if (profileButton) {
-
-  profileButton.addEventListener(
-    "click",
-    function () {
-
-      /*
-        Temporário.
-
-        Depois criaremos a página
-        completa do perfil.
-      */
-
-      alert(
-        "Das Profil wird als Nächstes eingerichtet."
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   RENDER GERAL
+   RENDER APP
 ========================================================= */
 
 function renderDashboard() {
-
   checkNewDay();
 
-  renderGreeting();
+  renderUser();
 
   renderWeight();
 
@@ -1652,12 +1822,11 @@ function renderDashboard() {
   renderCalories();
 
   renderMovement();
-
 }
 
 
 /* =========================================================
-   INICIAR DASHBOARD
+   START
 ========================================================= */
 
 renderDashboard();
