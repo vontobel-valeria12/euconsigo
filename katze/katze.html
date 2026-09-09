@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+
+<head>
+
+  <!-- =====================================================
+       01. DOCUMENT HEAD
+  ====================================================== -->
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Miau begleitet dich auf deinem Weg zu gesünderen Gewohnheiten."
+  >
+
+  
+
+  <title>Miau – Mein Begleiter</title>
+
+  <link
+    rel="stylesheet"
+    href="katze.css"
+  >
+
+</head>
+
+
+<body>
+
+
+  <!-- =====================================================
+       02. PET PAGE
+  ====================================================== -->
+
+  <main class="pet-page">
+
+
+    <!-- =====================================================
+         03. PET HEADER
+    ====================================================== -->
+
+    <header class="pet-header">
+
+
+      <a
+        href="../dashboard/dashboard.html"
+        class="back-button"
+        aria-label="Zurück zum Dashboard"
+      >
+
+        <span
+          class="back-button-icon"
+          aria-hidden="true"
+        >
+          ←
+        </span>
+
+        <span>
+          Zurück
+        </span>
+
+      </a>
+
+
+      <div class="pet-header-title">
+
+        <span class="eyebrow">
+          Mein Begleiter
+        </span>
+
+        <h1>
+          Miau
+          <span aria-hidden="true">
+            🐾
+          </span>
+        </h1>
+
+      </div>
+
+
+      <div
+        class="pet-status-badge"
+        id="petStatusBadge"
+      >
+        Bereit für heute
+      </div>
+
+
+    </header>
+
+
+
+    <!-- =====================================================
+         04. PET HERO CARD
+    ====================================================== -->
+
+    <section class="pet-card">
+
+
+      <!-- ===================================================
+           05. PET SCENE
+      ==================================================== -->
+
+      <div
+        class="pet-scene"
+        id="petScene"
+      >
+
+
+        <div
+          class="scene-decoration scene-decoration-left"
+          aria-hidden="true"
+        ></div>
+
+
+        <div
+          class="scene-decoration scene-decoration-right"
+          aria-hidden="true"
+        ></div>
+
+
+
+        <!-- =================================================
+             SPEECH BUBBLE
+        ================================================== -->
+
+        <div
+          class="speech-bubble"
+          id="speechBubble"
+          role="status"
+          aria-live="polite"
+        >
+
+          <span
+            class="speech-name"
+            aria-hidden="true"
+          >
+            Miau
+          </span>
+
+          <p id="speechText">
+            Schön, dass du da bist. Wir machen das zusammen.
+          </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             MIAU IMAGE
+        ================================================== -->
+
+        <div
+          class="miau-stage"
+          id="miauStage"
+        >
+
+
+          <div
+            class="miau-glow"
+            aria-hidden="true"
+          ></div>
+
+
+          <div
+            class="miau-shadow"
+            aria-hidden="true"
+          ></div>
+
+
+          <img
+            src="img/miau-normal.png"
+            alt="Miau, dein Begleiter"
+            class="miau-image"
+            id="miauImage"
+            draggable="false"
+          >
+
+
+          <!-- ===============================================
+               ACTIVITY EFFECT
+          ================================================ -->
+
+          <div
+            class="activity-effect"
+            id="activityEffect"
+            aria-hidden="true"
+          ></div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             DAILY MESSAGE
+        ================================================== -->
+
+        <div
+          class="daily-message"
+          id="dailyMessage"
+        >
+
+          <span aria-hidden="true">
+            ❤️
+          </span>
+
+          <span>
+            Gemeinsam Schritt für Schritt.
+          </span>
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- ===================================================
+           06. PET INFORMATION
+      ==================================================== -->
+
+      <div class="pet-info">
+
+
+        <article class="info-item">
+
+          <span
+            class="info-icon"
+            aria-hidden="true"
+          >
+            ⚖️
+          </span>
+
+          <div>
+
+            <span class="info-label">
+              Dein Gewicht
+            </span>
+
+            <strong id="userWeight">
+              -- kg
+            </strong>
+
+          </div>
+
+        </article>
+
+
+
+        <article class="info-item">
+
+          <span
+            class="info-icon"
+            aria-hidden="true"
+          >
+            💧
+          </span>
+
+          <div>
+
+            <span class="info-label">
+              Wasser heute
+            </span>
+
+            <strong id="waterToday">
+              0 ml
+            </strong>
+
+          </div>
+
+        </article>
+
+
+
+        <article class="info-item">
+
+          <span
+            class="info-icon"
+            aria-hidden="true"
+          >
+            ✨
+          </span>
+
+          <div>
+
+            <span class="info-label">
+              Miaus Stimmung
+            </span>
+
+            <strong id="miauMood">
+              Glücklich
+            </strong>
+
+          </div>
+
+        </article>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         07. TODAY CARD
+    ====================================================== -->
+
+    <section class="today-card">
+
+
+      <div class="section-header">
+
+
+        <div>
+
+          <span class="section-eyebrow">
+            Heute
+          </span>
+
+          <h2>
+            Was machen wir zusammen?
+          </h2>
+
+        </div>
+
+
+        <span
+          class="section-icon"
+          aria-hidden="true"
+        >
+          🐾
+        </span>
+
+
+      </div>
+
+
+
+      <p class="section-description">
+        Deine gesunden Gewohnheiten helfen auch Miau durch den Tag.
+      </p>
+
+
+
+      <!-- ===================================================
+           08. HABIT NAVIGATION
+      ==================================================== -->
+
+      <div class="habit-grid">
+
+
+        <button
+          class="habit-button"
+          data-habit="water"
+          type="button"
+        >
+
+          <span
+            class="habit-icon"
+            aria-hidden="true"
+          >
+            💧
+          </span>
+
+          <span class="habit-copy">
+
+            <strong>
+              Wasser
+            </strong>
+
+            <small>
+              Trinken
+            </small>
+
+          </span>
+
+        </button>
+
+
+
+        <button
+          class="habit-button"
+          data-habit="food"
+          type="button"
+        >
+
+          <span
+            class="habit-icon"
+            aria-hidden="true"
+          >
+            🥗
+          </span>
+
+          <span class="habit-copy">
+
+            <strong>
+              Ernährung
+            </strong>
+
+            <small>
+              Gesund essen
+            </small>
+
+          </span>
+
+        </button>
+
+
+
+        <button
+          class="habit-button"
+          data-habit="movement"
+          type="button"
+        >
+
+          <span
+            class="habit-icon"
+            aria-hidden="true"
+          >
+            🏃
+          </span>
+
+          <span class="habit-copy">
+
+            <strong>
+              Bewegung
+            </strong>
+
+            <small>
+              Aktiv sein
+            </small>
+
+          </span>
+
+        </button>
+
+
+
+        <button
+          class="habit-button"
+          data-habit="weight"
+          type="button"
+        >
+
+          <span
+            class="habit-icon"
+            aria-hidden="true"
+          >
+            ⚖️
+          </span>
+
+          <span class="habit-copy">
+
+            <strong>
+              Gewicht
+            </strong>
+
+            <small>
+              Fortschritt
+            </small>
+
+          </span>
+
+        </button>
+
+
+      </div>
+
+
+
+      <!-- ===================================================
+           09. WATER PANEL
+      ==================================================== -->
+
+      <div
+        class="habit-panel hidden"
+        id="waterPanel"
+      >
+
+
+        <div class="panel-header">
+
+          <span
+            class="panel-icon"
+            aria-hidden="true"
+          >
+            💧
+          </span>
+
+          <div>
+
+            <span>
+              Wasser
+            </span>
+
+            <h3>
+              Wie viel hast du getrunken?
+            </h3>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="quick-buttons">
+
+
+          <button
+            type="button"
+            data-water="250"
+          >
+            250 ml
+          </button>
+
+
+          <button
+            type="button"
+            data-water="500"
+          >
+            500 ml
+          </button>
+
+
+          <button
+            type="button"
+            data-water="750"
+          >
+            750 ml
+          </button>
+
+
+          <button
+            type="button"
+            data-water="1000"
+          >
+            1 Liter
+          </button>
+
+
+        </div>
+
+
+
+        <div class="panel-progress">
+
+          <div class="panel-progress-copy">
+
+            <span>
+              Heute
+            </span>
+
+            <strong id="waterPanelValue">
+              0 ml
+            </strong>
+
+          </div>
+
+
+          <div
+            class="progress-track"
+            aria-hidden="true"
+          >
+
+            <div
+              class="progress-fill"
+              id="waterProgressFill"
+            ></div>
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- ===================================================
+           10. FOOD PANEL
+      ==================================================== -->
+
+      <div
+        class="habit-panel hidden"
+        id="foodPanel"
+      >
+
+
+        <div class="panel-header">
+
+          <span
+            class="panel-icon"
+            aria-hidden="true"
+          >
+            🥗
+          </span>
+
+          <div>
+
+            <span>
+              Ernährung
+            </span>
+
+            <h3>
+              Hast du deine Mahlzeit eingetragen?
+            </h3>
+
+          </div>
+
+        </div>
+
+
+
+        <p class="panel-description">
+          Wenn du deine Ernährung einträgst, bekommt auch Miau seine gesunde Mahlzeit.
+        </p>
+
+
+
+        <button
+          class="primary-action"
+          id="healthyMealButton"
+          type="button"
+        >
+
+          <span aria-hidden="true">
+            🍽️
+          </span>
+
+          <span>
+            Mahlzeit eintragen
+          </span>
+
+        </button>
+
+
+      </div>
+
+
+
+      <!-- ===================================================
+           11. MOVEMENT PANEL
+      ==================================================== -->
+
+      <div
+        class="habit-panel hidden"
+        id="movementPanel"
+      >
+
+
+        <div class="panel-header">
+
+          <span
+            class="panel-icon"
+            aria-hidden="true"
+          >
+            🏃
+          </span>
+
+          <div>
+
+            <span>
+              Bewegung
+            </span>
+
+            <h3>
+              Was hast du heute gemacht?
+            </h3>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="movement-options">
+
+
+          <button
+            type="button"
+            data-movement="walk"
+          >
+
+            <span aria-hidden="true">
+              🚶
+            </span>
+
+            <strong>
+              Spaziergang
+            </strong>
+
+          </button>
+
+
+
+          <button
+            type="button"
+            data-movement="training"
+          >
+
+            <span aria-hidden="true">
+              🏃
+            </span>
+
+            <strong>
+              Training
+            </strong>
+
+          </button>
+
+
+
+          <button
+            type="button"
+            data-movement="cycling"
+          >
+
+            <span aria-hidden="true">
+              🚲
+            </span>
+
+            <strong>
+              Fahrrad
+            </strong>
+
+          </button>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- ===================================================
+           12. WEIGHT PANEL
+      ==================================================== -->
+
+      <div
+        class="habit-panel hidden"
+        id="weightPanel"
+      >
+
+
+        <div class="panel-header">
+
+          <span
+            class="panel-icon"
+            aria-hidden="true"
+          >
+            ⚖️
+          </span>
+
+          <div>
+
+            <span>
+              Fortschritt
+            </span>
+
+            <h3>
+              Neues Gewicht
+            </h3>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="weight-form">
+
+
+          <div class="weight-input-wrapper">
+
+            <input
+              type="number"
+              id="newWeightInput"
+              name="new-weight"
+              min="30"
+              max="300"
+              step="0.1"
+              inputmode="decimal"
+              placeholder="z. B. 82.5"
+              aria-label="Neues Gewicht in Kilogramm"
+            >
+
+            <span>
+              kg
+            </span>
+
+          </div>
+
+
+
+          <button
+            class="primary-action"
+            id="saveWeightButton"
+            type="button"
+          >
+            Speichern
+          </button>
+
+
+        </div>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         13. MIAU DAILY PROGRESS
+    ====================================================== -->
+
+    <section class="miau-progress-card">
+
+
+      <div class="section-header">
+
+
+        <div>
+
+          <span class="section-eyebrow">
+            Miaus Tag
+          </span>
+
+          <h2>
+            Gemeinsam gesund
+          </h2>
+
+        </div>
+
+
+        <span
+          class="section-icon"
+          aria-hidden="true"
+        >
+          ❤️
+        </span>
+
+
+      </div>
+
+
+
+      <div class="daily-goals">
+
+
+        <div
+          class="daily-goal"
+          id="waterGoalItem"
+        >
+
+          <span
+            class="goal-status"
+            aria-hidden="true"
+          >
+            💧
+          </span>
+
+          <span>
+            Wasser
+          </span>
+
+          <strong id="waterGoalStatus">
+            Offen
+          </strong>
+
+        </div>
+
+
+
+        <div
+          class="daily-goal"
+          id="foodGoalItem"
+        >
+
+          <span
+            class="goal-status"
+            aria-hidden="true"
+          >
+            🥗
+          </span>
+
+          <span>
+            Ernährung
+          </span>
+
+          <strong id="foodGoalStatus">
+            Offen
+          </strong>
+
+        </div>
+
+
+
+        <div
+          class="daily-goal"
+          id="movementGoalItem"
+        >
+
+          <span
+            class="goal-status"
+            aria-hidden="true"
+          >
+            🏃
+          </span>
+
+          <span>
+            Bewegung
+          </span>
+
+          <strong id="movementGoalStatus">
+            Offen
+          </strong>
+
+        </div>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         14. IMAGE PRELOAD
+    ====================================================== -->
+
+    <div
+      class="image-preload"
+      aria-hidden="true"
+    >
+
+      <img
+        src="img/miau-normal.png"
+        alt=""
+      >
+
+      <img
+        src="img/miau-fome.png"
+        alt=""
+      >
+
+      <img
+        src="img/miau-comendo.png"
+        alt=""
+      >
+
+      <img
+        src="img/miau-exercicio.png"
+        alt=""
+      >
+
+      <img
+        src="img/miau-feliz.png"
+        alt=""
+      >
+
+    </div>
+
+
+
+  </main>
+
+
+
+  <!-- =====================================================
+       15. JAVASCRIPT FILES
+  ====================================================== -->
+
+  <script src="../js/storage.js"></script>
+
+  <script src="../js/helpers.js"></script>
+
+  <script src="../js/user-data.js"></script>
+
+  <script src="katze.js"></script>
+
+
+
+  <!-- =====================================================
+       16. DOCUMENT END
+  ====================================================== -->
+
+</body>
+
+</html>
