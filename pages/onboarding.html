@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+
+
+<!-- =========================================================
+   ONBOARDING.HTML
+   Mein Fortschritt
+
+   Página de apresentação inicial da aplicação.
+
+   Responsabilidades deste arquivo:
+   - Estrutura semântica do onboarding
+   - Apresentação dos recursos principais
+   - Estrutura visual dos slides
+   - Navegação entre slides
+   - Acesso ao cadastro inicial
+   - Acesso ao login
+   - Pontos de ligação com onboarding.js
+
+   IMPORTANTE:
+   Este arquivo NÃO contém estilos internos.
+   Este arquivo NÃO contém lógica JavaScript interna.
+
+   Estilos:
+   onboarding.css
+
+   Lógica:
+   onboarding.js
+========================================================= -->
+
+
+<!-- =========================================================
+   01. DOCUMENT HEAD
+   Metadados, título e CSS
+========================================================= -->
+
+<head>
+
+  <meta charset="UTF-8">
+
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+
+  <meta
+    name="description"
+    content="Verfolge deine Ernährung, deine Fortschritte und entwickle gesunde Gewohnheiten, die zu deinem Alltag passen."
+  >
+
+
+  <title>
+    Mein Fortschritt
+  </title>
+
+
+  <link
+    rel="stylesheet"
+    href="onboarding.css"
+  >
+
+</head>
+
+
+<!-- =========================================================
+   02. DOCUMENT BODY
+========================================================= -->
+
+<body>
+
+
+  <!-- =======================================================
+       03. ONBOARDING MAIN
+       Conteúdo principal da apresentação
+  ======================================================== -->
+
+  <main class="onboarding">
+
+
+
+    <!-- =====================================================
+         04. ONBOARDING HEADER
+         Marca principal e retorno ao Index
+    ====================================================== -->
+
+    <header class="onboarding-header">
+
+      <a
+        href="../index.html"
+        class="brand"
+        aria-label="Mein Fortschritt Startseite"
+      >
+
+        <span
+          class="brand-icon"
+          aria-hidden="true"
+        >
+          M
+        </span>
+
+
+        <span class="brand-name">
+          Mein Fortschritt
+        </span>
+
+      </a>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         05. ONBOARDING SLIDER
+         Estrutura principal dos slides
+    ====================================================== -->
+
+    <section
+      class="slider"
+      id="slider"
+      aria-label="Einführung"
+    >
+
+      <div
+        class="slides"
+        id="slides"
+      >
+
+
+
+        <!-- =================================================
+             06. SLIDE 01
+             Apresentação inicial
+        ================================================== -->
+
+        <article
+          class="slide active"
+          data-slide="0"
+        >
+
+
+          <!-- SLIDE VISUAL -->
+
+          <div class="slide-visual">
+
+            <img
+              src="../img/onboarding/welcome.jpg"
+              alt="Gesunde Frau im Alltag"
+            >
+
+          </div>
+
+
+
+          <!-- SLIDE CONTENT -->
+
+          <div class="slide-content">
+
+            <span class="welcome">
+              Herzlich willkommen bei Mein Fortschritt
+            </span>
+
+
+            <h1>
+              Bereit für deinen nächsten Schritt?
+            </h1>
+
+
+            <p>
+              Beginne damit, deine Entwicklung zu verfolgen.
+              Einfach, übersichtlich und in deinem eigenen Tempo.
+            </p>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- =================================================
+             07. SLIDE 02
+             Dashboard e acompanhamento
+        ================================================== -->
+
+        <article
+          class="slide"
+          data-slide="1"
+        >
+
+
+          <!-- DASHBOARD PREVIEW -->
+
+          <div class="slide-visual dashboard-preview">
+
+            <div class="app-preview">
+
+
+              <!-- PREVIEW HEADER -->
+
+              <div class="preview-header">
+
+                <span>
+                  Heute
+                </span>
+
+
+                <span class="preview-profile">
+                  LS
+                </span>
+
+              </div>
+
+
+
+              <!-- CALORIE PREVIEW -->
+
+              <div class="calorie-preview">
+
+                <span class="preview-small">
+                  Kalorien verbleibend
+                </span>
+
+
+                <strong>
+                  620
+                </strong>
+
+
+                <span>
+                  kcal
+                </span>
+
+              </div>
+
+
+
+              <!-- CALORIE DETAILS -->
+
+              <div class="calorie-details">
+
+
+                <!-- GOAL -->
+
+                <div>
+
+                  <span>
+                    Ziel
+                  </span>
+
+
+                  <strong>
+                    1'850
+                  </strong>
+
+                </div>
+
+
+
+                <!-- FOOD -->
+
+                <div>
+
+                  <span>
+                    Nahrungsmittel
+                  </span>
+
+
+                  <strong>
+                    1'430
+                  </strong>
+
+                </div>
+
+
+
+                <!-- TRAINING -->
+
+                <div>
+
+                  <span>
+                    Training
+                  </span>
+
+
+                  <strong>
+                    +200
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+
+              <!-- PREVIEW PROGRESS -->
+
+              <div class="preview-progress">
+
+                <div class="preview-progress-bar">
+
+                  <span></span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- SLIDE CONTENT -->
+
+          <div class="slide-content">
+
+            <span class="slide-number">
+              01
+            </span>
+
+
+            <h2>
+              Verstehe deinen Alltag besser.
+            </h2>
+
+
+            <p>
+              Entdecke, wie Ernährung und Bewegung
+              deine tägliche Entwicklung beeinflussen.
+            </p>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- =================================================
+             08. SLIDE 03
+             Alimentação e hábitos
+        ================================================== -->
+
+        <article
+          class="slide"
+          data-slide="2"
+        >
+
+
+          <!-- SLIDE VISUAL -->
+
+          <div class="slide-visual">
+
+            <img
+              src="../img/onboarding/healthy-food.jpg"
+              alt="Gesunde und ausgewogene Mahlzeit"
+            >
+
+          </div>
+
+
+
+          <!-- SLIDE CONTENT -->
+
+          <div class="slide-content">
+
+            <span class="slide-number">
+              02
+            </span>
+
+
+            <h2>
+              Kleine Entscheidungen verändern viel.
+            </h2>
+
+
+            <p>
+              Entwickle bewusste Essgewohnheiten,
+              die wirklich zu deinem Alltag passen.
+            </p>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- =================================================
+             09. SLIDE 04
+             Apresentação Premium
+        ================================================== -->
+
+        <article
+          class="slide"
+          data-slide="3"
+        >
+
+
+          <!-- SLIDE VISUAL -->
+
+          <div class="slide-visual">
+
+            <img
+              src="../img/onboarding/nutritionist.jpg"
+              alt="Persönliche Ernährungsberatung"
+            >
+
+
+            <span class="premium-label">
+              Premium
+            </span>
+
+          </div>
+
+
+
+          <!-- SLIDE CONTENT -->
+
+          <div class="slide-content">
+
+            <span class="slide-number">
+              03
+            </span>
+
+
+            <h2>
+              Du musst deinen Weg nicht alleine gehen.
+            </h2>
+
+
+            <p>
+              Mit Premium erhältst du persönliche
+              Begleitung durch eine echte Ernährungsfachperson.
+            </p>
+
+          </div>
+
+        </article>
+
+      </div>
+
+
+
+      <!-- ===================================================
+           10. SLIDER NAVIGATION
+           Botões anterior e próximo
+      ==================================================== -->
+
+      <button
+        type="button"
+        class="slider-arrow slider-arrow-left"
+        id="previous-slide"
+        aria-label="Vorherige Seite"
+      >
+        ‹
+      </button>
+
+
+      <button
+        type="button"
+        class="slider-arrow slider-arrow-right"
+        id="next-slide"
+        aria-label="Nächste Seite"
+      >
+        ›
+      </button>
+
+
+
+      <!-- ===================================================
+           11. SLIDER DOTS
+           Navegação direta entre slides
+      ==================================================== -->
+
+      <div
+        class="slider-dots"
+        aria-label="Seitennavigation"
+      >
+
+
+        <!-- DOT 01 -->
+
+        <button
+          type="button"
+          class="slider-dot active"
+          data-slide="0"
+          aria-label="Seite 1"
+          aria-current="true"
+        ></button>
+
+
+
+        <!-- DOT 02 -->
+
+        <button
+          type="button"
+          class="slider-dot"
+          data-slide="1"
+          aria-label="Seite 2"
+        ></button>
+
+
+
+        <!-- DOT 03 -->
+
+        <button
+          type="button"
+          class="slider-dot"
+          data-slide="2"
+          aria-label="Seite 3"
+        ></button>
+
+
+
+        <!-- DOT 04 -->
+
+        <button
+          type="button"
+          class="slider-dot"
+          data-slide="3"
+          aria-label="Seite 4"
+        ></button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+
+  <!-- =======================================================
+       12. ONBOARDING ACTIONS
+       Ações principais fixas
+  ======================================================== -->
+
+  <footer class="onboarding-actions">
+
+    <div class="action-container">
+
+
+
+      <!-- =================================================
+           13. NEW USER ACTION
+           Inicia configuração da conta
+      ================================================== -->
+
+      <a
+        href="setup.html"
+        class="button button-primary"
+      >
+        Kostenlos einrichten
+      </a>
+
+
+
+      <!-- =================================================
+           14. EXISTING USER ACTION
+           Acesso para usuário existente
+      ================================================== -->
+
+      <a
+        href="login.html"
+        class="button button-secondary"
+      >
+        Anmelden
+      </a>
+
+    </div>
+
+  </footer>
+
+
+
+  <!-- =======================================================
+       15. JAVASCRIPT FILE
+       Controle exclusivo do slider
+  ======================================================== -->
+
+  <script src="onboarding.js"></script>
+
+
+</body>
+
+
+<!-- =========================================================
+   16. DOCUMENT END
+========================================================= -->
+
+</html>
