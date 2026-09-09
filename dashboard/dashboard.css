@@ -1778,7 +1778,23 @@ backdrop-filter:
     var(--white);
 }
 
+/* =========================================================
+   MIAU ICON
+========================================================= */
 
+.miau-icon {
+  width: 32px;
+  height: 32px;
+
+  object-fit: contain;
+
+  display: block;
+
+  border-radius: 50%;
+
+  -webkit-user-select: none;
+  user-select: none;
+}
 /* =========================================================
    27. WEIGHT CHART HEADER
 ========================================================= */
