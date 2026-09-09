@@ -1,723 +1,91 @@
 <!DOCTYPE html>
 <html lang="de-CH">
 
+
+<!-- =========================================================
+   INDEX.HTML
+   Mein Fortschritt
+
+   Página inicial da aplicação.
+
+   Responsabilidades deste arquivo:
+   - Estrutura semântica da página
+   - Formulário inicial de BMI
+   - Exibição da área de resultado
+   - Navegação para onboarding e dashboard
+   - Pontos de ligação com index.js
+
+   
+========================================================= -->
+
+
+<!-- =========================================================
+   01. DOCUMENT HEAD
+   Metadados, título e CSS
+========================================================= -->
+
 <head>
+
   <meta charset="UTF-8">
+
 
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   >
 
+
   <meta
     name="description"
     content="Berechne deinen BMI und starte deinen persönlichen Weg."
   >
 
-  <title>Mein Fortschritt | BMI-Rechner</title>
 
+  <title>
+    Mein Fortschritt | BMI-Rechner
+  </title>
 
-  <style>
 
-    /* =====================================================
-       ROOT
-    ====================================================== */
-
-    :root {
-      --green: #2f8f5b;
-      --green-dark: #247249;
-      --green-soft: #eef8f2;
-
-      --white: #ffffff;
-      --black: #151515;
-      --text: #242424;
-      --muted: #707570;
-      --line: #e5e9e6;
-
-      --shadow:
-        0 24px 60px rgba(25, 70, 45, 0.08);
-    }
-
-
-    /* =====================================================
-       RESET
-    ====================================================== */
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-
-    body {
-      min-height: 100vh;
-
-      font-family:
-        Inter,
-        "Helvetica Neue",
-        Helvetica,
-        Arial,
-        sans-serif;
-
-      background: var(--white);
-      color: var(--text);
-
-      line-height: 1.5;
-    }
-
-
-    button,
-    input {
-      font: inherit;
-    }
-
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-
-    /* =====================================================
-       HEADER
-    ====================================================== */
-
-    .header {
-      height: 82px;
-
-      display: flex;
-      align-items: center;
-    }
-
-
-    .header-inner {
-      width: min(1120px, calc(100% - 40px));
-
-      margin: 0 auto;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-
-    .brand {
-      display: flex;
-      align-items: center;
-
-      gap: 11px;
-
-      font-weight: 700;
-    }
-
-
-    .brand-mark {
-      width: 42px;
-      height: 42px;
-
-      display: grid;
-      place-items: center;
-
-      border-radius: 50%;
-
-      background: var(--green);
-      color: white;
-
-      font-size: 17px;
-    }
-
-
-    .brand-name {
-      color: var(--black);
-
-      font-size: 17px;
-
-      letter-spacing: -0.02em;
-    }
-
-
-    .login {
-      color: var(--black);
-
-      font-size: 14px;
-      font-weight: 600;
-
-      padding-bottom: 2px;
-
-      border-bottom: 1px solid transparent;
-
-      transition: 0.2s ease;
-    }
-
-
-    .login:hover {
-      color: var(--green);
-      border-color: var(--green);
-    }
-
-
-    /* =====================================================
-       MAIN
-    ====================================================== */
-
-    main {
-      min-height: calc(100vh - 82px);
-
-      display: flex;
-      align-items: center;
-
-      padding: 60px 0 100px;
-    }
-
-
-    .page {
-      width: min(1120px, calc(100% - 40px));
-
-      margin: 0 auto;
-
-      display: grid;
-      grid-template-columns: 1fr 520px;
-
-      align-items: center;
-
-      gap: 100px;
-    }
-
-
-    /* =====================================================
-       INTRO
-    ====================================================== */
-
-    .intro {
-      max-width: 520px;
-    }
-
-
-    .eyebrow {
-      display: inline-block;
-
-      margin-bottom: 20px;
-
-      color: var(--green);
-
-      font-size: 12px;
-      font-weight: 700;
-
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-
-    .intro h1 {
-      color: var(--black);
-
-      font-size: clamp(52px, 6vw, 78px);
-
-      line-height: 0.98;
-
-      letter-spacing: -0.055em;
-
-      font-weight: 600;
-    }
-
-
-    .intro p {
-      max-width: 470px;
-
-      margin-top: 27px;
-
-      color: var(--muted);
-
-      font-size: 18px;
-
-      line-height: 1.7;
-    }
-
-
-    /* =====================================================
-       BMI CARD
-    ====================================================== */
-
-    .bmi-card {
-      padding: 42px;
-
-      border: 1px solid var(--line);
-
-      border-radius: 26px;
-
-      background: var(--white);
-
-      box-shadow: var(--shadow);
-    }
-
-
-    .card-header {
-      margin-bottom: 30px;
-    }
-
-
-    .card-label {
-      display: block;
-
-      margin-bottom: 7px;
-
-      color: var(--green);
-
-      font-size: 12px;
-      font-weight: 700;
-
-      text-transform: uppercase;
-
-      letter-spacing: 0.12em;
-    }
-
-
-    .card-header h2 {
-      color: var(--black);
-
-      font-size: 31px;
-      font-weight: 600;
-
-      letter-spacing: -0.035em;
-    }
-
-
-    .card-header p {
-      margin-top: 7px;
-
-      color: var(--muted);
-
-      font-size: 14px;
-    }
-
-
-    /* =====================================================
-       FORM
-    ====================================================== */
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-
-      gap: 16px;
-
-      margin-bottom: 18px;
-    }
-
-
-    .form-group label {
-      display: block;
-
-      margin-bottom: 8px;
-
-      color: var(--black);
-
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-
-    .field {
-      position: relative;
-    }
-
-
-    .field input {
-      width: 100%;
-      height: 58px;
-
-      padding: 0 55px 0 16px;
-
-      border: 1px solid #d9dfda;
-      border-radius: 13px;
-
-      outline: none;
-
-      background: white;
-
-      color: var(--black);
-
-      transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-    }
-
-
-    .field input:focus {
-      border-color: var(--green);
-
-      box-shadow:
-        0 0 0 4px rgba(47, 143, 91, 0.10);
-    }
-
-
-    .field span {
-      position: absolute;
-
-      right: 16px;
-      top: 50%;
-
-      transform: translateY(-50%);
-
-      color: var(--muted);
-
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-
-    .calculate-button {
-      width: 100%;
-      height: 58px;
-
-      border: none;
-      border-radius: 13px;
-
-      background: var(--green);
-      color: white;
-
-      font-size: 15px;
-      font-weight: 700;
-
-      cursor: pointer;
-
-      transition:
-        background 0.2s ease,
-        transform 0.2s ease;
-    }
-
-
-    .calculate-button:hover {
-      background: var(--green-dark);
-
-      transform: translateY(-1px);
-    }
-
-
-    /* =====================================================
-       RESULT
-    ====================================================== */
-
-    .result {
-      margin-top: 26px;
-
-      padding-top: 26px;
-
-      border-top: 1px solid var(--line);
-
-      animation: resultIn 0.4s ease;
-    }
-
-
-    .result[hidden] {
-      display: none;
-    }
-
-
-    @keyframes resultIn {
-
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-    }
-
-
-    .result-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 25px;
-    }
-
-
-    .result-label {
-      display: block;
-
-      margin-bottom: 4px;
-
-      color: var(--muted);
-
-      font-size: 12px;
-    }
-
-
-    .result-value {
-      color: var(--black);
-
-      font-size: 54px;
-      font-weight: 600;
-
-      line-height: 1;
-
-      letter-spacing: -0.055em;
-    }
-
-
-    .result-category {
-      display: inline-flex;
-      align-items: center;
-
-      min-height: 36px;
-
-      padding: 0 14px;
-
-      border-radius: 999px;
-
-      background: var(--green-soft);
-      color: var(--green-dark);
-
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-
-    .result-message {
-      margin-top: 18px;
-
-      color: var(--muted);
-
-      font-size: 14px;
-
-      line-height: 1.65;
-    }
-
-
-    /* =====================================================
-       CONTINUE
-    ====================================================== */
-
-    .continue-area {
-      margin-top: 24px;
-    }
-
-
-    .continue-button {
-      width: 100%;
-      min-height: 58px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      gap: 10px;
-
-      border-radius: 13px;
-
-      background: var(--black);
-      color: white;
-
-      font-size: 15px;
-      font-weight: 700;
-
-      transition:
-        transform 0.2s ease,
-        background 0.2s ease;
-    }
-
-
-    .continue-button:hover {
-      background: var(--green-dark);
-
-      transform: translateY(-1px);
-    }
-
-
-    .continue-arrow {
-      font-size: 20px;
-
-      transition: transform 0.2s ease;
-    }
-
-
-    .continue-button:hover .continue-arrow {
-      transform: translateX(4px);
-    }
-
-
-    .continue-note {
-      margin-top: 10px;
-
-      text-align: center;
-
-      color: #8a8d8a;
-
-      font-size: 11px;
-    }
-
-
-    /* =====================================================
-       DISCLAIMER
-    ====================================================== */
-
-    .bmi-note {
-      margin-top: 18px;
-
-      color: #929692;
-
-      font-size: 11px;
-
-      line-height: 1.5;
-    }
-
-
-    /* =====================================================
-       TABLET
-    ====================================================== */
-
-    @media (max-width: 900px) {
-
-      main {
-        align-items: flex-start;
-
-        padding-top: 45px;
-      }
-
-
-      .page {
-        grid-template-columns: 1fr;
-
-        gap: 50px;
-      }
-
-
-      .intro {
-        max-width: 680px;
-
-        text-align: center;
-
-        margin: 0 auto;
-      }
-
-
-      .intro p {
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-
-      .bmi-card {
-        width: min(100%, 560px);
-
-        margin: 0 auto;
-      }
-
-    }
-
-
-    /* =====================================================
-       MOBILE
-    ====================================================== */
-
-    @media (max-width: 600px) {
-
-      .header {
-        height: 70px;
-      }
-
-
-      .header-inner {
-        width: calc(100% - 30px);
-      }
-
-
-      .brand-mark {
-        width: 38px;
-        height: 38px;
-      }
-
-
-      .brand-name {
-        font-size: 15px;
-      }
-
-
-      main {
-        min-height: calc(100vh - 70px);
-
-        padding: 32px 0 70px;
-      }
-
-
-      .page {
-        width: calc(100% - 30px);
-
-        gap: 38px;
-      }
-
-
-      .intro h1 {
-        font-size: 46px;
-      }
-
-
-      .intro p {
-        margin-top: 18px;
-
-        font-size: 16px;
-      }
-
-
-      .bmi-card {
-        padding: 28px 21px;
-
-        border-radius: 21px;
-      }
-
-
-      .card-header h2 {
-        font-size: 27px;
-      }
-
-
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-
-
-      .result-value {
-        font-size: 48px;
-      }
-
-    }
-
-  </style>
+  <link
+    rel="stylesheet"
+    href="index.css"
+  >
 
 </head>
 
 
+<!-- =========================================================
+   02. DOCUMENT BODY
+========================================================= -->
+
 <body>
 
 
-  <!-- =====================================================
-       HEADER
-  ====================================================== -->
+  <!-- =======================================================
+       03. APP HEADER
+       Marca principal e acesso ao Dashboard
+  ======================================================== -->
 
   <header class="header">
 
     <div class="header-inner">
 
+
+      <!-- BRAND -->
+
       <a
         href="index.html"
         class="brand"
+        aria-label="Mein Fortschritt Startseite"
       >
 
-        <span class="brand-mark">
+        <span
+          class="brand-mark"
+          aria-hidden="true"
+        >
           M
         </span>
+
 
         <span class="brand-name">
           Mein Fortschritt
@@ -726,8 +94,10 @@
       </a>
 
 
+      <!-- LOGIN -->
+
       <a
-        href="dashboard.html"
+        href="dashboard/dashboard.html"
         class="login"
       >
         Anmelden
@@ -739,18 +109,21 @@
 
 
 
-  <!-- =====================================================
-       MAIN
-  ====================================================== -->
+  <!-- =======================================================
+       04. MAIN CONTENT
+       Conteúdo principal da página inicial
+  ======================================================== -->
 
   <main>
 
     <div class="page">
 
 
-      <!-- =================================================
-           INTRO
-      ================================================== -->
+
+      <!-- ===================================================
+           05. INTRO SECTION
+           Apresentação inicial do aplicativo
+      ==================================================== -->
 
       <section class="intro">
 
@@ -758,9 +131,11 @@
           Dein Ausgangspunkt
         </span>
 
+
         <h1>
           Wo stehst du heute?
         </h1>
+
 
         <p>
           Berechne deinen BMI und mache den ersten Schritt,
@@ -771,11 +146,15 @@
 
 
 
-      <!-- =================================================
-           BMI CARD
-      ================================================== -->
+      <!-- ===================================================
+           06. BMI CALCULATOR
+           Formulário para peso e altura
+      ==================================================== -->
 
       <section class="bmi-card">
+
+
+        <!-- CARD HEADER -->
 
         <div class="card-header">
 
@@ -783,9 +162,11 @@
             BMI-Rechner
           </span>
 
+
           <h2>
             Deine Angaben
           </h2>
+
 
           <p>
             Trage dein aktuelles Gewicht und deine Körpergrösse ein.
@@ -795,7 +176,9 @@
 
 
 
-        <!-- FORM -->
+        <!-- =================================================
+             07. BMI FORM
+        ================================================== -->
 
         <form id="bmi-form">
 
@@ -816,14 +199,18 @@
                 <input
                   type="number"
                   id="weight"
+                  name="weight"
                   min="20"
                   max="350"
                   step="0.1"
+                  inputmode="decimal"
                   placeholder="82.5"
+                  autocomplete="off"
                   required
                 >
 
-                <span>
+
+                <span aria-hidden="true">
                   kg
                 </span>
 
@@ -847,14 +234,18 @@
                 <input
                   type="number"
                   id="height"
+                  name="height"
                   min="100"
                   max="250"
                   step="1"
+                  inputmode="numeric"
                   placeholder="167"
+                  autocomplete="off"
                   required
                 >
 
-                <span>
+
+                <span aria-hidden="true">
                   cm
                 </span>
 
@@ -864,6 +255,9 @@
 
           </div>
 
+
+
+          <!-- CALCULATE BUTTON -->
 
           <button
             type="submit"
@@ -877,7 +271,8 @@
 
 
         <!-- =================================================
-             RESULT
+             08. BMI RESULT
+             Conteúdo atualizado pelo index.js
         ================================================== -->
 
         <div
@@ -886,6 +281,9 @@
           aria-live="polite"
           hidden
         >
+
+
+          <!-- RESULT TOP -->
 
           <div class="result-top">
 
@@ -915,6 +313,8 @@
 
 
 
+          <!-- RESULT MESSAGE -->
+
           <p
             class="result-message"
             id="bmi-message"
@@ -922,17 +322,24 @@
 
 
 
-          <!-- CONTINUE -->
+          <!-- =================================================
+               09. CONTINUE AREA
+        ================================================== -->
 
           <div class="continue-area">
 
             <a
-              href="onboarding.html"
+              href="pages/onboarding.html"
               class="continue-button"
             >
+
               Weiter
 
-              <span class="continue-arrow">
+
+              <span
+                class="continue-arrow"
+                aria-hidden="true"
+              >
                 →
               </span>
 
@@ -947,7 +354,9 @@
 
 
 
-          <!-- DISCLAIMER -->
+          <!-- =================================================
+               10. BMI DISCLAIMER
+        ================================================== -->
 
           <p class="bmi-note">
             Der BMI ist ein allgemeiner Orientierungswert und ersetzt
@@ -965,300 +374,20 @@
 
 
 
-  <!-- =====================================================
-       CENTRAL USER DATA
-       precisa vir antes do script da página
-  ====================================================== -->
-
-  <script src="user-data.js"></script>
-
-
-
-  <!-- =====================================================
-       INDEX JAVASCRIPT
-  ====================================================== -->
-
-  <script>
-
-    /* =====================================================
-       ELEMENTS
-    ====================================================== */
-
-    const bmiForm =
-      document.getElementById("bmi-form");
-
-
-    const weightInput =
-      document.getElementById("weight");
-
-
-    const heightInput =
-      document.getElementById("height");
-
-
-    const result =
-      document.getElementById("result");
-
-
-    const bmiValue =
-      document.getElementById("bmi-value");
-
-
-    const bmiCategory =
-      document.getElementById("bmi-category");
-
-
-    const bmiMessage =
-      document.getElementById("bmi-message");
-
-
-
-    /* =====================================================
-       BMI MESSAGE
-    ====================================================== */
-
-    function getBMIMessage(bmi) {
-
-      if (bmi < 18.5) {
-
-        return (
-          "Dein BMI liegt unter dem üblichen Orientierungsbereich. " +
-          "Dein Ergebnis ist ein Ausgangspunkt, um deine Entwicklung " +
-          "bewusster zu verfolgen."
-        );
-
-      }
-
-
-      if (bmi < 25) {
-
-        return (
-          "Dein BMI liegt im üblichen Orientierungsbereich. " +
-          "Behalte deine Entwicklung im Blick und finde heraus, " +
-          "welche Gewohnheiten dir langfristig guttun."
-        );
-
-      }
-
-
-      if (bmi < 30) {
-
-        return (
-          "Dein BMI liegt über dem üblichen Orientierungsbereich. " +
-          "Das ist nur dein Ausgangspunkt – kleine, konsequente " +
-          "Veränderungen können einen Unterschied machen."
-        );
-
-      }
-
-
-      if (bmi < 35) {
-
-        return (
-          "Dein BMI liegt deutlich über dem üblichen Orientierungsbereich. " +
-          "Ein strukturierter Weg und realistische Ziele können dir helfen, " +
-          "deine Entwicklung Schritt für Schritt zu verfolgen."
-        );
-
-      }
-
-
-      if (bmi < 40) {
-
-        return (
-          "Dein BMI liegt deutlich über dem üblichen Orientierungsbereich. " +
-          "Eine persönliche fachliche Begleitung kann dir dabei helfen, " +
-          "passende und realistische nächste Schritte zu planen."
-        );
-
-      }
-
-
-      return (
-        "Dein BMI liegt stark über dem üblichen Orientierungsbereich. " +
-        "Eine individuelle fachliche Begleitung ist für die Planung " +
-        "der nächsten Schritte besonders sinnvoll."
-      );
-
-    }
-
-
-
-    /* =====================================================
-       FORM SUBMIT
-    ====================================================== */
-
-    bmiForm.addEventListener(
-      "submit",
-      function (event) {
-
-        event.preventDefault();
-
-
-
-        /* =================================================
-           INPUT VALUES
-        ================================================== */
-
-        const weight =
-          Number(weightInput.value);
-
-
-        const heightCm =
-          Number(heightInput.value);
-
-
-
-        /* =================================================
-           VALIDATION
-        ================================================== */
-
-        if (
-          !Number.isFinite(weight) ||
-          !Number.isFinite(heightCm) ||
-          weight < 20 ||
-          weight > 350 ||
-          heightCm < 100 ||
-          heightCm > 250
-        ) {
-          return;
-        }
-
-
-
-        /* =================================================
-           CONVERT HEIGHT
-           user-data.js usa metros
-        ================================================== */
-
-        const heightM =
-          heightCm / 100;
-
-
-
-        /* =================================================
-           SAVE USER DATA
-        ================================================== */
-
-        setUserHeight(
-          heightM
-        );
-
-
-        const user =
-          setInitialWeight(
-            weight
-          );
-
-
-
-        /* =================================================
-           BMI
-        ================================================== */
-
-        const bmi =
-          user.bmi;
-
-
-        const category =
-          getBMICategory(
-            bmi
-          );
-
-
-        const message =
-          getBMIMessage(
-            bmi
-          );
-
-
-
-        /* =================================================
-           DISPLAY RESULT
-        ================================================== */
-
-        bmiValue.textContent =
-          bmi.toFixed(1);
-
-
-        bmiCategory.textContent =
-          category;
-
-
-        bmiMessage.textContent =
-          message;
-
-
-        result.hidden = false;
-
-
-
-        /* =================================================
-           SCROLL TO RESULT
-        ================================================== */
-
-        setTimeout(
-          function () {
-
-            result.scrollIntoView({
-              behavior: "smooth",
-              block: "nearest"
-            });
-
-          },
-          100
-        );
-
-      }
-    );
-
-
-
-    /* =====================================================
-       LOAD EXISTING DATA
-       Se a pessoa voltar ao Index, mostramos os dados atuais
-       nos campos sem alterar o peso inicial.
-    ====================================================== */
-
-    function loadExistingUserData() {
-
-      const user =
-        getUser();
-
-
-      if (
-        typeof user.currentWeight === "number"
-      ) {
-
-        weightInput.value =
-          user.currentWeight;
-
-      }
-
-
-      if (
-        typeof user.height === "number"
-      ) {
-
-        heightInput.value =
-          Math.round(
-            user.height * 100
-          );
-
-      }
-
-    }
-
-
-
-    /* =====================================================
-       INIT
-    ====================================================== */
-
-    loadExistingUserData();
-
-  </script>
+ <!-- =====================================================
+     11. JAVASCRIPT FILES
+====================================================== -->
+
+<script src="js/storage.js"></script>
+<script src="js/helpers.js"></script>
+<script src="js/user-data.js"></script>
+<script src="index.js"></script>
 
 </body>
+
+
+<!-- =========================================================
+   12. DOCUMENT END
+========================================================= -->
 
 </html>
