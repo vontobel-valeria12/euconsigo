@@ -1778,13 +1778,13 @@ backdrop-filter:
     var(--white);
 }
 
-/* =========================================================
+/* ========SZ========
    MIAU ICON
 ========================================================= */
 
 .miau-icon {
-  width: 52px;
-  height: 52px;
+  width: 58px;
+  height: 58px;
 
   object-fit: contain;
 
