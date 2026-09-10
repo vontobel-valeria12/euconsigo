@@ -1,0 +1,438 @@
+/* =========================================================
+   ERNAEHRUNG.CSS
+   Mein Fortschritt
+========================================================= */
+
+
+/* =========================================================
+   01. ROOT
+========================================================= */
+
+:root {
+  --color-background: #f5f7f3;
+  --color-surface: #ffffff;
+  --color-surface-soft: #f0f4ee;
+
+  --color-primary: #315c4b;
+  --color-primary-dark: #234438;
+  --color-primary-soft: #dce9e1;
+
+  --color-accent: #a77c55;
+  --color-accent-soft: #eee4da;
+
+  --color-text: #24312b;
+  --color-text-soft: #6d7973;
+  --color-text-light: #8e9893;
+
+  --color-border: #dde5df;
+  --color-border-strong: #cbd7cf;
+
+  --color-danger: #b44d4d;
+
+  --shadow-small:
+    0 4px 14px rgba(30, 54, 43, 0.06);
+
+  --shadow-medium:
+    0 10px 30px rgba(30, 54, 43, 0.10);
+
+  --shadow-large:
+    0 20px 50px rgba(30, 54, 43, 0.16);
+
+  --radius-small: 12px;
+  --radius-medium: 18px;
+  --radius-large: 26px;
+
+  --page-width: 1180px;
+}
+
+
+/* =========================================================
+   02. RESET
+========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+body {
+  margin: 0;
+
+  min-height: 100vh;
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  color: var(--color-text);
+
+  background:
+    linear-gradient(
+      180deg,
+      #f8faf7 0%,
+      var(--color-background) 100%
+    );
+}
+
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+
+button,
+a,
+input,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+button {
+  border: 0;
+}
+
+
+button,
+a {
+  touch-action: manipulation;
+}
+
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+[hidden] {
+  display: none !important;
+}
+
+
+/* =========================================================
+   03. HEADER
+========================================================= */
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  background:
+    rgba(255, 255, 255, 0.92);
+
+  border-bottom:
+    1px solid var(--color-border);
+
+  backdrop-filter:
+    blur(14px);
+
+  -webkit-backdrop-filter:
+    blur(14px);
+}
+
+
+.top-header {
+  width: min(
+    calc(100% - 32px),
+    var(--page-width)
+  );
+
+  min-height: 72px;
+
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 10px;
+
+  font-weight: 800;
+}
+
+
+.brand-mark {
+  width: 38px;
+  height: 38px;
+
+  display: grid;
+  place-items: center;
+
+  color: #ffffff;
+
+  background:
+    var(--color-primary);
+
+  border-radius: 50%;
+
+  font-size: 17px;
+}
+
+
+.brand-name {
+  font-size: 1rem;
+}
+
+
+.back-button {
+  width: 42px;
+  height: 42px;
+
+  display: grid;
+  place-items: center;
+
+  border:
+    1px solid var(--color-border);
+
+  border-radius: 50%;
+
+  background:
+    var(--color-surface);
+
+  font-size: 1.25rem;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.back-button:hover {
+  background:
+    var(--color-surface-soft);
+
+  border-color:
+    var(--color-border-strong);
+}
+
+
+.back-button:active {
+  transform: scale(0.96);
+}
+
+
+/* =========================================================
+   04. PAGE
+========================================================= */
+
+.nutrition-page {
+  width: min(
+    calc(100% - 32px),
+    var(--page-width)
+  );
+
+  margin: 0 auto;
+
+  padding:
+    42px 0 80px;
+}
+
+
+.page-intro {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  margin-bottom: 34px;
+}
+
+
+.page-intro h1 {
+  margin:
+    4px 0 6px;
+
+  font-size:
+    clamp(2rem, 5vw, 3.3rem);
+
+  line-height: 1;
+
+  letter-spacing: -0.04em;
+}
+
+
+.current-date {
+  margin: 0;
+
+  color:
+    var(--color-text-soft);
+
+  font-size: 0.95rem;
+}
+
+
+.eyebrow {
+  margin: 0;
+
+  color:
+    var(--color-primary);
+
+  font-size: 0.74rem;
+
+  font-weight: 800;
+
+  letter-spacing: 0.11em;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   05. BUTTONS
+========================================================= */
+
+.primary-button {
+  min-height: 48px;
+
+  padding:
+    0 22px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius:
+    var(--radius-small);
+
+  background:
+    var(--color-primary);
+
+  color: #ffffff;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 20px rgba(49, 92, 75, 0.18);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.primary-button:hover {
+  background:
+    var(--color-primary-dark);
+
+  box-shadow:
+    0 10px 24px rgba(49, 92, 75, 0.24);
+}
+
+
+.primary-button:active {
+  transform: translateY(1px);
+}
+
+
+.secondary-button {
+  min-height: 44px;
+
+  padding:
+    0 18px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid var(--color-border-strong);
+
+  border-radius:
+    var(--radius-small);
+
+  background:
+    var(--color-surface);
+
+  color:
+    var(--color-primary);
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.secondary-button:hover {
+  background:
+    var(--color-surface-soft);
+
+  border-color:
+    var(--color-primary);
+}
+
+
+.text-button {
+  padding: 4px;
+
+  background: transparent;
+
+  color:
+    var(--color-primary);
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+.full-width {
+  width: 100%;
+}
+
+
+/* =========================================================
+   06. SECTION HEADING
+========================================================= */
+
+.section-heading {
+  margin-bottom: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+}
+
+
+.section-heading h2 {
+  margin:
+    4px 0 0;
+
+  font-size:
+    clamp(1.35rem, 3vw, 1.8rem);
+
+  letter-spacing:
+    -0.025
