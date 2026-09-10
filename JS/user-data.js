@@ -30,30 +30,14 @@
    <script src="helpers.js"></script>
    <script src="user-data.js"></script>
 
-   IMPORTANTE:
-   As páginas da aplicação devem utilizar estas funções
-   para acessar ou modificar os dados centrais do usuário.
-
-   Nenhuma página deve criar uma segunda estrutura
-   independente para os mesmos dados.
-
-   REGRA NUTRICIONAL:
-   O sistema NÃO cria, calcula ou sugere
-   metas nutricionais.
-
-   O usuário também NÃO define metas nutricionais.
-
-   As metas nutricionais somente existem quando
-   forem definidas por um profissional responsável.
-
-   Sem plano nutricional ativo, o aplicativo apenas
-   registra e apresenta o consumo real do usuário.
+   
+   
 ========================================================= */
 
 
 /* =========================================================
    01. STORAGE CONFIGURATION
-   Configuração do armazenamento central
+   
 ========================================================= */
 
 const USER_STORAGE_KEY =
@@ -62,7 +46,7 @@ const USER_STORAGE_KEY =
 
 /* =========================================================
    02. DEFAULT MEAL GOALS
-   Estrutura padrão das refeições do plano profissional
+   
 ========================================================= */
 
 function createDefaultMealGoals() {
@@ -132,12 +116,7 @@ function createDefaultMealGoals() {
 
 /* =========================================================
    03. DEFAULT NUTRITION PLAN
-   Estrutura padrão de um plano profissional
 
-   IMPORTANTE:
-   Todos os valores nutricionais começam como null.
-
-   Nenhuma meta é criada automaticamente.
 ========================================================= */
 
 function createDefaultNutritionPlan() {
@@ -217,8 +196,7 @@ function createDefaultNutritionPlan() {
     /* =====================================================
        PLANO ALIMENTAR
 
-       Será preenchido futuramente pelo
-       módulo de plano alimentar.
+ 
     ====================================================== */
 
     plannedMeals: [],
@@ -255,7 +233,7 @@ function createDefaultNutritionPlan() {
 
 /* =========================================================
    04. DEFAULT NUTRITION GOALS
-   Estrutura nutricional central do usuário
+   
 ========================================================= */
 
 function createDefaultNutritionGoals() {
@@ -272,8 +250,7 @@ function createDefaultNutritionGoals() {
 
 
 /* =========================================================
-   05. DEFAULT USER
-   Estrutura padrão dos dados do usuário
+   05. DEFAULT USE
 ========================================================= */
 
 const DEFAULT_USER = {
@@ -306,7 +283,7 @@ const DEFAULT_USER = {
 
 /* =========================================================
    06. BMI CALCULATION
-   Calcula o BMI usando peso em kg e altura em metros
+  
 ========================================================= */
 
 function calculateBMI(
@@ -355,7 +332,7 @@ function calculateBMI(
 
 /* =========================================================
    07. BMI CATEGORY
-   Retorna a categoria correspondente ao BMI
+
 ========================================================= */
 
 function getBMICategory(
@@ -430,13 +407,7 @@ function getBMICategory(
 
 /* =========================================================
    08. NUTRITION VALUE NORMALIZATION
-   Normaliza valores nutricionais
-
-   Valores negativos não são aceitos.
-
-   IMPORTANTE:
-   Esta função apenas valida números.
-   Ela NÃO calcula metas.
+   
 ========================================================= */
 
 function normalizeNutritionValue(
@@ -477,7 +448,7 @@ function normalizeNutritionValue(
 
 /* =========================================================
    09. DAILY GOALS NORMALIZATION
-   Normaliza metas diárias profissionais
+   
 ========================================================= */
 
 function normalizeDailyGoals(
@@ -540,7 +511,7 @@ function normalizeDailyGoals(
 
 /* =========================================================
    10. PROFESSIONAL NORMALIZATION
-   Normaliza os dados do profissional responsável
+   
 ========================================================= */
 
 function normalizeNutritionProfessional(
@@ -581,7 +552,7 @@ function normalizeNutritionProfessional(
 
 /* =========================================================
    11. MEAL GOALS NORMALIZATION
-   Normaliza metas profissionais por refeição
+   
 ========================================================= */
 
 function normalizeMealGoals(
@@ -686,7 +657,7 @@ function normalizeMealGoals(
 
 /* =========================================================
    12. NUTRITION PLAN NORMALIZATION
-   Garante a estrutura completa do plano profissional
+   
 ========================================================= */
 
 function normalizeNutritionPlan(
@@ -788,7 +759,6 @@ function normalizeNutritionPlan(
 
 /* =========================================================
    13. NUTRITION GOALS NORMALIZATION
-   Garante a estrutura nutricional central
 ========================================================= */
 
 function normalizeNutritionGoals(
@@ -858,11 +828,7 @@ function normalizeNutritionGoals(
 
 /* =========================================================
    14. USER NORMALIZATION
-   Garante que todos os campos padrão existam
-
-   IMPORTANTE:
-   Campos antigos como calorieGoal e waterGoal
-   não fazem mais parte da estrutura central.
+   
 ========================================================= */
 
 function normalizeUser(
@@ -934,7 +900,6 @@ function normalizeUser(
 
 /* =========================================================
    15. GET USER
-   Obtém os dados atuais armazenados
 ========================================================= */
 
 function getUser() {
@@ -968,7 +933,7 @@ function getUser() {
 
 /* =========================================================
    16. SAVE USER
-   Salva os dados centrais do usuário
+   
 ========================================================= */
 
 function saveUser(
@@ -1081,7 +1046,7 @@ function saveUser(
 
 /* =========================================================
    17. UPDATE USER
-   Atualiza somente os campos informados
+
 ========================================================= */
 
 function updateUser(
@@ -1109,7 +1074,6 @@ function updateUser(
 
 /* =========================================================
    18. INITIAL WEIGHT
-   Registra o primeiro peso do usuário
 ========================================================= */
 
 function setInitialWeight(
@@ -1162,7 +1126,7 @@ function setInitialWeight(
 
 /* =========================================================
    19. CURRENT WEIGHT
-   Atualiza o peso atual do usuário
+   
 ========================================================= */
 
 function setCurrentWeight(
@@ -1219,7 +1183,7 @@ function setCurrentWeight(
 
 /* =========================================================
    20. USER HEIGHT
-   Atualiza a altura do usuário em metros
+   
 ========================================================= */
 
 function setUserHeight(
@@ -1254,11 +1218,7 @@ function setUserHeight(
 
 /* =========================================================
    21. GOAL WEIGHT
-   Atualiza a meta de peso
 
-   IMPORTANTE:
-   A meta de peso NÃO gera automaticamente
-   nenhuma meta nutricional.
 ========================================================= */
 
 function setGoalWeight(
@@ -1293,7 +1253,7 @@ function setGoalWeight(
 
 /* =========================================================
    22. USER NAME
-   Atualiza o nome do usuário
+   
 ========================================================= */
 
 function setUserName(
@@ -1318,7 +1278,7 @@ function setUserName(
 
 /* =========================================================
    23. PREMIUM STATUS
-   Atualiza o status Premium do usuário
+   
 ========================================================= */
 
 function setPremiumStatus(
@@ -1339,7 +1299,7 @@ function setPremiumStatus(
 
 /* =========================================================
    24. GET NUTRITION GOALS
-   Obtém a estrutura nutricional completa
+   
 ========================================================= */
 
 function getNutritionGoals() {
@@ -1357,7 +1317,7 @@ function getNutritionGoals() {
 
 /* =========================================================
    25. GET ACTIVE NUTRITION PLAN
-   Retorna o plano profissional atualmente armazenado
+
 ========================================================= */
 
 function getActiveNutritionPlan() {
@@ -1384,7 +1344,7 @@ function getActiveNutritionPlan() {
 
 /* =========================================================
    26. DATE KEY
-   Converte uma data válida para YYYY-MM-DD
+   
 ========================================================= */
 
 function getNutritionDateKey(
@@ -1469,13 +1429,7 @@ function getNutritionDateKey(
 
 /* =========================================================
    27. ACTIVE PLAN VALIDITY
-   Verifica se o plano está dentro do período de validade
-
-   IMPORTANTE:
-   A função não cria nem altera metas.
-
-   Ela apenas verifica as datas definidas
-   pelo profissional.
+   
 ========================================================= */
 
 function isNutritionPlanCurrentlyValid(
@@ -1540,7 +1494,7 @@ function isNutritionPlanCurrentlyValid(
 
 /* =========================================================
    28. ACTIVE NUTRITION PLAN STATUS
-   Verifica se existe plano profissional ativo e válido
+   
 ========================================================= */
 
 function hasActiveNutritionPlan() {
@@ -1567,13 +1521,7 @@ function hasActiveNutritionPlan() {
 
 /* =========================================================
    29. SET PROFESSIONAL NUTRITION PLAN
-   Registra um novo plano profissional
-
-   Se já existir um plano anterior,
-   ele é preservado no histórico.
-
-   IMPORTANTE:
-   Nenhuma meta é preenchida automaticamente.
+  
 ========================================================= */
 
 function setProfessionalNutritionPlan(
@@ -1663,10 +1611,6 @@ function setProfessionalNutritionPlan(
 
 /* =========================================================
    30. UPDATE PROFESSIONAL NUTRITION PLAN
-   Atualiza o plano profissional atualmente ativo
-
-   Antes da alteração, a versão anterior
-   é preservada no histórico.
 ========================================================= */
 
 function updateProfessionalNutritionPlan(
@@ -1829,9 +1773,6 @@ function updateProfessionalNutritionPlan(
 
 /* =========================================================
    31. ARCHIVE ACTIVE NUTRITION PLAN
-   Encerra o plano ativo sem apagar seus dados
-
-   O plano é movido para o histórico.
 ========================================================= */
 
 function archiveActiveNutritionPlan() {
@@ -1886,7 +1827,7 @@ function archiveActiveNutritionPlan() {
 
 /* =========================================================
    32. NUTRITION PLAN HISTORY
-   Retorna o histórico de planos profissionais
+   
 ========================================================= */
 
 function getNutritionPlanHistory() {
@@ -1906,12 +1847,7 @@ function getNutritionPlanHistory() {
 
 /* =========================================================
    33. DAILY NUTRITION GOALS
-   Retorna as metas profissionais diárias
-
-   Se não existir plano ativo e válido,
-   retorna null.
-
-   Nenhum valor padrão é criado.
+  
 ========================================================= */
 
 function getActiveDailyNutritionGoals() {
@@ -1940,10 +1876,7 @@ function getActiveDailyNutritionGoals() {
 
 /* =========================================================
    34. MEAL NUTRITION GOALS
-   Retorna as metas profissionais por refeição
-
-   Se não existir plano ativo e válido,
-   retorna um array vazio.
+   
 ========================================================= */
 
 function getActiveMealNutritionGoals() {
@@ -1978,7 +1911,7 @@ function getActiveMealNutritionGoals() {
 
 /* =========================================================
    35. WEIGHT PROGRESS CALCULATION
-   Calcula o progresso entre peso inicial e meta
+   
 ========================================================= */
 
 function calculateWeightProgress(
@@ -2086,7 +2019,7 @@ function calculateWeightProgress(
 
 /* =========================================================
    36. USER WEIGHT PROGRESS
-   Calcula o progresso usando os dados atuais do usuário
+   
 ========================================================= */
 
 function getUserWeightProgress() {
@@ -2110,7 +2043,7 @@ function getUserWeightProgress() {
 
 /* =========================================================
    37. BASIC USER DATA STATUS
-   Verifica se os dados básicos já foram preenchidos
+   
 ========================================================= */
 
 function hasBasicUserData() {
@@ -2146,7 +2079,7 @@ function hasBasicUserData() {
 
 /* =========================================================
    38. WEIGHT GOAL STATUS
-   Verifica se a meta de peso já foi definida
+
 ========================================================= */
 
 function hasWeightGoal() {
@@ -2173,23 +2106,6 @@ function hasWeightGoal() {
 
    Ferramenta temporária para desenvolvimento.
 
-   IMPORTANTE:
-   Esta função remove os dados armazenados
-   na chave principal euConsigoUser.
-
-   Como nutritionGoals pertence ao usuário central,
-   o reset também remove:
-
-   - plano nutricional ativo
-   - metas profissionais
-   - histórico dos planos profissionais
-
-   Ela NÃO apaga dados armazenados em outras chaves:
-
-   - alimentação diária
-   - histórico alimentar
-   - movimento
-   - dados do Miau
 ========================================================= */
 
 function resetUserData() {
