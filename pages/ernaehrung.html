@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Ernährung – tägliche Mahlzeiten, Nährwerte und Ernährungsplan."
+  >
+
+  <title>Ernährung | Mein Fortschritt</title>
+
+  <link
+    rel="stylesheet"
+    href="ernaehrung.css"
+  >
+
+</head>
+
+
+<body>
+
+
+  <!-- =====================================================
+       01. HEADER
+  ====================================================== -->
+
+  <header class="app-header">
+
+    <div class="top-header">
+
+      <a
+        href="../dashboard/dashboard.html"
+        class="brand"
+        aria-label="Mein Fortschritt"
+      >
+
+        <span class="brand-mark">
+          ♥
+        </span>
+
+        <span class="brand-name">
+          Mein Fortschritt
+        </span>
+
+      </a>
+
+
+      <a
+        href="../dashboard/dashboard.html"
+        class="back-button"
+        aria-label="Zurück"
+      >
+        ←
+      </a>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       02. MAIN
+  ====================================================== -->
+
+  <main class="nutrition-page">
+
+
+    <!-- ===================================================
+         03. PAGE INTRO
+    ==================================================== -->
+
+    <section class="page-intro">
+
+      <div>
+
+        <p class="eyebrow">
+          Ernährung
+        </p>
+
+        <h1>
+          Heute
+        </h1>
+
+        <p
+          class="current-date"
+          id="currentDate"
+        ></p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="primary-button"
+        id="openFoodButton"
+      >
+        Lebensmittel hinzufügen
+      </button>
+
+    </section>
+
+
+    <!-- ===================================================
+         04. DAILY SUMMARY
+    ==================================================== -->
+
+    <section
+      class="daily-summary"
+      aria-labelledby="dailySummaryTitle"
+    >
+
+      <div class="section-heading">
+
+        <div>
+
+          <p class="eyebrow">
+            Tagesübersicht
+          </p>
+
+          <h2 id="dailySummaryTitle">
+            Deine Ernährung heute
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div class="summary-grid">
+
+
+        <article class="summary-card summary-card-main">
+
+          <span class="summary-label">
+            Kalorien
+          </span>
+
+          <strong
+            class="summary-value"
+            id="caloriesConsumed"
+          >
+            0 kcal
+          </strong>
+
+          <div
+            class="goal-comparison"
+            id="caloriesGoalArea"
+            hidden
+          >
+
+            <div class="goal-row">
+
+              <span>
+                Ziel
+              </span>
+
+              <span id="caloriesGoal">
+                —
+              </span>
+
+            </div>
+
+
+            <div class="goal-row">
+
+              <span>
+                Verbleibend
+              </span>
+
+              <span id="caloriesRemaining">
+                —
+              </span>
+
+            </div>
+
+
+            <div class="progress-track">
+
+              <div
+                class="progress-bar"
+                id="caloriesProgress"
+              ></div>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <article class="summary-card">
+
+          <span class="summary-label">
+            Protein
+          </span>
+
+          <strong
+            class="summary-value"
+            id="proteinConsumed"
+          >
+            0 g
+          </strong>
+
+          <span
+            class="summary-goal"
+            id="proteinGoal"
+            hidden
+          ></span>
+
+        </article>
+
+
+        <article class="summary-card">
+
+          <span class="summary-label">
+            Kohlenhydrate
+          </span>
+
+          <strong
+            class="summary-value"
+            id="carbohydratesConsumed"
+          >
+            0 g
+          </strong>
+
+          <span
+            class="summary-goal"
+            id="carbohydratesGoal"
+            hidden
+          ></span>
+
+        </article>
+
+
+        <article class="summary-card">
+
+          <span class="summary-label">
+            Fett
+          </span>
+
+          <strong
+            class="summary-value"
+            id="fatConsumed"
+          >
+            0 g
+          </strong>
+
+          <span
+            class="summary-goal"
+            id="fatGoal"
+            hidden
+          ></span>
+
+        </article>
+
+
+        <article class="summary-card">
+
+          <span class="summary-label">
+            Ballaststoffe
+          </span>
+
+          <strong
+            class="summary-value"
+            id="fiberConsumed"
+          >
+            0 g
+          </strong>
+
+          <span
+            class="summary-goal"
+            id="fiberGoal"
+            hidden
+          ></span>
+
+        </article>
+
+
+        <article class="summary-card">
+
+          <span class="summary-label">
+            Zucker
+          </span>
+
+          <strong
+            class="summary-value"
+            id="sugarConsumed"
+          >
+            0 g
+          </strong>
+
+          <span
+            class="summary-goal"
+            id="sugarGoal"
+            hidden
+          ></span>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         05. PROFESSIONAL PLAN
+    ==================================================== -->
+
+    <section
+      class="professional-plan"
+      id="professionalPlanSection"
+      hidden
+    >
+
+      <div class="section-heading">
+
+        <div>
+
+          <p class="eyebrow">
+            Ernährungsplan
+          </p>
+
+          <h2 id="nutritionPlanName">
+            Aktiver Plan
+          </h2>
+
+        </div>
+
+        <span class="premium-badge">
+          Premium
+        </span>
+
+      </div>
+
+
+      <div class="professional-plan-card">
+
+        <div class="professional-info">
+
+          <span class="plan-label">
+            Betreuung
+          </span>
+
+          <strong id="nutritionProfessionalName">
+            —
+          </strong>
+
+          <span id="nutritionProfessionalRole">
+            —
+          </span>
+
+        </div>
+
+
+        <div class="plan-period">
+
+          <div>
+
+            <span class="plan-label">
+              Beginn
+            </span>
+
+            <strong id="nutritionPlanStart">
+              —
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span class="plan-label">
+              Ende
+            </span>
+
+            <strong id="nutritionPlanEnd">
+              —
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <p
+          class="plan-notes"
+          id="nutritionPlanNotes"
+          hidden
+        ></p>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         06. MEALS
+    ==================================================== -->
+
+    <section
+      class="meals-section"
+      aria-labelledby="mealsTitle"
+    >
+
+      <div class="section-heading">
+
+        <div>
+
+          <p class="eyebrow">
+            Mahlzeiten
+          </p>
+
+          <h2 id="mealsTitle">
+            Heute gegessen
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="meals-list"
+        id="mealsList"
+      >
+
+
+        <article
+          class="meal-card"
+          data-meal="breakfast"
+        >
+
+          <div class="meal-header">
+
+            <div>
+
+              <span class="meal-time">
+                Frühstück
+              </span>
+
+              <strong
+                class="meal-calories"
+                id="breakfastCalories"
+              >
+                0 kcal
+              </strong>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="meal-add-button"
+              data-add-meal="breakfast"
+              aria-label="Lebensmittel zum Frühstück hinzufügen"
+            >
+              +
+            </button>
+
+          </div>
+
+
+          <div
+            class="meal-items"
+            id="breakfastItems"
+          >
+
+            <p class="empty-meal">
+              Noch nichts eingetragen.
+            </p>
+
+          </div>
+
+        </article>
+
+
+        <article
+          class="meal-card"
+          data-meal="lunch"
+        >
+
+          <div class="meal-header">
+
+            <div>
+
+              <span class="meal-time">
+                Mittagessen
+              </span>
+
+              <strong
+                class="meal-calories"
+                id="lunchCalories"
+              >
+                0 kcal
+              </strong>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="meal-add-button"
+              data-add-meal="lunch"
+              aria-label="Lebensmittel zum Mittagessen hinzufügen"
+            >
+              +
+            </button>
+
+          </div>
+
+
+          <div
+            class="meal-items"
+            id="lunchItems"
+          >
+
+            <p class="empty-meal">
+              Noch nichts eingetragen.
+            </p>
+
+          </div>
+
+        </article>
+
+
+        <article
+          class="meal-card"
+          data-meal="snack"
+        >
+
+          <div class="meal-header">
+
+            <div>
+
+              <span class="meal-time">
+                Snack
+              </span>
+
+              <strong
+                class="meal-calories"
+                id="snackCalories"
+              >
+                0 kcal
+              </strong>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="meal-add-button"
+              data-add-meal="snack"
+              aria-label="Snack hinzufügen"
+            >
+              +
+            </button>
+
+          </div>
+
+
+          <div
+            class="meal-items"
+            id="snackItems"
+          >
+
+            <p class="empty-meal">
+              Noch nichts eingetragen.
+            </p>
+
+          </div>
+
+        </article>
+
+
+        <article
+          class="meal-card"
+          data-meal="dinner"
+        >
+
+          <div class="meal-header">
+
+            <div>
+
+              <span class="meal-time">
+                Abendessen
+              </span>
+
+              <strong
+                class="meal-calories"
+                id="dinnerCalories"
+              >
+                0 kcal
+              </strong>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="meal-add-button"
+              data-add-meal="dinner"
+              aria-label="Lebensmittel zum Abendessen hinzufügen"
+            >
+              +
+            </button>
+
+          </div>
+
+
+          <div
+            class="meal-items"
+            id="dinnerItems"
+          >
+
+            <p class="empty-meal">
+              Noch nichts eingetragen.
+            </p>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         07. ADD FOOD MODAL
+    ==================================================== -->
+
+    <div
+      class="modal"
+      id="foodModal"
+      hidden
+    >
+
+      <div
+        class="modal-backdrop"
+        id="foodModalBackdrop"
+      ></div>
+
+
+      <section
+        class="modal-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="foodModalTitle"
+      >
+
+        <div class="modal-header">
+
+          <div>
+
+            <p class="eyebrow">
+              Ernährung
+            </p>
+
+            <h2 id="foodModalTitle">
+              Lebensmittel hinzufügen
+            </h2>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="modal-close"
+            id="closeFoodModalButton"
+            aria-label="Schließen"
+          >
+            ×
+          </button>
+
+        </div>
+
+
+        <!-- =================================================
+             08. FOOD SEARCH
+        ================================================== -->
+
+        <div
+          class="food-search-view"
+          id="foodSearchView"
+        >
+
+          <label
+            class="form-field"
+            for="foodSearchInput"
+          >
+
+            <span>
+              Lebensmittel suchen
+            </span>
+
+            <input
+              type="search"
+              id="foodSearchInput"
+              placeholder="z. B. Banane, Joghurt, Reis"
+              autocomplete="off"
+            >
+
+          </label>
+
+
+          <div
+            class="food-search-results"
+            id="foodSearchResults"
+          ></div>
+
+
+          <div
+            class="food-not-found"
+            id="foodNotFound"
+            hidden
+          >
+
+            <p>
+              Lebensmittel nicht gefunden?
+            </p>
+
+            <button
+              type="button"
+              class="secondary-button"
+              id="openCustomFoodButton"
+            >
+              Neues Lebensmittel eintragen
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             09. SELECTED FOOD
+        ================================================== -->
+
+        <form
+          class="selected-food-form"
+          id="selectedFoodForm"
+          hidden
+        >
+
+          <div class="selected-food-header">
+
+            <div>
+
+              <span class="form-label">
+                Ausgewählt
+              </span>
+
+              <strong id="selectedFoodName">
+                —
+              </strong>
+
+              <span id="selectedFoodBrand"></span>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="text-button"
+              id="changeSelectedFoodButton"
+            >
+              Ändern
+            </button>
+
+          </div>
+
+
+          <div class="form-grid">
+
+            <label
+              class="form-field"
+              for="selectedFoodQuantity"
+            >
+
+              <span>
+                Menge
+              </span>
+
+              <input
+                type="number"
+                id="selectedFoodQuantity"
+                min="0.01"
+                step="0.01"
+                required
+              >
+
+            </label>
+
+
+            <label
+              class="form-field"
+              for="selectedFoodUnit"
+            >
+
+              <span>
+                Einheit
+              </span>
+
+              <input
+                type="text"
+                id="selectedFoodUnit"
+                readonly
+              >
+
+            </label>
+
+
+            <label
+              class="form-field"
+              for="selectedFoodMeal"
+            >
+
+              <span>
+                Mahlzeit
+              </span>
+
+              <select
+                id="selectedFoodMeal"
+                required
+              >
+
+                <option value="breakfast">
+                  Frühstück
+                </option>
+
+                <option value="lunch">
+                  Mittagessen
+                </option>
+
+                <option value="snack">
+                  Snack
+                </option>
+
+                <option value="dinner">
+                  Abendessen
+                </option>
+
+              </select>
+
+            </label>
+
+
+            <label
+              class="form-field"
+              for="selectedFoodTime"
+            >
+
+              <span>
+                Uhrzeit
+              </span>
+
+              <input
+                type="time"
+                id="selectedFoodTime"
+              >
+
+            </label>
+
+          </div>
+
+
+          <div
+            class="selected-food-values"
+            id="selectedFoodValues"
+          >
+
+            <div>
+
+              <span>
+                Kalorien
+              </span>
+
+              <strong id="selectedCalories">
+                —
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <span>
+                Protein
+              </span>
+
+              <strong id="selectedProtein">
+                —
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <span>
+                Kohlenhydrate
+              </span>
+
+              <strong id="selectedCarbohydrates">
+                —
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <span>
+                Fett
+              </span>
+
+              <strong id="selectedFat">
+                —
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <span>
+                Ballaststoffe
+              </span>
+
+              <strong id="selectedFiber">
+                —
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <span>
+                Zucker
+              </span>
+
+              <strong id="selectedSugar">
+                —
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <button
+            type="submit"
+            class="primary-button full-width"
+          >
+            Zur Mahlzeit hinzufügen
+          </button>
+
+        </form>
+
+
+        <!-- =================================================
+             10. CUSTOM FOOD FORM
+        ================================================== -->
+
+        <form
+          class="custom-food-form"
+          id="customFoodForm"
+          hidden
+        >
+
+          <div class="form-section-heading">
+
+            <button
+              type="button"
+              class="text-button"
+              id="backToFoodSearchButton"
+            >
+              ← Zurück
+            </button>
+
+            <h3>
+              Neues Lebensmittel
+            </h3>
+
+          </div>
+
+
+          <div class="form-grid">
+
+            <label
+              class="form-field form-field-wide"
+              for="customFoodName"
+            >
+
+              <span>
+                Lebensmittel
+              </span>
+
+              <input
+                type="text"
+                id="customFoodName"
+                required
+              >
+
+            </label>
+
+
+            <label
+              class="form-field form-field-wide"
+              for="customFoodBrand"
+            >
+
+              <span>
+                Marke
+              </span>
+
+              <input
+                type="text"
+                id="customFoodBrand"
+              >
+
+            </label>
+
+
+            <label
+              class="form-field"
+              for="customFoodBasisAmount"
+            >
+
+              <span>
+                Nährwerte pro
+              </span>
+
+              <input
+                type="number"
+                id="customFoodBasisAmount"
+                value="100"
+                min="0.01"
+                step="0.01"
+                required
+              >
+
+            </label>
+
+
+            <label
+              class="form-field"
+              for="customFoodBasisUnit"
+            >
+
+              <span>
+                Einheit
+              </span>
+
+              <select
+                id="customFoodBasisUnit"
+                required
+              >
+
+                <option value="g">
+                  g
+                </option>
+
+                <option value="ml">
+                  ml
+                </option>
+
+              </select>
+
+            </label>
+
+
+            <label
+              class="form-field"
+              for="customFoodCalories"
+            >
+
+              <span>
+                Kalorien
+              </span>
+
+              <input
+                type="number"
+                id="customFoodCalories"
+                min="0"
+                step="0.01"
+                required
+              >
+
+            </label>
+
+
+            <label
+              class="form-field"
+              for="customFoodProtein"
+            >
+
+              <span>
+                Protein (g)
+              </span>
+
+              <input
+                type="number"
+                id="customFoodProtein"
+                min="0"
+                step="0.01"
+              >
+
+            </label>
+
+
+            <label
+              class="form-field"
+              for="customFoodCarbohydrates"
+            >
+
+              <span>
+                Kohlenhydrate (g)
+              </span>
+
+              <input
+                type="number"
+                id="customFoodCarbohydrates"
+                min="0"
+                step="0.01"
+              >
+
+            </label>
+
+
+            <label
+              class="form-field"
+              for="customFoodFat"
+            >
+
+              <span>
+                Fett (g)
+              </span>
+
+              <input
+                type="number"
+                id="customFoodFat"
+                min="0"
+                step="0.01"
+              >
+
+            </label>
+
+
+            <label
+              class="form-field"
+              for="customFoodFiber"
+            >
+
+              <span>
+                Ballaststoffe (g)
+              </span>
+
+              <input
+                type="number"
+                id="customFoodFiber"
+                min="0"
+                step="0.01"
+              >
+
+            </label>
+
+
+            <label
+              class="form-field"
+              for="customFoodSugar"
+            >
+
+              <span>
+                Zucker (g)
+              </span>
+
+              <input
+                type="number"
+                id="customFoodSugar"
+                min="0"
+                step="0.01"
+              >
+
+            </label>
+
+
+            <label
+              class="form-field"
+              for="customFoodMeal"
+            >
+
+              <span>
+                Mahlzeit
+              </span>
+
+              <select
+                id="customFoodMeal"
+                required
+              >
+
+                <option value="breakfast">
+                  Frühstück
+                </option>
+
+                <option value="lunch">
+                  Mittagessen
+                </option>
+
+                <option value="snack">
+                  Snack
+                </option>
+
+                <option value="dinner">
+                  Abendessen
+                </option>
+
+              </select>
+
+            </label>
+
+
+            <label
+              class="form-field"
+              for="customFoodTime"
+            >
+
+              <span>
+                Uhrzeit
+              </span>
+
+              <input
+                type="time"
+                id="customFoodTime"
+              >
+
+            </label>
+
+          </div>
+
+
+          <button
+            type="submit"
+            class="primary-button full-width"
+          >
+            Speichern und hinzufügen
+          </button>
+
+        </form>
+
+      </section>
+
+    </div>
+
+  </main>
+
+
+  <!-- =====================================================
+       11. SCRIPTS
+  ====================================================== -->
+
+  <script src="../JS/storage.js"></script>
+
+  <script src="../JS/helpers.js"></script>
+
+  <script src="../JS/user-data.js"></script>
+
+  <script src="../JS/food-data.js"></script>
+
+  <script src="../JS/food-database.js"></script>
+
+  <script src="ernaehrung.js"></script>
+
+
+</body>
+
+</html>
