@@ -13,10 +13,12 @@
    - Categoria do BMI
    - Peso inicial e peso atual
    - Meta de peso
-   - Meta de calorias
    - Status Premium
    - Cálculo do progresso de peso
    - Validação do perfil básico
+   - Plano nutricional profissional
+   - Metas nutricionais profissionais
+   - Histórico de alterações do plano nutricional
 
    DEPENDÊNCIAS:
    - storage.js
@@ -34,6 +36,18 @@
 
    Nenhuma página deve criar uma segunda estrutura
    independente para os mesmos dados.
+
+   REGRA NUTRICIONAL:
+   O sistema NÃO cria, calcula ou sugere
+   metas nutricionais.
+
+   O usuário também NÃO define metas nutricionais.
+
+   As metas nutricionais somente existem quando
+   forem definidas por um profissional responsável.
+
+   Sem plano nutricional ativo, o aplicativo apenas
+   registra e apresenta o consumo real do usuário.
 ========================================================= */
 
 
@@ -47,7 +61,218 @@ const USER_STORAGE_KEY =
 
 
 /* =========================================================
-   02. DEFAULT USER
+   02. DEFAULT MEAL GOALS
+   Estrutura padrão das refeições do plano profissional
+========================================================= */
+
+function createDefaultMealGoals() {
+
+  return [
+
+    {
+      id: "breakfast",
+      type: "breakfast",
+      order: 1,
+      customName: null,
+
+      goals: {
+        calories: null,
+        protein: null,
+        carbohydrates: null,
+        fat: null
+      }
+    },
+
+    {
+      id: "lunch",
+      type: "lunch",
+      order: 2,
+      customName: null,
+
+      goals: {
+        calories: null,
+        protein: null,
+        carbohydrates: null,
+        fat: null
+      }
+    },
+
+    {
+      id: "snack",
+      type: "snack",
+      order: 3,
+      customName: null,
+
+      goals: {
+        calories: null,
+        protein: null,
+        carbohydrates: null,
+        fat: null
+      }
+    },
+
+    {
+      id: "dinner",
+      type: "dinner",
+      order: 4,
+      customName: null,
+
+      goals: {
+        calories: null,
+        protein: null,
+        carbohydrates: null,
+        fat: null
+      }
+    }
+
+  ];
+
+}
+
+
+/* =========================================================
+   03. DEFAULT NUTRITION PLAN
+   Estrutura padrão de um plano profissional
+
+   IMPORTANTE:
+   Todos os valores nutricionais começam como null.
+
+   Nenhuma meta é criada automaticamente.
+========================================================= */
+
+function createDefaultNutritionPlan() {
+
+  return {
+
+    /* =====================================================
+       IDENTIFICAÇÃO DO PLANO
+    ====================================================== */
+
+    id: null,
+
+    planName: "",
+
+    version: 1,
+
+    source: "professional",
+
+
+    /* =====================================================
+       PROFISSIONAL RESPONSÁVEL
+    ====================================================== */
+
+    professional: {
+
+      id: null,
+
+      name: "",
+
+      role: ""
+
+    },
+
+
+    /* =====================================================
+       METAS DIÁRIAS
+
+       calories = kcal
+       nutrientes = g
+       water = ml
+    ====================================================== */
+
+    dailyGoals: {
+
+      calories: null,
+
+      protein: null,
+
+      carbohydrates: null,
+
+      fat: null,
+
+      fiber: null,
+
+      sugar: null,
+
+      water: null
+
+    },
+
+
+    /* =====================================================
+       NÚMERO DE REFEIÇÕES
+    ====================================================== */
+
+    mealsPerDay: null,
+
+
+    /* =====================================================
+       METAS POR REFEIÇÃO
+    ====================================================== */
+
+    mealGoals:
+      createDefaultMealGoals(),
+
+
+    /* =====================================================
+       PLANO ALIMENTAR
+
+       Será preenchido futuramente pelo
+       módulo de plano alimentar.
+    ====================================================== */
+
+    plannedMeals: [],
+
+
+    /* =====================================================
+       OBSERVAÇÕES PROFISSIONAIS
+    ====================================================== */
+
+    notes: "",
+
+
+    /* =====================================================
+       PERÍODO DE VALIDADE
+    ====================================================== */
+
+    validFrom: null,
+
+    validUntil: null,
+
+
+    /* =====================================================
+       DATAS DE CONTROLE
+    ====================================================== */
+
+    createdAt: null,
+
+    updatedAt: null
+
+  };
+
+}
+
+
+/* =========================================================
+   04. DEFAULT NUTRITION GOALS
+   Estrutura nutricional central do usuário
+========================================================= */
+
+function createDefaultNutritionGoals() {
+
+  return {
+
+    activePlan: null,
+
+    history: []
+
+  };
+
+}
+
+
+/* =========================================================
+   05. DEFAULT USER
    Estrutura padrão dos dados do usuário
 ========================================================= */
 
@@ -58,26 +283,29 @@ const DEFAULT_USER = {
   height: null,
 
   startWeight: null,
+
   currentWeight: null,
+
   goalWeight: null,
 
   bmi: null,
 
-  calorieGoal: null,
-
-  waterGoal: 2000,
   movementGoal: 30,
 
   premium: false,
 
+  nutritionGoals:
+    createDefaultNutritionGoals(),
+
   createdAt: null,
+
   updatedAt: null
 
 };
 
 
 /* =========================================================
-   03. BMI CALCULATION
+   06. BMI CALCULATION
    Calcula o BMI usando peso em kg e altura em metros
 ========================================================= */
 
@@ -126,7 +354,7 @@ function calculateBMI(
 
 
 /* =========================================================
-   04. BMI CATEGORY
+   07. BMI CATEGORY
    Retorna a categoria correspondente ao BMI
 ========================================================= */
 
@@ -201,8 +429,440 @@ function getBMICategory(
 
 
 /* =========================================================
-   05. USER NORMALIZATION
+   08. NUTRITION VALUE NORMALIZATION
+   Normaliza valores nutricionais
+
+   Valores negativos não são aceitos.
+
+   IMPORTANTE:
+   Esta função apenas valida números.
+   Ela NÃO calcula metas.
+========================================================= */
+
+function normalizeNutritionValue(
+  value
+) {
+
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
+
+    return null;
+
+  }
+
+
+  const numericValue =
+    toNumber(
+      value
+    );
+
+
+  if (
+    numericValue === null ||
+    numericValue < 0
+  ) {
+
+    return null;
+
+  }
+
+
+  return numericValue;
+
+}
+
+
+/* =========================================================
+   09. DAILY GOALS NORMALIZATION
+   Normaliza metas diárias profissionais
+========================================================= */
+
+function normalizeDailyGoals(
+  dailyGoals = {}
+) {
+
+  const safeGoals =
+    (
+      dailyGoals &&
+      typeof dailyGoals === "object" &&
+      !Array.isArray(
+        dailyGoals
+      )
+    )
+      ? dailyGoals
+      : {};
+
+
+  return {
+
+    calories:
+      normalizeNutritionValue(
+        safeGoals.calories
+      ),
+
+    protein:
+      normalizeNutritionValue(
+        safeGoals.protein
+      ),
+
+    carbohydrates:
+      normalizeNutritionValue(
+        safeGoals.carbohydrates
+      ),
+
+    fat:
+      normalizeNutritionValue(
+        safeGoals.fat
+      ),
+
+    fiber:
+      normalizeNutritionValue(
+        safeGoals.fiber
+      ),
+
+    sugar:
+      normalizeNutritionValue(
+        safeGoals.sugar
+      ),
+
+    water:
+      normalizeNutritionValue(
+        safeGoals.water
+      )
+
+  };
+
+}
+
+
+/* =========================================================
+   10. PROFESSIONAL NORMALIZATION
+   Normaliza os dados do profissional responsável
+========================================================= */
+
+function normalizeNutritionProfessional(
+  professional = {}
+) {
+
+  const safeProfessional =
+    (
+      professional &&
+      typeof professional === "object" &&
+      !Array.isArray(
+        professional
+      )
+    )
+      ? professional
+      : {};
+
+
+  return {
+
+    id:
+      safeProfessional.id ?? null,
+
+    name:
+      typeof safeProfessional.name === "string"
+        ? safeProfessional.name.trim()
+        : "",
+
+    role:
+      typeof safeProfessional.role === "string"
+        ? safeProfessional.role.trim()
+        : ""
+
+  };
+
+}
+
+
+/* =========================================================
+   11. MEAL GOALS NORMALIZATION
+   Normaliza metas profissionais por refeição
+========================================================= */
+
+function normalizeMealGoals(
+  mealGoals
+) {
+
+  if (
+    !Array.isArray(
+      mealGoals
+    )
+  ) {
+
+    return createDefaultMealGoals();
+
+  }
+
+
+  return mealGoals.map(
+    (
+      meal,
+      index
+    ) => {
+
+      const safeMeal =
+        (
+          meal &&
+          typeof meal === "object" &&
+          !Array.isArray(
+            meal
+          )
+        )
+          ? meal
+          : {};
+
+
+      const safeGoals =
+        (
+          safeMeal.goals &&
+          typeof safeMeal.goals === "object" &&
+          !Array.isArray(
+            safeMeal.goals
+          )
+        )
+          ? safeMeal.goals
+          : {};
+
+
+      return {
+
+        id:
+          safeMeal.id ??
+          `meal-${index + 1}`,
+
+        type:
+          typeof safeMeal.type === "string"
+            ? safeMeal.type
+            : "custom",
+
+        order:
+          Number.isInteger(
+            safeMeal.order
+          )
+            ? safeMeal.order
+            : index + 1,
+
+        customName:
+          typeof safeMeal.customName === "string"
+            ? safeMeal.customName.trim()
+            : null,
+
+        goals: {
+
+          calories:
+            normalizeNutritionValue(
+              safeGoals.calories
+            ),
+
+          protein:
+            normalizeNutritionValue(
+              safeGoals.protein
+            ),
+
+          carbohydrates:
+            normalizeNutritionValue(
+              safeGoals.carbohydrates
+            ),
+
+          fat:
+            normalizeNutritionValue(
+              safeGoals.fat
+            )
+
+        }
+
+      };
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   12. NUTRITION PLAN NORMALIZATION
+   Garante a estrutura completa do plano profissional
+========================================================= */
+
+function normalizeNutritionPlan(
+  planData = {}
+) {
+
+  const safePlan =
+    (
+      planData &&
+      typeof planData === "object" &&
+      !Array.isArray(
+        planData
+      )
+    )
+      ? planData
+      : {};
+
+
+  const mealsPerDayNumber =
+    toNumber(
+      safePlan.mealsPerDay
+    );
+
+
+  return {
+
+    id:
+      safePlan.id ?? null,
+
+    planName:
+      typeof safePlan.planName === "string"
+        ? safePlan.planName.trim()
+        : "",
+
+    version:
+      Number.isInteger(
+        safePlan.version
+      ) &&
+      safePlan.version > 0
+        ? safePlan.version
+        : 1,
+
+    source:
+      "professional",
+
+    professional:
+      normalizeNutritionProfessional(
+        safePlan.professional
+      ),
+
+    dailyGoals:
+      normalizeDailyGoals(
+        safePlan.dailyGoals
+      ),
+
+    mealsPerDay:
+      (
+        mealsPerDayNumber !== null &&
+        mealsPerDayNumber > 0
+      )
+        ? Math.round(
+            mealsPerDayNumber
+          )
+        : null,
+
+    mealGoals:
+      normalizeMealGoals(
+        safePlan.mealGoals
+      ),
+
+    plannedMeals:
+      Array.isArray(
+        safePlan.plannedMeals
+      )
+        ? safePlan.plannedMeals
+        : [],
+
+    notes:
+      typeof safePlan.notes === "string"
+        ? safePlan.notes.trim()
+        : "",
+
+    validFrom:
+      safePlan.validFrom ?? null,
+
+    validUntil:
+      safePlan.validUntil ?? null,
+
+    createdAt:
+      safePlan.createdAt ?? null,
+
+    updatedAt:
+      safePlan.updatedAt ?? null
+
+  };
+
+}
+
+
+/* =========================================================
+   13. NUTRITION GOALS NORMALIZATION
+   Garante a estrutura nutricional central
+========================================================= */
+
+function normalizeNutritionGoals(
+  nutritionGoals = {}
+) {
+
+  const safeNutritionGoals =
+    (
+      nutritionGoals &&
+      typeof nutritionGoals === "object" &&
+      !Array.isArray(
+        nutritionGoals
+      )
+    )
+      ? nutritionGoals
+      : {};
+
+
+  const activePlan =
+    (
+      safeNutritionGoals.activePlan &&
+      typeof safeNutritionGoals.activePlan === "object" &&
+      !Array.isArray(
+        safeNutritionGoals.activePlan
+      )
+    )
+      ? normalizeNutritionPlan(
+          safeNutritionGoals.activePlan
+        )
+      : null;
+
+
+  const history =
+    Array.isArray(
+      safeNutritionGoals.history
+    )
+      ? safeNutritionGoals.history
+          .filter(
+            plan =>
+              plan &&
+              typeof plan === "object" &&
+              !Array.isArray(
+                plan
+              )
+          )
+          .map(
+            plan =>
+              normalizeNutritionPlan(
+                plan
+              )
+          )
+      : [];
+
+
+  return {
+
+    activePlan:
+      activePlan,
+
+    history:
+      history
+
+  };
+
+}
+
+
+/* =========================================================
+   14. USER NORMALIZATION
    Garante que todos os campos padrão existam
+
+   IMPORTANTE:
+   Campos antigos como calorieGoal e waterGoal
+   não fazem mais parte da estrutura central.
 ========================================================= */
 
 function normalizeUser(
@@ -223,8 +883,49 @@ function normalizeUser(
 
   return {
 
-    ...DEFAULT_USER,
-    ...safeUserData
+    name:
+      typeof safeUserData.name === "string"
+        ? safeUserData.name
+        : "",
+
+    height:
+      safeUserData.height ?? null,
+
+    startWeight:
+      safeUserData.startWeight ?? null,
+
+    currentWeight:
+      safeUserData.currentWeight ?? null,
+
+    goalWeight:
+      safeUserData.goalWeight ?? null,
+
+    bmi:
+      safeUserData.bmi ?? null,
+
+    movementGoal:
+      (
+        isFiniteNumber(
+          safeUserData.movementGoal
+        ) &&
+        safeUserData.movementGoal > 0
+      )
+        ? safeUserData.movementGoal
+        : DEFAULT_USER.movementGoal,
+
+    premium:
+      safeUserData.premium === true,
+
+    nutritionGoals:
+      normalizeNutritionGoals(
+        safeUserData.nutritionGoals
+      ),
+
+    createdAt:
+      safeUserData.createdAt ?? null,
+
+    updatedAt:
+      safeUserData.updatedAt ?? null
 
   };
 
@@ -232,7 +933,7 @@ function normalizeUser(
 
 
 /* =========================================================
-   06. GET USER
+   15. GET USER
    Obtém os dados atuais armazenados
 ========================================================= */
 
@@ -253,9 +954,7 @@ function getUser() {
     )
   ) {
 
-    return {
-      ...DEFAULT_USER
-    };
+    return normalizeUser({});
 
   }
 
@@ -268,7 +967,7 @@ function getUser() {
 
 
 /* =========================================================
-   07. SAVE USER
+   16. SAVE USER
    Salva os dados centrais do usuário
 ========================================================= */
 
@@ -301,7 +1000,13 @@ function saveUser(
     normalizeUser({
 
       ...currentUser,
-      ...safeUserData
+
+      ...safeUserData,
+
+      nutritionGoals:
+        safeUserData.nutritionGoals !== undefined
+          ? safeUserData.nutritionGoals
+          : currentUser.nutritionGoals
 
     });
 
@@ -330,10 +1035,6 @@ function saveUser(
 
   /* =======================================================
      AUTOMATIC BMI UPDATE
-
-     O BMI é recalculado sempre que:
-     - currentWeight existir
-     - height existir
   ======================================================== */
 
   if (
@@ -379,7 +1080,7 @@ function saveUser(
 
 
 /* =========================================================
-   08. UPDATE USER
+   17. UPDATE USER
    Atualiza somente os campos informados
 ========================================================= */
 
@@ -407,7 +1108,7 @@ function updateUser(
 
 
 /* =========================================================
-   09. INITIAL WEIGHT
+   18. INITIAL WEIGHT
    Registra o primeiro peso do usuário
 ========================================================= */
 
@@ -420,10 +1121,6 @@ function setInitialWeight(
       weight
     );
 
-
-  /* =======================================================
-     VALIDATION
-  ======================================================== */
 
   if (
     numericWeight === null ||
@@ -439,16 +1136,6 @@ function setInitialWeight(
     getUser();
 
 
-  /* =======================================================
-     START WEIGHT PROTECTION
-
-     startWeight somente é criado
-     se ainda não existir.
-
-     Ao retornar ao Index,
-     o peso inicial não é sobrescrito.
-  ======================================================== */
-
   const startWeight =
     (
       isFiniteNumber(
@@ -459,10 +1146,6 @@ function setInitialWeight(
       ? user.startWeight
       : numericWeight;
 
-
-  /* =======================================================
-     SAVE WEIGHT
-  ======================================================== */
 
   return updateUser({
 
@@ -478,7 +1161,7 @@ function setInitialWeight(
 
 
 /* =========================================================
-   10. CURRENT WEIGHT
+   19. CURRENT WEIGHT
    Atualiza o peso atual do usuário
 ========================================================= */
 
@@ -491,10 +1174,6 @@ function setCurrentWeight(
       weight
     );
 
-
-  /* =======================================================
-     VALIDATION
-  ======================================================== */
 
   if (
     numericWeight === null ||
@@ -518,13 +1197,6 @@ function setCurrentWeight(
   };
 
 
-  /* =======================================================
-     INITIAL WEIGHT FALLBACK
-
-     Segurança para casos em que o usuário
-     ainda não possui startWeight.
-  ======================================================== */
-
   if (
     !isFiniteNumber(
       user.startWeight
@@ -546,7 +1218,7 @@ function setCurrentWeight(
 
 
 /* =========================================================
-   11. USER HEIGHT
+   20. USER HEIGHT
    Atualiza a altura do usuário em metros
 ========================================================= */
 
@@ -559,10 +1231,6 @@ function setUserHeight(
       height
     );
 
-
-  /* =======================================================
-     VALIDATION
-  ======================================================== */
 
   if (
     numericHeight === null ||
@@ -585,8 +1253,12 @@ function setUserHeight(
 
 
 /* =========================================================
-   12. GOAL WEIGHT
+   21. GOAL WEIGHT
    Atualiza a meta de peso
+
+   IMPORTANTE:
+   A meta de peso NÃO gera automaticamente
+   nenhuma meta nutricional.
 ========================================================= */
 
 function setGoalWeight(
@@ -598,10 +1270,6 @@ function setGoalWeight(
       weight
     );
 
-
-  /* =======================================================
-     VALIDATION
-  ======================================================== */
 
   if (
     numericWeight === null ||
@@ -624,7 +1292,7 @@ function setGoalWeight(
 
 
 /* =========================================================
-   13. USER NAME
+   22. USER NAME
    Atualiza o nome do usuário
 ========================================================= */
 
@@ -649,48 +1317,7 @@ function setUserName(
 
 
 /* =========================================================
-   14. CALORIE GOAL
-   Atualiza a meta diária de calorias
-========================================================= */
-
-function setCalorieGoal(
-  calories
-) {
-
-  const numericCalories =
-    toNumber(
-      calories
-    );
-
-
-  /* =======================================================
-     VALIDATION
-  ======================================================== */
-
-  if (
-    numericCalories === null ||
-    numericCalories <= 0
-  ) {
-
-    return getUser();
-
-  }
-
-
-  return updateUser({
-
-    calorieGoal:
-      Math.round(
-        numericCalories
-      )
-
-  });
-
-}
-
-
-/* =========================================================
-   15. PREMIUM STATUS
+   23. PREMIUM STATUS
    Atualiza o status Premium do usuário
 ========================================================= */
 
@@ -711,7 +1338,646 @@ function setPremiumStatus(
 
 
 /* =========================================================
-   16. WEIGHT PROGRESS CALCULATION
+   24. GET NUTRITION GOALS
+   Obtém a estrutura nutricional completa
+========================================================= */
+
+function getNutritionGoals() {
+
+  const user =
+    getUser();
+
+
+  return normalizeNutritionGoals(
+    user.nutritionGoals
+  );
+
+}
+
+
+/* =========================================================
+   25. GET ACTIVE NUTRITION PLAN
+   Retorna o plano profissional atualmente armazenado
+========================================================= */
+
+function getActiveNutritionPlan() {
+
+  const nutritionGoals =
+    getNutritionGoals();
+
+
+  if (
+    !nutritionGoals.activePlan
+  ) {
+
+    return null;
+
+  }
+
+
+  return normalizeNutritionPlan(
+    nutritionGoals.activePlan
+  );
+
+}
+
+
+/* =========================================================
+   26. DATE KEY
+   Converte uma data válida para YYYY-MM-DD
+========================================================= */
+
+function getNutritionDateKey(
+  value
+) {
+
+  if (
+    !value
+  ) {
+
+    return null;
+
+  }
+
+
+  if (
+    typeof value === "string"
+  ) {
+
+    const match =
+      value.match(
+        /^\d{4}-\d{2}-\d{2}/
+      );
+
+
+    if (
+      match
+    ) {
+
+      return match[0];
+
+    }
+
+  }
+
+
+  const date =
+    new Date(
+      value
+    );
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return null;
+
+  }
+
+
+  const year =
+    date.getFullYear();
+
+
+  const month =
+    String(
+      date.getMonth() + 1
+    )
+      .padStart(
+        2,
+        "0"
+      );
+
+
+  const day =
+    String(
+      date.getDate()
+    )
+      .padStart(
+        2,
+        "0"
+      );
+
+
+  return `${year}-${month}-${day}`;
+
+}
+
+
+/* =========================================================
+   27. ACTIVE PLAN VALIDITY
+   Verifica se o plano está dentro do período de validade
+
+   IMPORTANTE:
+   A função não cria nem altera metas.
+
+   Ela apenas verifica as datas definidas
+   pelo profissional.
+========================================================= */
+
+function isNutritionPlanCurrentlyValid(
+  plan
+) {
+
+  if (
+    !plan ||
+    typeof plan !== "object" ||
+    Array.isArray(
+      plan
+    )
+  ) {
+
+    return false;
+
+  }
+
+
+  const today =
+    getNutritionDateKey(
+      new Date()
+    );
+
+
+  const validFrom =
+    getNutritionDateKey(
+      plan.validFrom
+    );
+
+
+  const validUntil =
+    getNutritionDateKey(
+      plan.validUntil
+    );
+
+
+  if (
+    validFrom &&
+    today < validFrom
+  ) {
+
+    return false;
+
+  }
+
+
+  if (
+    validUntil &&
+    today > validUntil
+  ) {
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   28. ACTIVE NUTRITION PLAN STATUS
+   Verifica se existe plano profissional ativo e válido
+========================================================= */
+
+function hasActiveNutritionPlan() {
+
+  const activePlan =
+    getActiveNutritionPlan();
+
+
+  if (
+    !activePlan
+  ) {
+
+    return false;
+
+  }
+
+
+  return isNutritionPlanCurrentlyValid(
+    activePlan
+  );
+
+}
+
+
+/* =========================================================
+   29. SET PROFESSIONAL NUTRITION PLAN
+   Registra um novo plano profissional
+
+   Se já existir um plano anterior,
+   ele é preservado no histórico.
+
+   IMPORTANTE:
+   Nenhuma meta é preenchida automaticamente.
+========================================================= */
+
+function setProfessionalNutritionPlan(
+  planData = {}
+) {
+
+  const user =
+    getUser();
+
+
+  const nutritionGoals =
+    normalizeNutritionGoals(
+      user.nutritionGoals
+    );
+
+
+  const now =
+    new Date()
+      .toISOString();
+
+
+  const history =
+    [
+      ...nutritionGoals.history
+    ];
+
+
+  /* =======================================================
+     PRESERVE CURRENT PLAN
+  ======================================================== */
+
+  if (
+    nutritionGoals.activePlan
+  ) {
+
+    history.push(
+      normalizeNutritionPlan(
+        nutritionGoals.activePlan
+      )
+    );
+
+  }
+
+
+  /* =======================================================
+     CREATE NEW PLAN
+  ======================================================== */
+
+  const newPlan =
+    normalizeNutritionPlan(
+      planData
+    );
+
+
+  newPlan.version =
+    1;
+
+
+  newPlan.source =
+    "professional";
+
+
+  newPlan.createdAt =
+    now;
+
+
+  newPlan.updatedAt =
+    now;
+
+
+  return updateUser({
+
+    nutritionGoals: {
+
+      activePlan:
+        newPlan,
+
+      history:
+        history
+
+    }
+
+  });
+
+}
+
+
+/* =========================================================
+   30. UPDATE PROFESSIONAL NUTRITION PLAN
+   Atualiza o plano profissional atualmente ativo
+
+   Antes da alteração, a versão anterior
+   é preservada no histórico.
+========================================================= */
+
+function updateProfessionalNutritionPlan(
+  changes = {}
+) {
+
+  const user =
+    getUser();
+
+
+  const nutritionGoals =
+    normalizeNutritionGoals(
+      user.nutritionGoals
+    );
+
+
+  const currentPlan =
+    nutritionGoals.activePlan;
+
+
+  if (
+    !currentPlan
+  ) {
+
+    return user;
+
+  }
+
+
+  const safeChanges =
+    (
+      changes &&
+      typeof changes === "object" &&
+      !Array.isArray(
+        changes
+      )
+    )
+      ? changes
+      : {};
+
+
+  const now =
+    new Date()
+      .toISOString();
+
+
+  /* =======================================================
+     SAVE PREVIOUS VERSION
+  ======================================================== */
+
+  const history =
+    [
+      ...nutritionGoals.history,
+
+      normalizeNutritionPlan(
+        currentPlan
+      )
+    ];
+
+
+  /* =======================================================
+     NESTED PROFESSIONAL UPDATE
+  ======================================================== */
+
+  const professional =
+    {
+
+      ...currentPlan.professional,
+
+      ...(
+        safeChanges.professional &&
+        typeof safeChanges.professional === "object" &&
+        !Array.isArray(
+          safeChanges.professional
+        )
+          ? safeChanges.professional
+          : {}
+      )
+
+    };
+
+
+  /* =======================================================
+     NESTED DAILY GOALS UPDATE
+  ======================================================== */
+
+  const dailyGoals =
+    {
+
+      ...currentPlan.dailyGoals,
+
+      ...(
+        safeChanges.dailyGoals &&
+        typeof safeChanges.dailyGoals === "object" &&
+        !Array.isArray(
+          safeChanges.dailyGoals
+        )
+          ? safeChanges.dailyGoals
+          : {}
+      )
+
+    };
+
+
+  /* =======================================================
+     CREATE UPDATED PLAN
+  ======================================================== */
+
+  const updatedPlan =
+    normalizeNutritionPlan({
+
+      ...currentPlan,
+
+      ...safeChanges,
+
+      professional:
+        professional,
+
+      dailyGoals:
+        dailyGoals,
+
+      mealGoals:
+        safeChanges.mealGoals !== undefined
+          ? safeChanges.mealGoals
+          : currentPlan.mealGoals,
+
+      plannedMeals:
+        safeChanges.plannedMeals !== undefined
+          ? safeChanges.plannedMeals
+          : currentPlan.plannedMeals,
+
+      version:
+        currentPlan.version + 1,
+
+      createdAt:
+        currentPlan.createdAt,
+
+      updatedAt:
+        now
+
+    });
+
+
+  return updateUser({
+
+    nutritionGoals: {
+
+      activePlan:
+        updatedPlan,
+
+      history:
+        history
+
+    }
+
+  });
+
+}
+
+
+/* =========================================================
+   31. ARCHIVE ACTIVE NUTRITION PLAN
+   Encerra o plano ativo sem apagar seus dados
+
+   O plano é movido para o histórico.
+========================================================= */
+
+function archiveActiveNutritionPlan() {
+
+  const user =
+    getUser();
+
+
+  const nutritionGoals =
+    normalizeNutritionGoals(
+      user.nutritionGoals
+    );
+
+
+  if (
+    !nutritionGoals.activePlan
+  ) {
+
+    return user;
+
+  }
+
+
+  const history =
+    [
+
+      ...nutritionGoals.history,
+
+      normalizeNutritionPlan(
+        nutritionGoals.activePlan
+      )
+
+    ];
+
+
+  return updateUser({
+
+    nutritionGoals: {
+
+      activePlan:
+        null,
+
+      history:
+        history
+
+    }
+
+  });
+
+}
+
+
+/* =========================================================
+   32. NUTRITION PLAN HISTORY
+   Retorna o histórico de planos profissionais
+========================================================= */
+
+function getNutritionPlanHistory() {
+
+  const nutritionGoals =
+    getNutritionGoals();
+
+
+  return [
+
+    ...nutritionGoals.history
+
+  ];
+
+}
+
+
+/* =========================================================
+   33. DAILY NUTRITION GOALS
+   Retorna as metas profissionais diárias
+
+   Se não existir plano ativo e válido,
+   retorna null.
+
+   Nenhum valor padrão é criado.
+========================================================= */
+
+function getActiveDailyNutritionGoals() {
+
+  if (
+    !hasActiveNutritionPlan()
+  ) {
+
+    return null;
+
+  }
+
+
+  const activePlan =
+    getActiveNutritionPlan();
+
+
+  return {
+
+    ...activePlan.dailyGoals
+
+  };
+
+}
+
+
+/* =========================================================
+   34. MEAL NUTRITION GOALS
+   Retorna as metas profissionais por refeição
+
+   Se não existir plano ativo e válido,
+   retorna um array vazio.
+========================================================= */
+
+function getActiveMealNutritionGoals() {
+
+  if (
+    !hasActiveNutritionPlan()
+  ) {
+
+    return [];
+
+  }
+
+
+  const activePlan =
+    getActiveNutritionPlan();
+
+
+  return activePlan.mealGoals.map(
+    meal => ({
+
+      ...meal,
+
+      goals: {
+        ...meal.goals
+      }
+
+    })
+  );
+
+}
+
+
+/* =========================================================
+   35. WEIGHT PROGRESS CALCULATION
    Calcula o progresso entre peso inicial e meta
 ========================================================= */
 
@@ -739,10 +2005,6 @@ function calculateWeightProgress(
     );
 
 
-  /* =======================================================
-     VALIDATION
-  ======================================================== */
-
   if (
     start === null ||
     current === null ||
@@ -753,10 +2015,6 @@ function calculateWeightProgress(
 
   }
 
-
-  /* =======================================================
-     GOAL ALREADY EQUAL TO START
-  ======================================================== */
 
   if (
     start === goal
@@ -817,11 +2075,6 @@ function calculateWeightProgress(
   }
 
 
-  /* =======================================================
-     PROGRESS LIMIT
-     Mantém o resultado entre 0% e 100%
-  ======================================================== */
-
   return Math.round(
     clampPercentage(
       progress
@@ -832,7 +2085,7 @@ function calculateWeightProgress(
 
 
 /* =========================================================
-   17. USER WEIGHT PROGRESS
+   36. USER WEIGHT PROGRESS
    Calcula o progresso usando os dados atuais do usuário
 ========================================================= */
 
@@ -845,7 +2098,9 @@ function getUserWeightProgress() {
   return calculateWeightProgress(
 
     user.startWeight,
+
     user.currentWeight,
+
     user.goalWeight
 
   );
@@ -854,7 +2109,7 @@ function getUserWeightProgress() {
 
 
 /* =========================================================
-   18. BASIC USER DATA STATUS
+   37. BASIC USER DATA STATUS
    Verifica se os dados básicos já foram preenchidos
 ========================================================= */
 
@@ -890,7 +2145,7 @@ function hasBasicUserData() {
 
 
 /* =========================================================
-   19. WEIGHT GOAL STATUS
+   38. WEIGHT GOAL STATUS
    Verifica se a meta de peso já foi definida
 ========================================================= */
 
@@ -914,19 +2169,26 @@ function hasWeightGoal() {
 
 
 /* =========================================================
-   20. DEVELOPMENT RESET
+   39. DEVELOPMENT RESET
 
    Ferramenta temporária para desenvolvimento.
 
    IMPORTANTE:
-   Esta função remove somente os dados
-   armazenados na chave principal do usuário.
+   Esta função remove os dados armazenados
+   na chave principal euConsigoUser.
 
-   Ela NÃO apaga:
-   - água
-   - alimentação
+   Como nutritionGoals pertence ao usuário central,
+   o reset também remove:
+
+   - plano nutricional ativo
+   - metas profissionais
+   - histórico dos planos profissionais
+
+   Ela NÃO apaga dados armazenados em outras chaves:
+
+   - alimentação diária
+   - histórico alimentar
    - movimento
-   - histórico
    - dados do Miau
 ========================================================= */
 
@@ -937,13 +2199,11 @@ function resetUserData() {
   );
 
 
-  return {
-    ...DEFAULT_USER
-  };
+  return normalizeUser({});
 
 }
 
 
 /* =========================================================
-   21. FILE END
+   40. FILE END
 ========================================================= */
