@@ -8,49 +8,36 @@
 
    Estrutura principal do Dashboard.
 
-   Responsabilidades deste arquivo:
-   - Estrutura semântica da página
-   - Elementos visuais
-   - Navegação
-   - Formulários
-   - Modais
-   - Pontos de ligação com dashboard.js
-
    IMPORTANTE:
-   Este arquivo NÃO deve conter dados fictícios do usuário.
+   Este arquivo não contém dados fictícios do usuário.
 
-   Os dados reais são carregados por:
-   user-data.js
-   dashboard.js
+   Dados reais:
+   - user-data.js
+   - dashboard.js
 ========================================================= -->
 
 
 <!-- =========================================================
    01. DOCUMENT HEAD
-   Metadados, título e CSS
 ========================================================= -->
 
 <head>
 
   <meta charset="UTF-8">
 
-
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   >
-
 
   <meta
     name="description"
     content="Mein Fortschritt – Gewicht, Ernährung, Bewegung, Wasser und persönliche Begleitung."
   >
 
-
   <title>
     Mein Fortschritt
   </title>
-
 
   <link
     rel="stylesheet"
@@ -69,15 +56,11 @@
 
   <!-- =======================================================
        03. APP HEADER
-       Logo e botão do menu principal
   ======================================================== -->
 
   <header class="app-header">
 
     <div class="top-header">
-
-
-      <!-- BRAND -->
 
       <a
         href="dashboard.html"
@@ -92,15 +75,12 @@
           ♥
         </span>
 
-
         <span class="brand-name">
           Mein Fortschritt
         </span>
 
       </a>
 
-
-      <!-- MENU BUTTON -->
 
       <button
         type="button"
@@ -122,10 +102,8 @@
   </header>
 
 
-
   <!-- =======================================================
        04. SIDE MENU
-       Estrutura geral do menu lateral
   ======================================================== -->
 
   <div
@@ -134,16 +112,11 @@
     hidden
   >
 
-
-    <!-- MENU BACKDROP -->
-
     <div
       class="side-menu-backdrop"
       id="side-menu-backdrop"
     ></div>
 
-
-    <!-- SIDE MENU PANEL -->
 
     <aside
       class="side-menu"
@@ -164,7 +137,6 @@
             Menü
           </span>
 
-
           <h2>
             Mein Bereich
           </h2>
@@ -184,14 +156,11 @@
       </div>
 
 
-
       <!-- ===================================================
            06. SIDE MENU ACCOUNT
-           Nome e avatar carregados pelo JavaScript
       ==================================================== -->
 
       <div class="menu-account-card">
-
 
         <div
           class="menu-avatar"
@@ -207,15 +176,13 @@
             Mein Konto
           </strong>
 
-
-          <span>
-            Kostenloses Konto
+          <span id="menu-account-plan">
+            Basis-Konto
           </span>
 
         </div>
 
       </div>
-
 
 
       <!-- ===================================================
@@ -228,7 +195,7 @@
       >
 
 
-        <!-- PROGRESS -->
+        <!-- BASIS -->
 
         <a
           href="#fortschritt"
@@ -239,28 +206,7 @@
             ♥
           </span>
 
-          Mein Fortschritt
-
-        </a>
-
-
-        <!-- COMPANION -->
-
-        <a
-          href="../katze/katze.html"
-          class="side-menu-link"
-        >
-
-         <span aria-hidden="true">
-  <img
-    src="icone/miau-normal.png"
-    alt=""
-    class="miau-icon"
-    draggable="false"
-  >
-</span>
-
-          Mein Begleiter
+          Basis
 
         </a>
 
@@ -273,11 +219,38 @@
           id="menu-premium-button"
         >
 
-          <span aria-hidden="true">
-            👑
+          <span
+            class="side-menu-image"
+            aria-hidden="true"
+          >
+
+            <img
+              src="icone/miau-normal.png"
+              alt=""
+              class="miau-icon"
+              draggable="false"
+            >
+
           </span>
 
           Premium
+
+        </button>
+
+
+        <!-- PREMIUM PLUS -->
+
+        <button
+          type="button"
+          class="side-menu-link"
+          id="menu-premium-plus-button"
+        >
+
+          <span aria-hidden="true">
+            🧑‍⚕️
+          </span>
+
+          Premium+
 
         </button>
 
@@ -351,9 +324,6 @@
       </nav>
 
 
-
-      <!-- LOGOUT -->
-
       <button
         type="button"
         class="logout-button"
@@ -367,10 +337,8 @@
   </div>
 
 
-
   <!-- =======================================================
        08. DASHBOARD MAIN
-       Conteúdo principal da aplicação
   ======================================================== -->
 
   <main class="dashboard-main">
@@ -378,16 +346,11 @@
     <div class="dashboard-container">
 
 
-
       <!-- ===================================================
            09. WELCOME SECTION
-           Saudação dinâmica e foto do usuário
       ==================================================== -->
 
       <section class="welcome-section">
-
-
-        <!-- WELCOME TEXT -->
 
         <div class="welcome-copy">
 
@@ -395,15 +358,12 @@
             Willkommen.
           </h1>
 
-
           <p>
             Heute ist ein neuer Schritt in Richtung deines Ziels.
           </p>
 
         </div>
 
-
-        <!-- USER PHOTO -->
 
         <div class="user-photo-wrap">
 
@@ -419,16 +379,40 @@
       </section>
 
 
-
       <!-- ===================================================
            10. MAIN CIRCLE NAVIGATION
-           Premium / Fortschritt / Begleiter / Shop
+           Basis / Premium / Premium+ / Shop
       ==================================================== -->
 
       <section
         class="circle-navigation"
         aria-label="Hauptbereiche"
       >
+
+
+        <!-- BASIS -->
+
+        <a
+          href="#fortschritt"
+          class="circle-nav-item basis-circle-item"
+        >
+
+          <span
+            class="circle-nav-icon"
+            aria-hidden="true"
+          >
+            ♥
+          </span>
+
+          <strong>
+            Basis
+          </strong>
+
+          <small>
+            Dein kostenloser Bereich
+          </small>
+
+        </a>
 
 
         <!-- PREMIUM -->
@@ -440,81 +424,54 @@
         >
 
           <span
-            class="circle-nav-icon"
+            class="circle-nav-icon circle-nav-image"
             aria-hidden="true"
           >
-            👑
-          </span>
 
+            <img
+              src="icone/miau-normal.png"
+              alt=""
+              class="miau-icon"
+              draggable="false"
+            >
+
+          </span>
 
           <strong>
             Premium
           </strong>
 
-
           <small>
-            Mehr Möglichkeiten
+            Mit deinem Begleiter
           </small>
 
         </button>
 
 
+        <!-- PREMIUM PLUS -->
 
-        <!-- PROGRESS -->
-
-        <a
-          href="#fortschritt"
-          class="circle-nav-item"
+        <button
+          type="button"
+          class="circle-nav-item premium-plus-circle-item"
+          id="premium-plus-main-button"
         >
 
           <span
             class="circle-nav-icon"
             aria-hidden="true"
           >
-            ♥
+            🧑‍⚕️
           </span>
 
-
           <strong>
-            Mein Fortschritt
+            Premium+
           </strong>
 
-
           <small>
-            Alles auf einen Blick
+            Mit Ernährungsberatung
           </small>
 
-        </a>
-
-
-
-        <!-- COMPANION -->
-
-        <a
-          href="../katze/katze.html"
-          class="circle-nav-item companion-circle-item"
-        >
-
-                   <span aria-hidden="true">
-  <img
-    src="icone/miau-normal.png"
-    alt=""
-    class="miau-icon"
-    draggable="false"
-  >
-</span>
-
-          <strong>
-            Mein Begleiter
-          </strong>
-
-
-          <small>
-            Dein kleiner Partner
-          </small>
-
-        </a>
-
+        </button>
 
 
         <!-- SHOP -->
@@ -531,11 +488,9 @@
             🛍️
           </span>
 
-
           <strong>
             Shop
           </strong>
-
 
           <small>
             Für deinen Alltag
@@ -546,13 +501,11 @@
       </section>
 
 
-
       <!-- ===================================================
            11. INVITE FRIEND SECTION
       ==================================================== -->
 
       <section class="invite-section">
-
 
         <div
           class="invite-icon"
@@ -567,7 +520,6 @@
           <strong>
             Zusammen ist es leichter.
           </strong>
-
 
           <span>
             Lade einen Freund oder eine Freundin ein und startet gemeinsam.
@@ -587,10 +539,8 @@
       </section>
 
 
-
       <!-- ===================================================
            12. AD AREA 1
-           Espaço publicitário para contas gratuitas
       ==================================================== -->
 
       <aside
@@ -602,7 +552,6 @@
           Anzeige
         </span>
 
-
         <div class="ad-placeholder">
           Werbefläche
         </div>
@@ -610,10 +559,8 @@
       </aside>
 
 
-
       <!-- ===================================================
-           13. PROGRESS SECTION
-           Área principal de acompanhamento
+           13. BASIS PROGRESS SECTION
       ==================================================== -->
 
       <section
@@ -622,16 +569,11 @@
       >
 
 
-
         <!-- =================================================
              14. MAIN WEIGHT PROGRESS
-             Peso atual, meta e barra de progresso
         ================================================== -->
 
         <article class="main-progress-card">
-
-
-          <!-- CURRENT WEIGHT -->
 
           <div class="progress-left">
 
@@ -639,16 +581,13 @@
               Dein Fortschritt
             </span>
 
-
             <span class="weight-label">
               Aktuelles Gewicht
             </span>
 
-
             <strong id="current-weight-main">
               —
             </strong>
-
 
             <span class="goal-weight-line">
 
@@ -663,13 +602,7 @@
           </div>
 
 
-
-          <!-- PROGRESS BAR -->
-
           <div class="progress-right">
-
-
-            <!-- WEIGHT LABELS -->
 
             <div class="goal-numbers">
 
@@ -677,11 +610,9 @@
                 Start —
               </span>
 
-
               <span id="current-weight-text">
                 Aktuell —
               </span>
-
 
               <span id="goal-weight-text">
                 Ziel —
@@ -689,8 +620,6 @@
 
             </div>
 
-
-            <!-- PROGRESS TRACK -->
 
             <div
               class="goal-track"
@@ -709,10 +638,8 @@
         </article>
 
 
-
         <!-- =================================================
              15. QUICK OVERVIEW
-             BMI / Wasser / Bewegung
         ================================================== -->
 
         <section
@@ -721,9 +648,7 @@
         >
 
 
-          <!-- =================================================
-               BMI
-          ================================================== -->
+          <!-- BMI -->
 
           <article class="quick-card">
 
@@ -733,18 +658,15 @@
                 BMI
               </span>
 
-
               <strong id="current-bmi">
                 —
               </strong>
-
 
               <small id="bmi-status">
                 Noch keine Daten
               </small>
 
             </div>
-
 
             <span
               class="quick-icon"
@@ -756,10 +678,7 @@
           </article>
 
 
-
-          <!-- =================================================
-               WATER
-          ================================================== -->
+          <!-- WATER -->
 
           <article class="quick-card">
 
@@ -768,7 +687,6 @@
               <span class="quick-label">
                 Wasser heute
               </span>
-
 
               <strong>
 
@@ -780,7 +698,6 @@
 
               </strong>
 
-
               <button
                 type="button"
                 class="quick-action"
@@ -790,7 +707,6 @@
               </button>
 
             </div>
-
 
             <span
               class="quick-icon"
@@ -802,10 +718,7 @@
           </article>
 
 
-
-          <!-- =================================================
-               MOVEMENT
-          ================================================== -->
+          <!-- MOVEMENT -->
 
           <article class="quick-card">
 
@@ -814,7 +727,6 @@
               <span class="quick-label">
                 Bewegung
               </span>
-
 
               <strong>
 
@@ -826,13 +738,11 @@
 
               </strong>
 
-
               <small>
                 Tagesziel 30 Min.
               </small>
 
             </div>
-
 
             <span
               class="quick-icon"
@@ -846,16 +756,11 @@
         </section>
 
 
-
         <!-- =================================================
              16. WEIGHT SECTION
-             Gewicht eintragen und Verlauf ansehen
         ================================================== -->
 
         <section class="compact-section">
-
-
-          <!-- SECTION HEADER -->
 
           <button
             type="button"
@@ -870,20 +775,17 @@
               ⚖
             </span>
 
-
             <span class="compact-copy">
 
               <strong>
                 Gewicht
               </strong>
 
-
               <small>
                 Gewicht eintragen und Verlauf ansehen
               </small>
 
             </span>
-
 
             <span
               class="compact-arrow"
@@ -895,9 +797,6 @@
           </button>
 
 
-
-          <!-- SECTION CONTENT -->
-
           <div
             class="compact-section-content"
             id="gewicht-content"
@@ -905,12 +804,6 @@
           >
 
             <div class="weight-layout">
-
-
-              <!-- =================================================
-                   WEIGHT HISTORY AND CHART
-                   Conteúdo substituído pelo dashboard.js
-              ================================================== -->
 
               <div
                 class="chart-area"
@@ -923,7 +816,6 @@
                     Dein Verlauf beginnt hier.
                   </strong>
 
-
                   <span>
                     Trage dein Gewicht regelmässig ein.
                   </span>
@@ -933,11 +825,6 @@
               </div>
 
 
-
-              <!-- =================================================
-                   WEIGHT FORM
-              ================================================== -->
-
               <form
                 class="simple-form"
                 id="weight-form"
@@ -946,7 +833,6 @@
                 <label for="new-weight">
                   Aktuelles Gewicht
                 </label>
-
 
                 <div class="input-unit">
 
@@ -963,13 +849,11 @@
                     required
                   >
 
-
                   <span>
                     kg
                   </span>
 
                 </div>
-
 
                 <button
                   type="submit"
@@ -987,16 +871,11 @@
         </section>
 
 
-
         <!-- =================================================
              17. FOOD SECTION
-             Kalorien und Lebensmittel
         ================================================== -->
 
         <section class="compact-section">
-
-
-          <!-- SECTION HEADER -->
 
           <button
             type="button"
@@ -1011,20 +890,17 @@
               🍲
             </span>
 
-
             <span class="compact-copy">
 
               <strong>
                 Ernährung
               </strong>
 
-
               <small>
-                Deine Kalorien und Mahlzeiten im Überblick
+                Lebensmittel und Mahlzeiten eintragen
               </small>
 
             </span>
-
 
             <span
               class="compact-arrow"
@@ -1036,9 +912,6 @@
           </button>
 
 
-
-          <!-- SECTION CONTENT -->
-
           <div
             class="compact-section-content"
             id="ernaehrung-content"
@@ -1047,41 +920,31 @@
 
             <div class="calorie-layout">
 
-
-
-              <!-- =================================================
-                   CALORIE SUMMARY
-                   calorieGoal pode permanecer vazio até ser definido
-              ================================================== -->
-
               <article class="calorie-summary">
 
                 <span>
                   Gegessen
                 </span>
 
-
                 <strong id="calories-consumed">
                   0
                 </strong>
-
 
                 <small>
                   kcal
                 </small>
 
-
-                <div class="calorie-details">
-
-
-                  <!-- CALORIE GOAL -->
+                <div
+                  class="calorie-details"
+                  id="professional-calorie-goals"
+                  hidden
+                >
 
                   <div>
 
                     <span>
-                      Ziel
+                      Professionelles Ziel
                     </span>
-
 
                     <strong id="calorie-goal">
                       —
@@ -1089,15 +952,11 @@
 
                   </div>
 
-
-                  <!-- CALORIES REMAINING -->
-
                   <div>
 
                     <span>
                       Verbleibend
                     </span>
-
 
                     <strong id="calories-remaining">
                       —
@@ -1110,25 +969,16 @@
               </article>
 
 
-
-              <!-- =================================================
-                   FOOD FORM
-              ================================================== -->
-
               <form
                 class="food-form"
                 id="food-form"
               >
-
-
-                <!-- FOOD NAME -->
 
                 <div class="form-group">
 
                   <label for="food-name">
                     Lebensmittel
                   </label>
-
 
                   <input
                     type="text"
@@ -1143,15 +993,11 @@
                 </div>
 
 
-
-                <!-- FOOD CALORIES -->
-
                 <div class="form-group">
 
                   <label for="food-calories">
                     Kalorien
                   </label>
-
 
                   <div class="input-unit">
 
@@ -1167,7 +1013,6 @@
                       required
                     >
 
-
                     <span>
                       kcal
                     </span>
@@ -1176,9 +1021,6 @@
 
                 </div>
 
-
-
-                <!-- FOOD SUBMIT -->
 
                 <button
                   type="submit"
@@ -1192,12 +1034,6 @@
             </div>
 
 
-
-            <!-- =================================================
-                 FOOD LIST
-                 Conteúdo dinâmico gerado pelo dashboard.js
-            ================================================== -->
-
             <div
               class="food-list"
               id="food-list"
@@ -1208,7 +1044,6 @@
                 <strong>
                   Noch nichts eingetragen.
                 </strong>
-
 
                 <span>
                   Deine Lebensmittel erscheinen hier.
@@ -1223,16 +1058,11 @@
         </section>
 
 
-
         <!-- =================================================
              18. MOVEMENT SECTION
-             Atividades e duração
         ================================================== -->
 
         <section class="compact-section">
-
-
-          <!-- SECTION HEADER -->
 
           <button
             type="button"
@@ -1247,20 +1077,17 @@
               🏃
             </span>
 
-
             <span class="compact-copy">
 
               <strong>
                 Bewegung
               </strong>
 
-
               <small>
                 Deine Aktivitäten und dein Fortschritt
               </small>
 
             </span>
-
 
             <span
               class="compact-arrow"
@@ -1272,34 +1099,22 @@
           </button>
 
 
-
-          <!-- SECTION CONTENT -->
-
           <div
             class="compact-section-content"
             id="bewegung-content"
             hidden
           >
 
-
-            <!-- =================================================
-                 MOVEMENT FORM
-            ================================================== -->
-
             <form
               class="movement-form"
               id="movement-form"
             >
-
-
-              <!-- ACTIVITY NAME -->
 
               <div class="form-group">
 
                 <label for="activity-name">
                   Aktivität
                 </label>
-
 
                 <input
                   type="text"
@@ -1314,15 +1129,11 @@
               </div>
 
 
-
-              <!-- ACTIVITY DURATION -->
-
               <div class="form-group">
 
                 <label for="activity-minutes">
                   Dauer
                 </label>
-
 
                 <div class="input-unit">
 
@@ -1338,7 +1149,6 @@
                     required
                   >
 
-
                   <span>
                     Min.
                   </span>
@@ -1347,9 +1157,6 @@
 
               </div>
 
-
-
-              <!-- MOVEMENT SUBMIT -->
 
               <button
                 type="submit"
@@ -1361,12 +1168,6 @@
             </form>
 
 
-
-            <!-- =================================================
-                 ACTIVITY LIST
-                 Conteúdo dinâmico gerado pelo dashboard.js
-            ================================================== -->
-
             <div
               class="activity-list"
               id="activity-list"
@@ -1377,7 +1178,6 @@
                 <strong>
                   Noch keine Aktivität.
                 </strong>
-
 
                 <span>
                   Auch kleine Bewegungen zählen.
@@ -1394,10 +1194,8 @@
       </section>
 
 
-
       <!-- ===================================================
            19. AD AREA 2
-           Segunda área publicitária
       ==================================================== -->
 
       <aside
@@ -1409,7 +1207,6 @@
           Anzeige
         </span>
 
-
         <div class="ad-placeholder">
           Werbefläche
         </div>
@@ -1417,27 +1214,26 @@
       </aside>
 
 
-
       <!-- ===================================================
-           20. PREMIUM BOTTOM SECTION
-           Chamada Premium no final do Dashboard
+           20. PLAN PRESENTATION
       ==================================================== -->
 
       <section class="premium-bottom-section">
-
-
-        <!-- PREMIUM ICON -->
 
         <div
           class="premium-bottom-icon"
           aria-hidden="true"
         >
-          👑
+
+          <img
+            src="icone/miau-normal.png"
+            alt=""
+            class="miau-icon"
+            draggable="false"
+          >
+
         </div>
 
-
-
-        <!-- PREMIUM TEXT -->
 
         <div class="premium-bottom-copy">
 
@@ -1445,16 +1241,12 @@
             Premium
           </h2>
 
-
           <p>
-            Mehr Unterstützung, persönliche Analysen und zusätzliche Funktionen für deinen Weg.
+            Entdecke deinen persönlichen Begleiter, ausführliche Analysen und weitere Funktionen.
           </p>
 
         </div>
 
-
-
-        <!-- PREMIUM BUTTON -->
 
         <button
           type="button"
@@ -1466,15 +1258,47 @@
 
       </section>
 
+
+      <section class="premium-bottom-section premium-plus-bottom-section">
+
+        <div
+          class="premium-bottom-icon premium-plus-bottom-icon"
+          aria-hidden="true"
+        >
+          🧑‍⚕️
+        </div>
+
+
+        <div class="premium-bottom-copy">
+
+          <h2>
+            Premium+
+          </h2>
+
+          <p>
+            Erhalte zusätzlich eine persönliche Ernährungsberatung und direkten Kontakt zu deiner Fachperson.
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="premium-bottom-button premium-plus-bottom-button"
+          id="premium-plus-bottom-button"
+        >
+          Premium+ entdecken
+        </button>
+
+      </section>
+
     </div>
 
   </main>
 
 
-
   <!-- =======================================================
        21. PREMIUM MODAL
-       Informações sobre recursos Premium
   ======================================================== -->
 
   <div
@@ -1483,17 +1307,11 @@
     hidden
   >
 
-
-    <!-- MODAL BACKDROP -->
-
     <div
       class="premium-modal-backdrop"
       id="premium-modal-backdrop"
     ></div>
 
-
-
-    <!-- PREMIUM MODAL CARD -->
 
     <section
       class="premium-modal-card"
@@ -1501,9 +1319,6 @@
       aria-modal="true"
       aria-labelledby="premium-modal-title"
     >
-
-
-      <!-- CLOSE BUTTON -->
 
       <button
         type="button"
@@ -1515,45 +1330,50 @@
       </button>
 
 
+      <div
+        class="modal-plan-image"
+        aria-hidden="true"
+      >
 
-      <!-- PREMIUM HEADER -->
+        <img
+          src="icone/miau-normal.png"
+          alt=""
+          class="miau-icon"
+          draggable="false"
+        >
+
+      </div>
+
 
       <span class="premium-title">
         PREMIUM
       </span>
 
-
       <h2 id="premium-modal-title">
-        Mehr Unterstützung für deinen Weg
+        Dein Begleiter auf deinem Weg
       </h2>
 
+      <p class="premium-modal-intro">
+        Mehr Motivation, Unterhaltung und ausführliche Einblicke in deinen Fortschritt.
+      </p>
 
-
-      <!-- =================================================
-           PREMIUM FEATURE LIST
-      ================================================== -->
 
       <div class="premium-feature-list">
-
-
-        <!-- PERSONAL SUPPORT -->
 
         <div class="premium-feature-item">
 
           <span aria-hidden="true">
-            ♡
+            🐱
           </span>
-
 
           <div>
 
             <strong>
-              Persönliche Begleitung
+              Dein persönlicher Begleiter
             </strong>
 
-
             <small>
-              Mehr Unterstützung passend zu deinem persönlichen Ziel.
+              Dein Begleiter entwickelt sich gemeinsam mit deinem Fortschritt.
             </small>
 
           </div>
@@ -1561,22 +1381,17 @@
         </div>
 
 
-
-        <!-- WEEKLY ANALYSIS -->
-
         <div class="premium-feature-item">
 
           <span aria-hidden="true">
             📊
           </span>
 
-
           <div>
 
             <strong>
               Wöchentliche Analyse
             </strong>
-
 
             <small>
               Sieh, wie sich dein Fortschritt von Woche zu Woche entwickelt.
@@ -1587,86 +1402,26 @@
         </div>
 
 
-
-        <!-- STRATEGY -->
-
-        <div class="premium-feature-item">
-
-          <span aria-hidden="true">
-            🎯
-          </span>
-
-
-          <div>
-
-            <strong>
-              Persönliche Strategie
-            </strong>
-
-
-            <small>
-              Erhalte eine klarere Struktur für deine nächsten Schritte.
-            </small>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- NUTRITION PLAN -->
-
-        <div class="premium-feature-item">
-
-          <span aria-hidden="true">
-            🍲
-          </span>
-
-
-          <div>
-
-            <strong>
-              Ernährungsplan
-            </strong>
-
-
-            <small>
-              Zusätzliche Unterstützung bei deiner Ernährungsplanung.
-            </small>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- ADVANCED ANALYSIS -->
-
         <div class="premium-feature-item">
 
           <span aria-hidden="true">
             📈
           </span>
 
-
           <div>
 
             <strong>
-              Erweiterte Analyse
+              Erweiterte Auswertungen
             </strong>
 
-
             <small>
-              Mehr Details über deine langfristige Entwicklung.
+              Erkenne langfristige Veränderungen in deinen gespeicherten Daten.
             </small>
 
           </div>
 
         </div>
 
-
-
-        <!-- PROGRESS PHOTOS -->
 
         <div class="premium-feature-item">
 
@@ -1674,16 +1429,35 @@
             📷
           </span>
 
-
           <div>
 
             <strong>
               Fortschrittsfotos
             </strong>
 
+            <small>
+              Dokumentiere deine persönliche Entwicklung auch visuell.
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div class="premium-feature-item">
+
+          <span aria-hidden="true">
+            🚫
+          </span>
+
+          <div>
+
+            <strong>
+              Ohne Werbung
+            </strong>
 
             <small>
-              Dokumentiere deine Entwicklung auch visuell.
+              Nutze deinen persönlichen Bereich ohne Werbeanzeigen.
             </small>
 
           </div>
@@ -1692,9 +1466,6 @@
 
       </div>
 
-
-
-      <!-- PREMIUM PAGE LINK -->
 
       <a
         href="premium.html"
@@ -1708,10 +1479,183 @@
   </div>
 
 
+  <!-- =======================================================
+       22. PREMIUM PLUS MODAL
+  ======================================================== -->
+
+  <div
+    class="premium-modal premium-plus-modal"
+    id="premium-plus-modal"
+    hidden
+  >
+
+    <div
+      class="premium-modal-backdrop"
+      id="premium-plus-modal-backdrop"
+    ></div>
+
+
+    <section
+      class="premium-modal-card premium-plus-modal-card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="premium-plus-modal-title"
+    >
+
+      <button
+        type="button"
+        class="modal-close"
+        id="premium-plus-modal-close"
+        aria-label="Premium Plus Fenster schliessen"
+      >
+        ×
+      </button>
+
+
+      <div
+        class="modal-plan-icon"
+        aria-hidden="true"
+      >
+        🧑‍⚕️
+      </div>
+
+
+      <span class="premium-title premium-plus-title">
+        PREMIUM+
+      </span>
+
+      <h2 id="premium-plus-modal-title">
+        Persönliche Ernährungsberatung
+      </h2>
+
+      <p class="premium-modal-intro">
+        Premium+ verbindet die Funktionen des Programms mit einer persönlichen Ernährungsfachperson.
+      </p>
+
+
+      <div class="premium-feature-list">
+
+        <div class="premium-feature-item">
+
+          <span aria-hidden="true">
+            ✓
+          </span>
+
+          <div>
+
+            <strong>
+              Alle Premium-Funktionen
+            </strong>
+
+            <small>
+              Nutze deinen Begleiter und alle erweiterten Funktionen.
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div class="premium-feature-item">
+
+          <span aria-hidden="true">
+            🧑‍⚕️
+          </span>
+
+          <div>
+
+            <strong>
+              Persönliche Fachperson
+            </strong>
+
+            <small>
+              Deine Ernährungsfachperson begleitet dich professionell.
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div class="premium-feature-item">
+
+          <span aria-hidden="true">
+            💬
+          </span>
+
+          <div>
+
+            <strong>
+              Geschützter Chat
+            </strong>
+
+            <small>
+              Tausche dich direkt mit deiner Ernährungsfachperson aus.
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div class="premium-feature-item">
+
+          <span aria-hidden="true">
+            🍲
+          </span>
+
+          <div>
+
+            <strong>
+              Professioneller Ernährungsplan
+            </strong>
+
+            <small>
+              Ziele und Pläne werden ausschliesslich von deiner Fachperson festgelegt.
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div class="premium-feature-item">
+
+          <span aria-hidden="true">
+            📋
+          </span>
+
+          <div>
+
+            <strong>
+              Persönliche Rückmeldungen
+            </strong>
+
+            <small>
+              Erhalte professionelle Rückmeldungen zu deiner Entwicklung.
+            </small>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <a
+        href="premium-plus.html"
+        class="premium-button premium-plus-button"
+      >
+        Premium+ ansehen
+      </a>
+
+    </section>
+
+  </div>
+
 
   <!-- =======================================================
-       22. SHARE MODAL
-       Compartilhamento do aplicativo
+       23. SHARE MODAL
   ======================================================== -->
 
   <div
@@ -1720,17 +1664,11 @@
     hidden
   >
 
-
-    <!-- SHARE BACKDROP -->
-
     <div
       class="share-modal-backdrop"
       id="share-modal-backdrop"
     ></div>
 
-
-
-    <!-- SHARE MODAL CARD -->
 
     <section
       class="share-modal-card"
@@ -1738,9 +1676,6 @@
       aria-modal="true"
       aria-labelledby="share-modal-title"
     >
-
-
-      <!-- CLOSE BUTTON -->
 
       <button
         type="button"
@@ -1752,33 +1687,20 @@
       </button>
 
 
-
-      <!-- SHARE CONTENT -->
-
       <span class="section-kicker">
         Gemeinsam
       </span>
 
-
       <h2 id="share-modal-title">
         Mein Fortschritt teilen
       </h2>
-
 
       <p>
         Lade jemanden ein, gemeinsam mit dir einen neuen Weg zu beginnen.
       </p>
 
 
-
-      <!-- =================================================
-           SHARE ACTIONS
-      ================================================== -->
-
       <div class="share-actions">
-
-
-        <!-- NATIVE SHARE -->
 
         <button
           type="button"
@@ -1787,10 +1709,6 @@
         >
           Teilen
         </button>
-
-
-
-        <!-- COPY LINK -->
 
         <button
           type="button"
@@ -1803,9 +1721,6 @@
       </div>
 
 
-
-      <!-- SHARE FEEDBACK -->
-
       <span
         class="share-message"
         id="share-message"
@@ -1817,20 +1732,20 @@
   </div>
 
 
+  <!-- =======================================================
+       24. JAVASCRIPT FILES
+  ======================================================== -->
 
-  <!-- =====================================================
-     23. JAVASCRIPT FILES
-====================================================== -->
-<script src="../JS/storage.js"></script>
-<script src="../JS/helpers.js"></script>
-<script src="../JS/user-data.js"></script>
-<script src="dashboard.js"></script>
+  <script src="../JS/storage.js"></script>
+  <script src="../JS/helpers.js"></script>
+  <script src="../JS/user-data.js"></script>
+  <script src="dashboard.js"></script>
 
 </body>
 
 
 <!-- =========================================================
-   24. DOCUMENT END
+   25. DOCUMENT END
 ========================================================= -->
 
 </html>
