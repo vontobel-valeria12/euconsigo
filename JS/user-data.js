@@ -13,9 +13,7 @@
    - Categoria do BMI
    - Peso inicial e peso atual
    - Meta de peso
-   - Status Premium
-   - Cálculo do progresso de peso
-   - Validação do perfil básico
+   - Nível da assinatura
    - Plano nutricional profissional
    - Metas nutricionais profissionais
    - Histórico de alterações do plano nutricional
@@ -29,15 +27,11 @@
    <script src="storage.js"></script>
    <script src="helpers.js"></script>
    <script src="user-data.js"></script>
-
-   
-   
 ========================================================= */
 
 
 /* =========================================================
    01. STORAGE CONFIGURATION
-   
 ========================================================= */
 
 const USER_STORAGE_KEY =
@@ -46,7 +40,6 @@ const USER_STORAGE_KEY =
 
 /* =========================================================
    02. DEFAULT MEAL GOALS
-   
 ========================================================= */
 
 function createDefaultMealGoals() {
@@ -116,7 +109,6 @@ function createDefaultMealGoals() {
 
 /* =========================================================
    03. DEFAULT NUTRITION PLAN
-
 ========================================================= */
 
 function createDefaultNutritionPlan() {
@@ -195,8 +187,6 @@ function createDefaultNutritionPlan() {
 
     /* =====================================================
        PLANO ALIMENTAR
-
- 
     ====================================================== */
 
     plannedMeals: [],
@@ -233,7 +223,6 @@ function createDefaultNutritionPlan() {
 
 /* =========================================================
    04. DEFAULT NUTRITION GOALS
-   
 ========================================================= */
 
 function createDefaultNutritionGoals() {
@@ -250,7 +239,7 @@ function createDefaultNutritionGoals() {
 
 
 /* =========================================================
-   05. DEFAULT USE
+   05. DEFAULT USER
 ========================================================= */
 
 const DEFAULT_USER = {
@@ -271,6 +260,8 @@ const DEFAULT_USER = {
 
   premium: false,
 
+  subscriptionLevel: "free",
+
   nutritionGoals:
     createDefaultNutritionGoals(),
 
@@ -283,7 +274,6 @@ const DEFAULT_USER = {
 
 /* =========================================================
    06. BMI CALCULATION
-  
 ========================================================= */
 
 function calculateBMI(
@@ -332,7 +322,6 @@ function calculateBMI(
 
 /* =========================================================
    07. BMI CATEGORY
-
 ========================================================= */
 
 function getBMICategory(
@@ -407,7 +396,6 @@ function getBMICategory(
 
 /* =========================================================
    08. NUTRITION VALUE NORMALIZATION
-   
 ========================================================= */
 
 function normalizeNutritionValue(
@@ -448,7 +436,6 @@ function normalizeNutritionValue(
 
 /* =========================================================
    09. DAILY GOALS NORMALIZATION
-   
 ========================================================= */
 
 function normalizeDailyGoals(
@@ -511,7 +498,6 @@ function normalizeDailyGoals(
 
 /* =========================================================
    10. PROFESSIONAL NORMALIZATION
-   
 ========================================================= */
 
 function normalizeNutritionProfessional(
@@ -552,7 +538,6 @@ function normalizeNutritionProfessional(
 
 /* =========================================================
    11. MEAL GOALS NORMALIZATION
-   
 ========================================================= */
 
 function normalizeMealGoals(
@@ -657,7 +642,6 @@ function normalizeMealGoals(
 
 /* =========================================================
    12. NUTRITION PLAN NORMALIZATION
-   
 ========================================================= */
 
 function normalizeNutritionPlan(
@@ -827,8 +811,88 @@ function normalizeNutritionGoals(
 
 
 /* =========================================================
-   14. USER NORMALIZATION
-   
+   14. SUBSCRIPTION LEVEL NORMALIZATION
+========================================================= */
+
+function normalizeSubscriptionLevel(
+  value,
+  legacyPremium = false,
+  legacyPremiumPlus = false
+) {
+
+  const level =
+    String(value || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, "-");
+
+
+  if (
+    [
+      "premium-plus",
+      "premiumplus",
+      "premium+",
+      "plus"
+    ].includes(level)
+  ) {
+
+    return "premium-plus";
+
+  }
+
+
+  if (
+    [
+      "premium",
+      "premium-plan"
+    ].includes(level)
+  ) {
+
+    return "premium";
+
+  }
+
+
+  if (
+    [
+      "free",
+      "gratis",
+      "basic",
+      "basis",
+      "public"
+    ].includes(level)
+  ) {
+
+    return "free";
+
+  }
+
+
+  if (
+    legacyPremiumPlus === true
+  ) {
+
+    return "premium-plus";
+
+  }
+
+
+  if (
+    legacyPremium === true
+  ) {
+
+    return "premium";
+
+  }
+
+
+  return "free";
+
+}
+
+
+/* =========================================================
+   15. USER NORMALIZATION
 ========================================================= */
 
 function normalizeUser(
@@ -845,6 +909,20 @@ function normalizeUser(
     )
       ? userData
       : {};
+
+
+  const subscriptionLevel =
+    normalizeSubscriptionLevel(
+
+      safeUserData.subscriptionLevel ??
+      safeUserData.subscriptionPlan ??
+      safeUserData.plan,
+
+      safeUserData.premium,
+
+      safeUserData.premiumPlus
+
+    );
 
 
   return {
@@ -879,8 +957,11 @@ function normalizeUser(
         ? safeUserData.movementGoal
         : DEFAULT_USER.movementGoal,
 
+    subscriptionLevel:
+      subscriptionLevel,
+
     premium:
-      safeUserData.premium === true,
+      subscriptionLevel !== "free",
 
     nutritionGoals:
       normalizeNutritionGoals(
@@ -899,7 +980,7 @@ function normalizeUser(
 
 
 /* =========================================================
-   15. GET USER
+   16. GET USER
 ========================================================= */
 
 function getUser() {
@@ -932,8 +1013,7 @@ function getUser() {
 
 
 /* =========================================================
-   16. SAVE USER
-   
+   17. SAVE USER
 ========================================================= */
 
 function saveUser(
@@ -1045,8 +1125,7 @@ function saveUser(
 
 
 /* =========================================================
-   17. UPDATE USER
-
+   18. UPDATE USER
 ========================================================= */
 
 function updateUser(
@@ -1073,7 +1152,7 @@ function updateUser(
 
 
 /* =========================================================
-   18. INITIAL WEIGHT
+   19. INITIAL WEIGHT
 ========================================================= */
 
 function setInitialWeight(
@@ -1125,8 +1204,7 @@ function setInitialWeight(
 
 
 /* =========================================================
-   19. CURRENT WEIGHT
-   
+   20. CURRENT WEIGHT
 ========================================================= */
 
 function setCurrentWeight(
@@ -1182,8 +1260,7 @@ function setCurrentWeight(
 
 
 /* =========================================================
-   20. USER HEIGHT
-   
+   21. USER HEIGHT
 ========================================================= */
 
 function setUserHeight(
@@ -1217,8 +1294,7 @@ function setUserHeight(
 
 
 /* =========================================================
-   21. GOAL WEIGHT
-
+   22. GOAL WEIGHT
 ========================================================= */
 
 function setGoalWeight(
@@ -1252,8 +1328,7 @@ function setGoalWeight(
 
 
 /* =========================================================
-   22. USER NAME
-   
+   23. USER NAME
 ========================================================= */
 
 function setUserName(
@@ -1277,20 +1352,26 @@ function setUserName(
 
 
 /* =========================================================
-   23. PREMIUM STATUS
-   
+   24. SUBSCRIPTION LEVEL
 ========================================================= */
 
-function setPremiumStatus(
-  status
+function setSubscriptionLevel(
+  level
 ) {
+
+  const subscriptionLevel =
+    normalizeSubscriptionLevel(
+      level
+    );
+
 
   return updateUser({
 
+    subscriptionLevel:
+      subscriptionLevel,
+
     premium:
-      Boolean(
-        status
-      )
+      subscriptionLevel !== "free"
 
   });
 
@@ -1298,8 +1379,30 @@ function setPremiumStatus(
 
 
 /* =========================================================
-   24. GET NUTRITION GOALS
-   
+   25. PREMIUM STATUS
+========================================================= */
+
+function setPremiumStatus(
+  status
+) {
+
+  const level =
+    typeof status === "string"
+      ? status
+      : status === true
+        ? "premium"
+        : "free";
+
+
+  return setSubscriptionLevel(
+    level
+  );
+
+}
+
+
+/* =========================================================
+   26. GET NUTRITION GOALS
 ========================================================= */
 
 function getNutritionGoals() {
@@ -1316,8 +1419,7 @@ function getNutritionGoals() {
 
 
 /* =========================================================
-   25. GET ACTIVE NUTRITION PLAN
-
+   27. GET ACTIVE NUTRITION PLAN
 ========================================================= */
 
 function getActiveNutritionPlan() {
@@ -1343,8 +1445,7 @@ function getActiveNutritionPlan() {
 
 
 /* =========================================================
-   26. DATE KEY
-   
+   28. DATE KEY
 ========================================================= */
 
 function getNutritionDateKey(
@@ -1428,8 +1529,7 @@ function getNutritionDateKey(
 
 
 /* =========================================================
-   27. ACTIVE PLAN VALIDITY
-   
+   29. ACTIVE PLAN VALIDITY
 ========================================================= */
 
 function isNutritionPlanCurrentlyValid(
@@ -1493,8 +1593,7 @@ function isNutritionPlanCurrentlyValid(
 
 
 /* =========================================================
-   28. ACTIVE NUTRITION PLAN STATUS
-   
+   30. ACTIVE NUTRITION PLAN STATUS
 ========================================================= */
 
 function hasActiveNutritionPlan() {
@@ -1520,8 +1619,7 @@ function hasActiveNutritionPlan() {
 
 
 /* =========================================================
-   29. SET PROFESSIONAL NUTRITION PLAN
-  
+   31. SET PROFESSIONAL NUTRITION PLAN
 ========================================================= */
 
 function setProfessionalNutritionPlan(
@@ -1610,7 +1708,7 @@ function setProfessionalNutritionPlan(
 
 
 /* =========================================================
-   30. UPDATE PROFESSIONAL NUTRITION PLAN
+   32. UPDATE PROFESSIONAL NUTRITION PLAN
 ========================================================= */
 
 function updateProfessionalNutritionPlan(
@@ -1772,7 +1870,7 @@ function updateProfessionalNutritionPlan(
 
 
 /* =========================================================
-   31. ARCHIVE ACTIVE NUTRITION PLAN
+   33. ARCHIVE ACTIVE NUTRITION PLAN
 ========================================================= */
 
 function archiveActiveNutritionPlan() {
@@ -1826,8 +1924,7 @@ function archiveActiveNutritionPlan() {
 
 
 /* =========================================================
-   32. NUTRITION PLAN HISTORY
-   
+   34. NUTRITION PLAN HISTORY
 ========================================================= */
 
 function getNutritionPlanHistory() {
@@ -1846,8 +1943,7 @@ function getNutritionPlanHistory() {
 
 
 /* =========================================================
-   33. DAILY NUTRITION GOALS
-  
+   35. DAILY NUTRITION GOALS
 ========================================================= */
 
 function getActiveDailyNutritionGoals() {
@@ -1875,8 +1971,7 @@ function getActiveDailyNutritionGoals() {
 
 
 /* =========================================================
-   34. MEAL NUTRITION GOALS
-   
+   36. MEAL NUTRITION GOALS
 ========================================================= */
 
 function getActiveMealNutritionGoals() {
@@ -1910,8 +2005,7 @@ function getActiveMealNutritionGoals() {
 
 
 /* =========================================================
-   35. WEIGHT PROGRESS CALCULATION
-   
+   37. WEIGHT PROGRESS CALCULATION
 ========================================================= */
 
 function calculateWeightProgress(
@@ -2018,108 +2112,9 @@ function calculateWeightProgress(
 
 
 /* =========================================================
-   36. USER WEIGHT PROGRESS
-   
+   38. USER WEIGHT PROGRESS
 ========================================================= */
 
 function getUserWeightProgress() {
 
-  const user =
-    getUser();
-
-
-  return calculateWeightProgress(
-
-    user.startWeight,
-
-    user.currentWeight,
-
-    user.goalWeight
-
-  );
-
-}
-
-
-/* =========================================================
-   37. BASIC USER DATA STATUS
-   
-========================================================= */
-
-function hasBasicUserData() {
-
-  const user =
-    getUser();
-
-
-  return Boolean(
-
-    isFiniteNumber(
-      user.height
-    ) &&
-
-    user.height > 0 &&
-
-    isFiniteNumber(
-      user.startWeight
-    ) &&
-
-    user.startWeight > 0 &&
-
-    isFiniteNumber(
-      user.currentWeight
-    ) &&
-
-    user.currentWeight > 0
-
-  );
-
-}
-
-
-/* =========================================================
-   38. WEIGHT GOAL STATUS
-
-========================================================= */
-
-function hasWeightGoal() {
-
-  const user =
-    getUser();
-
-
-  return Boolean(
-
-    isFiniteNumber(
-      user.goalWeight
-    ) &&
-
-    user.goalWeight > 0
-
-  );
-
-}
-
-
-/* =========================================================
-   39. DEVELOPMENT RESET
-
-   Ferramenta temporária para desenvolvimento.
-
-========================================================= */
-
-function resetUserData() {
-
-  removeStorageData(
-    USER_STORAGE_KEY
-  );
-
-
-  return normalizeUser({});
-
-}
-
-
-/* =========================================================
-   40. FILE END
-========================================================= */
+  const user
