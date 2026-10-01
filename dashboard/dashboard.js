@@ -142,6 +142,14 @@ function normalizeDashboardData() {
     foodData.items = [];
   }
 
+  foodData.items =
+    foodData.items.filter(
+      item =>
+        item &&
+        typeof item === "object" &&
+        !Array.isArray(item)
+    );
+
   if (
     !movementData ||
     typeof movementData !== "object" ||
@@ -156,6 +164,14 @@ function normalizeDashboardData() {
   if (!Array.isArray(movementData.items)) {
     movementData.items = [];
   }
+
+  movementData.items =
+    movementData.items.filter(
+      item =>
+        item &&
+        typeof item === "object" &&
+        !Array.isArray(item)
+    );
 
   if (!Array.isArray(weightHistory)) {
     weightHistory = [];
@@ -238,6 +254,9 @@ const welcomeName =
 const menuUserName =
   document.getElementById("menu-user-name");
 
+const menuAccountPlan =
+  document.getElementById("menu-account-plan");
+
 const menuAvatar =
   document.querySelector(".menu-avatar");
 
@@ -258,6 +277,24 @@ const premiumModalClose =
 
 const premiumModalBackdrop =
   document.getElementById("premium-modal-backdrop");
+
+const premiumPlusMainButton =
+  document.getElementById("premium-plus-main-button");
+
+const premiumPlusBottomButton =
+  document.getElementById("premium-plus-bottom-button");
+
+const menuPremiumPlusButton =
+  document.getElementById("menu-premium-plus-button");
+
+const premiumPlusModal =
+  document.getElementById("premium-plus-modal");
+
+const premiumPlusModalClose =
+  document.getElementById("premium-plus-modal-close");
+
+const premiumPlusModalBackdrop =
+  document.getElementById("premium-plus-modal-backdrop");
 
 const shareAppButton =
   document.getElementById("share-app-button");
@@ -414,7 +451,6 @@ function openMenu() {
   }
 
   sideMenuWrapper.hidden = false;
-
   body.classList.add("menu-open");
 
   if (menuButton) {
@@ -432,7 +468,6 @@ function closeMenu() {
   }
 
   sideMenuWrapper.hidden = true;
-
   body.classList.remove("menu-open");
 
   if (menuButton) {
@@ -511,19 +546,14 @@ compactSectionButtons.forEach(button => {
             otherButton.dataset.toggleSection;
 
           const otherTarget =
-            document.getElementById(
-              otherTargetId
-            );
+            document.getElementById(otherTargetId);
 
           if (
             otherButton !== button &&
             otherTarget
           ) {
             otherTarget.hidden = true;
-
-            otherButton.classList.remove(
-              "active"
-            );
+            otherButton.classList.remove("active");
           }
         }
       );
@@ -575,6 +605,37 @@ function getGreeting() {
    11. RENDER USER
 ========================================================= */
 
+function getUserPlanLabel(currentUser) {
+  const planName =
+    String(
+      currentUser.subscriptionLevel ||
+      currentUser.plan ||
+      currentUser.planId ||
+      currentUser.subscriptionPlan ||
+      currentUser.membershipPlan ||
+      ""
+    )
+      .trim()
+      .toLocaleLowerCase("de-CH");
+
+  if (
+    currentUser.premiumPlus === true ||
+    planName.includes("plus")
+  ) {
+    return "Premium+ Konto";
+  }
+
+  if (
+    currentUser.premium === true ||
+    planName.includes("premium")
+  ) {
+    return "Premium-Konto";
+  }
+
+  return "Basis-Konto";
+}
+
+
 function renderUser() {
   user = getUser();
 
@@ -591,6 +652,11 @@ function renderUser() {
   if (menuUserName) {
     menuUserName.textContent =
       userName || "Mein Konto";
+  }
+
+  if (menuAccountPlan) {
+    menuAccountPlan.textContent =
+      getUserPlanLabel(user);
   }
 
   if (menuAvatar) {
@@ -613,8 +679,10 @@ function openPremiumModal() {
     return;
   }
 
-  premiumModal.hidden = false;
+  closePremiumPlusModal();
+  closeShareModal();
 
+  premiumModal.hidden = false;
   body.classList.add("modal-open");
 }
 
@@ -625,7 +693,6 @@ function closePremiumModal() {
   }
 
   premiumModal.hidden = true;
-
   body.classList.remove("modal-open");
 }
 
@@ -663,18 +730,80 @@ if (premiumModalBackdrop) {
 
 
 /* =========================================================
-   13. SHARE MODAL
+   13. PREMIUM PLUS MODAL
+========================================================= */
+
+function openPremiumPlusModal() {
+  closeMenu();
+
+  if (!premiumPlusModal) {
+    return;
+  }
+
+  closePremiumModal();
+  closeShareModal();
+
+  premiumPlusModal.hidden = false;
+  body.classList.add("modal-open");
+}
+
+
+function closePremiumPlusModal() {
+  if (!premiumPlusModal) {
+    return;
+  }
+
+  premiumPlusModal.hidden = true;
+  body.classList.remove("modal-open");
+}
+
+
+[
+  premiumPlusMainButton,
+  premiumPlusBottomButton,
+  menuPremiumPlusButton
+].forEach(button => {
+  if (!button) {
+    return;
+  }
+
+  button.addEventListener(
+    "click",
+    openPremiumPlusModal
+  );
+});
+
+
+if (premiumPlusModalClose) {
+  premiumPlusModalClose.addEventListener(
+    "click",
+    closePremiumPlusModal
+  );
+}
+
+
+if (premiumPlusModalBackdrop) {
+  premiumPlusModalBackdrop.addEventListener(
+    "click",
+    closePremiumPlusModal
+  );
+}
+
+
+/* =========================================================
+   14. SHARE MODAL
 ========================================================= */
 
 function openShareModal() {
   closeMenu();
+  closePremiumModal();
+  closePremiumPlusModal();
 
   if (!shareModal) {
     return;
   }
 
   shareModal.hidden = false;
-
   body.classList.add("modal-open");
 
   if (shareMessage) {
@@ -689,7 +818,6 @@ function closeShareModal() {
   }
 
   shareModal.hidden = true;
-
   body.classList.remove("modal-open");
 }
 
@@ -726,7 +854,7 @@ if (shareModalBackdrop) {
 
 
 /* =========================================================
-   14. SHARE DATA
+   15. SHARE DATA
 ========================================================= */
 
 function getShareData() {
@@ -746,7 +874,7 @@ function getShareData() {
 
 
 /* =========================================================
-   15. NATIVE SHARE
+   16. NATIVE SHARE
 ========================================================= */
 
 if (nativeShareButton) {
@@ -764,11 +892,9 @@ if (nativeShareButton) {
             shareMessage.textContent =
               "Danke fürs Teilen 💚";
           }
-
         } catch (error) {
           console.log("Teilen abgebrochen.");
         }
-
       } else {
         copyShareLink();
       }
@@ -778,7 +904,7 @@ if (nativeShareButton) {
 
 
 /* =========================================================
-   16. COPY SHARE LINK
+   17. COPY SHARE LINK
 ========================================================= */
 
 async function copyShareLink() {
@@ -794,7 +920,6 @@ async function copyShareLink() {
       shareMessage.textContent =
         "Link kopiert ✓";
     }
-
   } catch (error) {
     console.error(
       "Link konnte nicht kopiert werden.",
@@ -818,7 +943,7 @@ if (copyLinkButton) {
 
 
 /* =========================================================
-   17. SETTINGS BUTTON
+   18. SETTINGS BUTTON
 ========================================================= */
 
 if (settingsButton) {
@@ -836,7 +961,7 @@ if (settingsButton) {
 
 
 /* =========================================================
-   18. ACCOUNT BUTTON
+   19. ACCOUNT BUTTON
 ========================================================= */
 
 if (accountButton) {
@@ -854,7 +979,7 @@ if (accountButton) {
 
 
 /* =========================================================
-   19. LOGOUT
+   20. LOGOUT
 ========================================================= */
 
 if (logoutButton) {
@@ -880,7 +1005,7 @@ if (logoutButton) {
 
 
 /* =========================================================
-   20. WEIGHT - ENSURE INITIAL HISTORY
+   21. WEIGHT - ENSURE INITIAL HISTORY
 ========================================================= */
 
 function ensureInitialWeightHistory() {
@@ -934,7 +1059,7 @@ function ensureInitialWeightHistory() {
 
 
 /* =========================================================
-   21. WEIGHT - RENDER CURRENT DATA
+   22. WEIGHT - RENDER CURRENT DATA
 ========================================================= */
 
 function renderWeight() {
@@ -974,7 +1099,6 @@ function renderWeight() {
   if (currentBMI && hasValidNumber(user.bmi)) {
     currentBMI.textContent =
       Number(user.bmi).toFixed(1);
-
   } else if (currentBMI) {
     currentBMI.textContent = "—";
   }
@@ -982,7 +1106,6 @@ function renderWeight() {
   if (bmiStatus && hasValidNumber(user.bmi)) {
     bmiStatus.textContent =
       getBMICategory(Number(user.bmi));
-
   } else if (bmiStatus) {
     bmiStatus.textContent =
       "Noch keine Daten";
@@ -1001,7 +1124,7 @@ function renderWeight() {
 
 
 /* =========================================================
-   22. WEIGHT - SAVE CURRENT WEIGHT
+   23. WEIGHT - SAVE CURRENT WEIGHT
 ========================================================= */
 
 if (weightForm && newWeightInput) {
@@ -1038,7 +1161,7 @@ if (weightForm && newWeightInput) {
 
 
 /* =========================================================
-   23. WEIGHT - SAVE HISTORY
+   24. WEIGHT - SAVE HISTORY
 ========================================================= */
 
 function saveWeightHistory(weight) {
@@ -1062,7 +1185,6 @@ function saveWeightHistory(weight) {
   if (existingEntry) {
     existingEntry.weight =
       numericWeight;
-
   } else {
     weightHistory.push({
       date: today,
@@ -1083,7 +1205,7 @@ function saveWeightHistory(weight) {
 
 
 /* =========================================================
-   24. WEIGHT - PREPARE HISTORY
+   25. WEIGHT - PREPARE HISTORY
 ========================================================= */
 
 function getValidWeightHistory() {
@@ -1112,7 +1234,7 @@ function getValidWeightHistory() {
 
 
 /* =========================================================
-   25. WEIGHT - RENDER HISTORY AND CHART
+   26. WEIGHT - RENDER HISTORY AND CHART
 ========================================================= */
 
 function renderWeightHistory() {
@@ -1272,11 +1394,9 @@ function renderWeightHistory() {
 
     if (totalDifference === 0) {
       totalDifferenceText = "±0.0 kg";
-
     } else if (totalDifference > 0) {
       totalDifferenceText =
         `+${totalDifference.toFixed(1)} kg`;
-
     } else {
       totalDifferenceText =
         `${totalDifference.toFixed(1)} kg`;
@@ -1385,7 +1505,7 @@ function renderWeightHistory() {
 
 
 /* =========================================================
-   26. WATER - RENDER
+   27. WATER - RENDER
 ========================================================= */
 
 function renderWater() {
@@ -1404,7 +1524,7 @@ function renderWater() {
 
 
 /* =========================================================
-   27. WATER - ADD 250 ML
+   28. WATER - ADD 250 ML
 ========================================================= */
 
 if (addWaterButton) {
@@ -1433,7 +1553,7 @@ if (addWaterButton) {
 
 
 /* =========================================================
-   28. FOOD - CATALOG
+   29. FOOD - CATALOG
 ========================================================= */
 
 const foodCatalog =
@@ -1506,7 +1626,6 @@ function populateFoodCatalog() {
         document.createElement("option");
 
       option.value = name;
-
       foodCatalogOptions.appendChild(option);
     });
   });
@@ -1517,7 +1636,7 @@ populateFoodCatalog();
 
 
 /* =========================================================
-   29. FOOD - CALCULATE NUTRIENTS
+   30. FOOD - CALCULATE NUTRIENTS
 ========================================================= */
 
 function calculateFoodValues(food, amountGrams) {
@@ -1546,14 +1665,33 @@ function calculateFoodValues(food, amountGrams) {
 
 
 function getFoodPlanLevel() {
-  const level =
-    getUser().subscriptionLevel;
+  const currentUser =
+    getUser();
+
+  const planName =
+    String(
+      currentUser.subscriptionLevel ||
+      currentUser.plan ||
+      currentUser.planId ||
+      currentUser.subscriptionPlan ||
+      currentUser.membershipPlan ||
+      ""
+    )
+      .trim()
+      .toLocaleLowerCase("de-CH");
 
   if (
-    level === "premium" ||
-    level === "premium-plus"
+    currentUser.premiumPlus === true ||
+    planName.includes("plus")
   ) {
-    return level;
+    return "premium-plus";
+  }
+
+  if (
+    currentUser.premium === true ||
+    planName.includes("premium")
+  ) {
+    return "premium";
   }
 
   return "free";
@@ -1698,7 +1836,7 @@ function renderFoodNutrients(food, amountGrams) {
 
 
 /* =========================================================
-   30. FOOD - UPDATE SELECTION
+   31. FOOD - UPDATE SELECTION
 ========================================================= */
 
 function updateFoodSelection() {
@@ -1776,7 +1914,7 @@ if (foodAmountInput) {
 
 
 /* =========================================================
-   31. FOOD - CALCULATE CONSUMED CALORIES
+   32. FOOD - CALCULATE CONSUMED CALORIES
 ========================================================= */
 
 function getConsumedCalories() {
@@ -1797,7 +1935,7 @@ function getConsumedCalories() {
 
 
 /* =========================================================
-   32. FOOD - RENDER CALORIES
+   33. FOOD - RENDER CALORIES
 ========================================================= */
 
 function renderCalories() {
@@ -1812,7 +1950,9 @@ function renderCalories() {
   }
 
   const dailyGoals =
-    getActiveDailyNutritionGoals();
+    typeof getActiveDailyNutritionGoals === "function"
+      ? getActiveDailyNutritionGoals()
+      : null;
 
   const goal =
     dailyGoals
@@ -1859,7 +1999,7 @@ function renderCalories() {
 
 
 /* =========================================================
-   33. FOOD - ADD ITEM
+   34. FOOD - ADD ITEM
 ========================================================= */
 
 if (
@@ -1925,6 +2065,14 @@ if (
         foodIdInput.value = "";
       }
 
+      if (premiumFoodDetails) {
+        premiumFoodDetails.hidden = true;
+      }
+
+      if (premiumPlusFoodDetails) {
+        premiumPlusFoodDetails.hidden = true;
+      }
+
       renderCalories();
     }
   );
@@ -1932,7 +2080,7 @@ if (
 
 
 /* =========================================================
-   34. FOOD - RENDER ITEM LIST
+   35. FOOD - RENDER ITEM LIST
 ========================================================= */
 
 function renderFoodList() {
@@ -1972,13 +2120,13 @@ function renderFoodList() {
       document.createElement("span");
 
     name.textContent =
-      item.name;
+      item.name || "Lebensmittel";
 
     amount.textContent =
       `${formatNutrient(item.amountGrams)} g`;
 
     calories.textContent =
-      `${Number(item.calories)} kcal`;
+      `${formatNutrient(item.calories)} kcal`;
 
     details.appendChild(name);
     details.appendChild(amount);
@@ -2029,7 +2177,7 @@ function renderFoodList() {
 
 
 /* =========================================================
-   35. MOVEMENT - CALCULATE TOTAL MINUTES
+   36. MOVEMENT - CALCULATE TOTAL MINUTES
 ========================================================= */
 
 function getMovementMinutes() {
@@ -2050,7 +2198,7 @@ function getMovementMinutes() {
 
 
 /* =========================================================
-   36. MOVEMENT - RENDER
+   37. MOVEMENT - RENDER
 ========================================================= */
 
 function renderMovement() {
@@ -2085,22 +2233,38 @@ function renderMovement() {
 
     row.className = "activity-item";
 
-    row.innerHTML = `
-      <div>
-        <strong>${escapeHTML(item.name)}</strong>
-        <span>${Number(item.minutes)} Min.</span>
-      </div>
+    const details =
+      document.createElement("div");
 
-      <button
-        type="button"
-        class="delete-item"
-        data-activity-id="${item.id}"
-        aria-label="Aktivität löschen"
-      >
-        ×
-      </button>
-    `;
+    const name =
+      document.createElement("strong");
 
+    const duration =
+      document.createElement("span");
+
+    name.textContent =
+      item.name || "Aktivität";
+
+    duration.textContent =
+      `${formatNutrient(item.minutes)} Min.`;
+
+    details.appendChild(name);
+    details.appendChild(duration);
+
+    const deleteButton =
+      document.createElement("button");
+
+    deleteButton.type = "button";
+    deleteButton.className = "delete-item";
+    deleteButton.dataset.activityId = item.id;
+    deleteButton.setAttribute(
+      "aria-label",
+      "Aktivität löschen"
+    );
+    deleteButton.textContent = "×";
+
+    row.appendChild(details);
+    row.appendChild(deleteButton);
     activityList.appendChild(row);
   });
 
@@ -2132,7 +2296,7 @@ function renderMovement() {
 
 
 /* =========================================================
-   37. MOVEMENT - ADD ACTIVITY
+   38. MOVEMENT - ADD ACTIVITY
 ========================================================= */
 
 if (
@@ -2186,7 +2350,7 @@ if (
 
 
 /* =========================================================
-   38. ESCAPE KEY
+   39. ESCAPE KEY
 ========================================================= */
 
 document.addEventListener(
@@ -2211,6 +2375,13 @@ document.addEventListener(
     }
 
     if (
+      premiumPlusModal &&
+      !premiumPlusModal.hidden
+    ) {
+      closePremiumPlusModal();
+    }
+
+    if (
       shareModal &&
       !shareModal.hidden
     ) {
@@ -2221,7 +2392,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   39. RENDER DASHBOARD
+   40. RENDER DASHBOARD
 ========================================================= */
 
 function renderDashboard() {
@@ -2241,7 +2412,7 @@ function renderDashboard() {
 
 
 /* =========================================================
-   40. START DASHBOARD
+   41. START DASHBOARD
 ========================================================= */
 
 renderDashboard();
