@@ -869,193 +869,207 @@
 
 
         <!-- =================================================
-             17. FOOD SECTION
-        ================================================== -->
+     17. FOOD SECTION
+================================================== -->
 
-        <section class="compact-section">
+<section class="compact-section">
 
-          <button
-            type="button"
-            class="compact-section-header"
-            data-toggle-section="ernaehrung-content"
-          >
+  <button
+    type="button"
+    class="compact-section-header"
+    data-toggle-section="ernaehrung-content"
+  >
+    <span class="compact-icon beige-icon" aria-hidden="true">
+      🍲
+    </span>
 
-            <span
-              class="compact-icon beige-icon"
-              aria-hidden="true"
-            >
-              🍲
-            </span>
+    <span class="compact-copy">
+      <strong>Ernährung</strong>
+      <small>Lebensmittel und Mahlzeiten eintragen</small>
+    </span>
 
-            <span class="compact-copy">
-
-              <strong>
-                Ernährung
-              </strong>
-
-              <small>
-                Lebensmittel und Mahlzeiten eintragen
-              </small>
-
-            </span>
-
-            <span
-              class="compact-arrow"
-              aria-hidden="true"
-            >
-              ›
-            </span>
-
-          </button>
+    <span class="compact-arrow" aria-hidden="true">›</span>
+  </button>
 
 
-          <div
-            class="compact-section-content"
-            id="ernaehrung-content"
-            hidden
-          >
+  <div
+    class="compact-section-content"
+    id="ernaehrung-content"
+    hidden
+  >
 
-            <div class="calorie-layout">
+    <div class="calorie-layout">
 
-              <article class="calorie-summary">
+      <article class="calorie-summary">
 
-                <span>
-                  Gegessen
-                </span>
+        <span>Gegessen</span>
 
-                <strong id="calories-consumed">
-                  0
-                </strong>
+        <strong id="calories-consumed">0</strong>
 
-                <small>
-                  kcal
-                </small>
+        <small>kcal</small>
 
-                <div
-                  class="calorie-details"
-                  id="professional-calorie-goals"
-                  hidden
-                >
-
-                  <div>
-
-                    <span>
-                      Professionelles Ziel
-                    </span>
-
-                    <strong id="calorie-goal">
-                      —
-                    </strong>
-
-                  </div>
-
-                  <div>
-
-                    <span>
-                      Verbleibend
-                    </span>
-
-                    <strong id="calories-remaining">
-                      —
-                    </strong>
-
-                  </div>
-
-                </div>
-
-              </article>
-
-
-              <form
-                class="food-form"
-                id="food-form"
-              >
-
-                <div class="form-group">
-
-                  <label for="food-name">
-                    Lebensmittel
-                  </label>
-
-                  <input
-                    type="text"
-                    id="food-name"
-                    name="food-name"
-                    maxlength="100"
-                    placeholder="z. B. Banane"
-                    autocomplete="off"
-                    required
-                  >
-
-                </div>
-
-
-                <div class="form-group">
-
-                  <label for="food-calories">
-                    Kalorien
-                  </label>
-
-                  <div class="input-unit">
-
-                    <input
-                      type="number"
-                      id="food-calories"
-                      name="food-calories"
-                      min="0"
-                      step="1"
-                      inputmode="numeric"
-                      placeholder="100"
-                      autocomplete="off"
-                      required
-                    >
-
-                    <span>
-                      kcal
-                    </span>
-
-                  </div>
-
-                </div>
-
-
-                <button
-                  type="submit"
-                  class="primary-button"
-                >
-                  Hinzufügen
-                </button>
-
-              </form>
-
-            </div>
-
-
-            <div
-              class="food-list"
-              id="food-list"
-            >
-
-              <div class="empty-state">
-
-                <strong>
-                  Noch nichts eingetragen.
-                </strong>
-
-                <span>
-                  Deine Lebensmittel erscheinen hier.
-                </span>
-
-              </div>
-
-            </div>
-
+        <div
+          class="calorie-details"
+          id="professional-calorie-goals"
+          hidden
+        >
+          <div>
+            <span>Professionelles Ziel</span>
+            <strong id="calorie-goal">—</strong>
           </div>
 
-        </section>
+          <div>
+            <span>Verbleibend</span>
+            <strong id="calories-remaining">—</strong>
+          </div>
+        </div>
+
+      </article>
 
 
-        <!-- =================================================
+      <form class="food-form" id="food-form">
+
+        <div class="form-group">
+          <label for="food-name">Lebensmittel</label>
+
+          <input
+            type="search"
+            id="food-name"
+            name="food-name"
+            list="food-catalog-options"
+            maxlength="100"
+            placeholder="z. B. Banane"
+            autocomplete="off"
+            required
+          >
+
+          <datalist id="food-catalog-options"></datalist>
+
+          <input
+            type="hidden"
+            id="food-id"
+            name="food-id"
+          >
+        </div>
+
+
+        <div class="form-group">
+          <label for="food-amount">Menge</label>
+
+          <div class="input-unit">
+            <input
+              type="number"
+              id="food-amount"
+              name="food-amount"
+              min="1"
+              step="1"
+              value="100"
+              inputmode="numeric"
+              required
+            >
+
+            <span>g</span>
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <label for="food-calories">Kalorien</label>
+
+          <div class="input-unit">
+            <input
+              type="number"
+              id="food-calories"
+              name="food-calories"
+              min="0"
+              step="1"
+              placeholder="—"
+              readonly
+              required
+            >
+
+            <span>kcal</span>
+          </div>
+        </div>
+
+
+        <div
+          class="food-nutrients-premium"
+          id="premium-food-details"
+          hidden
+        >
+          <h3>Nährwerte</h3>
+
+          <dl>
+            <div>
+              <dt>Eiweiss</dt>
+              <dd><span id="food-protein">—</span> g</dd>
+            </div>
+
+            <div>
+              <dt>Kohlenhydrate</dt>
+              <dd><span id="food-carbohydrates">—</span> g</dd>
+            </div>
+
+            <div>
+              <dt>Fett</dt>
+              <dd><span id="food-fat">—</span> g</dd>
+            </div>
+
+            <div>
+              <dt>Ballaststoffe</dt>
+              <dd><span id="food-fiber">—</span> g</dd>
+            </div>
+          </dl>
+
+          <p id="food-highlights" hidden></p>
+        </div>
+
+
+        <div
+          class="food-nutrients-plus"
+          id="premium-plus-food-details"
+          hidden
+        >
+          <h3>Vollständige Nährwerttabelle</h3>
+
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Nährstoff</th>
+                <th scope="col">Menge</th>
+              </tr>
+            </thead>
+
+            <tbody id="food-complete-nutrients">
+              <tr>
+                <td colspan="2">Lebensmittel auswählen</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+        <button type="submit" class="primary-button">
+          Hinzufügen
+        </button>
+
+      </form>
+
+    </div>
+
+
+    <div class="food-list" id="food-list">
+      <div class="empty-state">
+        <strong>Noch nichts eingetragen.</strong>
+        <span>Deine Lebensmittel erscheinen hier.</span>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+ =================================================
              18. MOVEMENT SECTION
         ================================================== -->
 
