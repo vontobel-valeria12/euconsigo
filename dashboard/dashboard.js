@@ -1557,20 +1557,375 @@ if (addWaterButton) {
 
 
 /* =========================================================
-   28. FOOD - CALCULATE CONSUMED CALORIES
+   28. FOOD - CATALOG
+========================================================= */
+
+const foodCatalog =
+  Array.isArray(window.FOOD_CATALOG)
+    ? window.FOOD_CATALOG
+    : [
+        {
+          id: "banana-raw",
+          name: "Banane, roh",
+          aliases: [
+            "Banane",
+            "Banana",
+            "Banana, raw"
+          ],
+          per100g: {
+            calories: 90,
+            protein: 1.1,
+            carbohydrates: 19.7,
+            fat: 0.2,
+            fiber: 2.7,
+            sugar: 15.6,
+            water: 75.8
+          },
+          highlights: [],
+          completeNutrients: []
+        }
+      ];
+
+
+function normalizeFoodName(value) {
+  return String(value || "")
+    .trim()
+    .toLocaleLowerCase("de-CH");
+}
+
+
+function findFoodByName(name) {
+  const searchName =
+    normalizeFoodName(name);
+
+  return foodCatalog.find(food => {
+    const names = [
+      food.name,
+      ...(food.aliases || [])
+    ];
+
+    return names.some(
+      item =>
+        normalizeFoodName(item) === searchName
+    );
+  });
+}
+
+
+function populateFoodCatalog() {
+  if (!foodCatalogOptions) {
+    return;
+  }
+
+  foodCatalogOptions.innerHTML = "";
+
+  foodCatalog.forEach(food => {
+    const names = [
+      food.name,
+      ...(food.aliases || [])
+    ];
+
+    names.forEach(name => {
+      const option =
+        document.createElement("option");
+
+      option.value = name;
+
+      foodCatalogOptions.appendChild(option);
+    });
+  });
+}
+
+
+populateFoodCatalog();
+
+
+/* =========================================================
+   29. FOOD - CALCULATE NUTRIENTS
+========================================================= */
+
+function calculateFoodValues(food, amountGrams) {
+  const multiplier =
+    amountGrams / 100;
+
+  const values = {};
+
+  Object.entries(food.per100g || {})
+    .forEach(([key, value]) => {
+      const number = Number(value);
+
+      if (Number.isFinite(number)) {
+        const calculated =
+          number * multiplier;
+
+        values[key] =
+          key === "calories"
+            ? Math.round(calculated)
+            : Math.round(calculated * 10) / 10;
+      }
+    });
+
+  return values;
+}
+
+
+function getFoodPlanLevel() {
+  const currentUser =
+    getUser();
+
+  const planName =
+    String(
+      currentUser.plan ||
+      currentUser.planId ||
+      currentUser.subscriptionPlan ||
+      currentUser.membershipPlan ||
+      ""
+    )
+      .trim()
+      .toLocaleLowerCase("de-CH");
+
+  if (
+    currentUser.premiumPlus === true ||
+    planName.includes("plus")
+  ) {
+    return "premium-plus";
+  }
+
+  if (
+    currentUser.premium === true ||
+    planName.includes("premium")
+  ) {
+    return "premium";
+  }
+
+  return "free";
+}
+
+
+function formatNutrient(value) {
+  const number = Number(value);
+
+  if (!Number.isFinite(number)) {
+    return "—";
+  }
+
+  return number.toLocaleString(
+    "de-CH",
+    {
+      maximumFractionDigits: 1
+    }
+  );
+}
+
+
+function renderFoodNutrients(food, amountGrams) {
+  const planLevel =
+    getFoodPlanLevel();
+
+  const values =
+    calculateFoodValues(
+      food,
+      amountGrams
+    );
+
+  const showPremium =
+    planLevel === "premium" ||
+    planLevel === "premium-plus";
+
+  const showPremiumPlus =
+    planLevel === "premium-plus";
+
+  if (premiumFoodDetails) {
+    premiumFoodDetails.hidden =
+      !showPremium;
+  }
+
+  if (premiumPlusFoodDetails) {
+    premiumPlusFoodDetails.hidden =
+      !showPremiumPlus;
+  }
+
+  if (!showPremium) {
+    return;
+  }
+
+  if (foodProtein) {
+    foodProtein.textContent =
+      formatNutrient(values.protein);
+  }
+
+  if (foodCarbohydrates) {
+    foodCarbohydrates.textContent =
+      formatNutrient(values.carbohydrates);
+  }
+
+  if (foodFat) {
+    foodFat.textContent =
+      formatNutrient(values.fat);
+  }
+
+  if (foodFiber) {
+    foodFiber.textContent =
+      formatNutrient(values.fiber);
+  }
+
+  if (foodHighlights) {
+    const highlights =
+      Array.isArray(food.highlights)
+        ? food.highlights
+        : [];
+
+    foodHighlights.textContent =
+      highlights.join(", ");
+
+    foodHighlights.hidden =
+      highlights.length === 0;
+  }
+
+  if (!showPremiumPlus || !foodCompleteNutrients) {
+    return;
+  }
+
+  foodCompleteNutrients.innerHTML = "";
+
+  const completeNutrients =
+    Array.isArray(food.completeNutrients)
+      ? food.completeNutrients
+      : [];
+
+  if (completeNutrients.length === 0) {
+    const row =
+      document.createElement("tr");
+
+    const cell =
+      document.createElement("td");
+
+    cell.colSpan = 2;
+    cell.textContent =
+      "Vollständige Nährwerte werden noch geladen.";
+
+    row.appendChild(cell);
+    foodCompleteNutrients.appendChild(row);
+
+    return;
+  }
+
+  completeNutrients.forEach(nutrient => {
+    const row =
+      document.createElement("tr");
+
+    const nameCell =
+      document.createElement("td");
+
+    const valueCell =
+      document.createElement("td");
+
+    nameCell.textContent =
+      nutrient.name;
+
+    valueCell.textContent =
+      `${formatNutrient(
+        Number(nutrient.value) *
+        amountGrams / 100
+      )} ${nutrient.unit || ""}`.trim();
+
+    row.appendChild(nameCell);
+    row.appendChild(valueCell);
+    foodCompleteNutrients.appendChild(row);
+  });
+}
+
+
+/* =========================================================
+   30. FOOD - UPDATE SELECTION
+========================================================= */
+
+function updateFoodSelection() {
+  if (
+    !foodNameInput ||
+    !foodAmountInput ||
+    !foodCaloriesInput
+  ) {
+    return;
+  }
+
+  const food =
+    findFoodByName(
+      foodNameInput.value
+    );
+
+  const amountGrams =
+    Number(foodAmountInput.value);
+
+  if (
+    !food ||
+    !Number.isFinite(amountGrams) ||
+    amountGrams <= 0
+  ) {
+    if (foodIdInput) {
+      foodIdInput.value = "";
+    }
+
+    foodCaloriesInput.value = "";
+
+    if (premiumFoodDetails) {
+      premiumFoodDetails.hidden = true;
+    }
+
+    if (premiumPlusFoodDetails) {
+      premiumPlusFoodDetails.hidden = true;
+    }
+
+    return;
+  }
+
+  const values =
+    calculateFoodValues(
+      food,
+      amountGrams
+    );
+
+  if (foodIdInput) {
+    foodIdInput.value =
+      food.id;
+  }
+
+  foodCaloriesInput.value =
+    values.calories ?? "";
+
+  renderFoodNutrients(
+    food,
+    amountGrams
+  );
+}
+
+
+if (foodNameInput) {
+  foodNameInput.addEventListener(
+    "input",
+    updateFoodSelection
+  );
+}
+
+if (foodAmountInput) {
+  foodAmountInput.addEventListener(
+    "input",
+    updateFoodSelection
+  );
+}
+
+
+/* =========================================================
+   31. FOOD - CALCULATE CONSUMED CALORIES
 ========================================================= */
 
 function getConsumedCalories() {
   return foodData.items.reduce(
     (total, item) => {
       const calories =
-        Number(
-          item.calories
-        );
+        Number(item.calories);
 
-      if (
-        !Number.isFinite(calories)
-      ) {
+      if (!Number.isFinite(calories)) {
         return total;
       }
 
@@ -1582,7 +1937,7 @@ function getConsumedCalories() {
 
 
 /* =========================================================
-   29. FOOD - RENDER CALORIES
+   32. FOOD - RENDER CALORIES
 ========================================================= */
 
 function renderCalories() {
@@ -1593,57 +1948,39 @@ function renderCalories() {
 
   if (caloriesConsumed) {
     caloriesConsumed.textContent =
-      consumed.toLocaleString(
-        "de-CH"
-      );
+      consumed.toLocaleString("de-CH");
   }
 
   if (
-    !hasValidNumber(
-      user.calorieGoal
-    ) ||
-    Number(
-      user.calorieGoal
-    ) <= 0
+    !hasValidNumber(user.calorieGoal) ||
+    Number(user.calorieGoal) <= 0
   ) {
     if (calorieGoalElement) {
-      calorieGoalElement.textContent =
-        "—";
+      calorieGoalElement.textContent = "—";
     }
 
     if (caloriesRemaining) {
-      caloriesRemaining.textContent =
-        "—";
+      caloriesRemaining.textContent = "—";
     }
 
     renderFoodList();
-
     return;
   }
 
   const goal =
-    Number(
-      user.calorieGoal
-    );
+    Number(user.calorieGoal);
 
   const remaining =
-    Math.max(
-      0,
-      goal - consumed
-    );
+    Math.max(0, goal - consumed);
 
   if (calorieGoalElement) {
     calorieGoalElement.textContent =
-      goal.toLocaleString(
-        "de-CH"
-      );
+      goal.toLocaleString("de-CH");
   }
 
   if (caloriesRemaining) {
     caloriesRemaining.textContent =
-      remaining.toLocaleString(
-        "de-CH"
-      );
+      remaining.toLocaleString("de-CH");
   }
 
   renderFoodList();
@@ -1651,12 +1988,13 @@ function renderCalories() {
 
 
 /* =========================================================
-   30. FOOD - ADD ITEM
+   33. FOOD - ADD ITEM
 ========================================================= */
 
 if (
   foodForm &&
   foodNameInput &&
+  foodAmountInput &&
   foodCaloriesInput
 ) {
   foodForm.addEventListener(
@@ -1666,32 +2004,43 @@ if (
 
       checkNewDay();
 
-      const name =
-        foodNameInput
-          .value
-          .trim();
-
-      const calories =
-        Number(
-          foodCaloriesInput.value
+      const food =
+        findFoodByName(
+          foodNameInput.value
         );
 
+      const amountGrams =
+        Number(foodAmountInput.value);
+
+      const calories =
+        Number(foodCaloriesInput.value);
+
       if (
-        !name ||
-        !Number.isFinite(calories) ||
-        calories < 0
+        !food ||
+        !Number.isFinite(amountGrams) ||
+        amountGrams <= 0 ||
+        !Number.isFinite(calories)
       ) {
         alert(
-          "Bitte Lebensmittel und Kalorien eingeben."
+          "Bitte ein Lebensmittel aus der Liste auswählen."
         );
 
         return;
       }
 
+      const nutrients =
+        calculateFoodValues(
+          food,
+          amountGrams
+        );
+
       foodData.items.push({
         id: Date.now(),
-        name,
-        calories
+        foodId: food.id,
+        name: food.name,
+        amountGrams,
+        calories,
+        nutrients
       });
 
       saveStorageData(
@@ -1700,7 +2049,12 @@ if (
       );
 
       foodNameInput.value = "";
+      foodAmountInput.value = "100";
       foodCaloriesInput.value = "";
+
+      if (foodIdInput) {
+        foodIdInput.value = "";
+      }
 
       renderCalories();
     }
@@ -1709,7 +2063,7 @@ if (
 
 
 /* =========================================================
-   31. FOOD - RENDER ITEM LIST
+   34. FOOD - RENDER ITEM LIST
 ========================================================= */
 
 function renderFoodList() {
@@ -1717,20 +2071,11 @@ function renderFoodList() {
     return;
   }
 
-  if (
-    foodData.items.length === 0
-  ) {
+  if (foodData.items.length === 0) {
     foodList.innerHTML = `
       <div class="empty-state">
-
-        <strong>
-          Noch nichts eingetragen.
-        </strong>
-
-        <span>
-          Deine Lebensmittel erscheinen hier.
-        </span>
-
+        <strong>Noch nichts eingetragen.</strong>
+        <span>Deine Lebensmittel erscheinen hier.</span>
       </div>
     `;
 
@@ -1739,57 +2084,62 @@ function renderFoodList() {
 
   foodList.innerHTML = "";
 
-  foodData.items.forEach(
-    item => {
-      const row =
-        document.createElement(
-          "div"
-        );
+  foodData.items.forEach(item => {
+    const row =
+      document.createElement("div");
 
-      row.className =
-        "food-item";
+    row.className = "food-item";
 
-      row.innerHTML = `
-        <div>
+    const details =
+      document.createElement("div");
 
-          <strong>
-            ${escapeHTML(item.name)}
-          </strong>
+    const name =
+      document.createElement("strong");
 
-          <span>
-            ${Number(item.calories)} kcal
-          </span>
+    const amount =
+      document.createElement("span");
 
-        </div>
+    const calories =
+      document.createElement("span");
 
-        <button
-          type="button"
-          class="delete-item"
-          data-food-id="${item.id}"
-          aria-label="Lebensmittel löschen"
-        >
-          ×
-        </button>
-      `;
+    name.textContent =
+      item.name;
 
-      foodList.appendChild(
-        row
-      );
-    }
-  );
+    amount.textContent =
+      `${formatNutrient(item.amountGrams)} g`;
+
+    calories.textContent =
+      `${Number(item.calories)} kcal`;
+
+    details.appendChild(name);
+    details.appendChild(amount);
+    details.appendChild(calories);
+
+    const deleteButton =
+      document.createElement("button");
+
+    deleteButton.type = "button";
+    deleteButton.className = "delete-item";
+    deleteButton.dataset.foodId = item.id;
+    deleteButton.setAttribute(
+      "aria-label",
+      "Lebensmittel löschen"
+    );
+    deleteButton.textContent = "×";
+
+    row.appendChild(details);
+    row.appendChild(deleteButton);
+    foodList.appendChild(row);
+  });
 
   foodList
-    .querySelectorAll(
-      "[data-food-id]"
-    )
+    .querySelectorAll("[data-food-id]")
     .forEach(button => {
       button.addEventListener(
         "click",
         function () {
           const id =
-            Number(
-              button.dataset.foodId
-            );
+            Number(button.dataset.foodId);
 
           foodData.items =
             foodData.items.filter(
@@ -1809,8 +2159,8 @@ function renderFoodList() {
 }
 
 
-/* =========================================================
-   32. MOVEMENT - CALCULATE TOTAL MINUTES
+/*  =========================================================
+   35. MOVEMENT - CALCULATE TOTAL MINUTES
 ========================================================= */
 
 function getMovementMinutes() {
@@ -1835,7 +2185,7 @@ function getMovementMinutes() {
 
 
 /* =========================================================
-   33. MOVEMENT - RENDER
+   36. MOVEMENT - RENDER
 ========================================================= */
 
 function renderMovement() {
@@ -1944,7 +2294,7 @@ function renderMovement() {
 
 
 /* =========================================================
-   34. MOVEMENT - ADD ACTIVITY
+   37. MOVEMENT - ADD ACTIVITY
 ========================================================= */
 
 if (
@@ -2002,7 +2352,7 @@ if (
 
 
 /* =========================================================
-   35. ESCAPE KEY
+   38. ESCAPE KEY
 ========================================================= */
 
 document.addEventListener(
@@ -2039,7 +2389,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   36. RENDER DASHBOARD
+   39. RENDER DASHBOARD
 ========================================================= */
 
 function renderDashboard() {
@@ -2059,7 +2409,7 @@ function renderDashboard() {
 
 
 /* =========================================================
-   37. START DASHBOARD
+   40. START DASHBOARD
 ========================================================= */
 
 renderDashboard();
