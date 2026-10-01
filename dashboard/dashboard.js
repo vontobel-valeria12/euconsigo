@@ -340,6 +340,15 @@ const foodNameInput =
 const foodCaloriesInput =
   document.getElementById("food-calories");
 
+const foodAmountInput =
+  document.getElementById("food-amount");
+
+const foodIdInput =
+  document.getElementById("food-id");
+
+const foodCatalogOptions =
+  document.getElementById("food-catalog-options");
+
 const caloriesConsumed =
   document.getElementById("calories-consumed");
 
@@ -349,8 +358,35 @@ const calorieGoalElement =
 const caloriesRemaining =
   document.getElementById("calories-remaining");
 
+const professionalCalorieGoals =
+  document.getElementById("professional-calorie-goals");
+
 const foodList =
   document.getElementById("food-list");
+
+const premiumFoodDetails =
+  document.getElementById("premium-food-details");
+
+const premiumPlusFoodDetails =
+  document.getElementById("premium-plus-food-details");
+
+const foodProtein =
+  document.getElementById("food-protein");
+
+const foodCarbohydrates =
+  document.getElementById("food-carbohydrates");
+
+const foodFat =
+  document.getElementById("food-fat");
+
+const foodFiber =
+  document.getElementById("food-fiber");
+
+const foodHighlights =
+  document.getElementById("food-highlights");
+
+const foodCompleteNutrients =
+  document.getElementById("food-complete-nutrients");
 
 const movementForm =
   document.getElementById("movement-form");
@@ -433,9 +469,7 @@ if (sideMenuBackdrop) {
 
 
 document
-  .querySelectorAll(
-    ".side-menu-link[href^='#']"
-  )
+  .querySelectorAll(".side-menu-link[href^='#']")
   .forEach(link => {
     link.addEventListener(
       "click",
@@ -545,9 +579,7 @@ function renderUser() {
   user = getUser();
 
   const userName =
-    String(
-      user.name || ""
-    ).trim();
+    String(user.name || "").trim();
 
   if (welcomeName) {
     welcomeName.textContent =
@@ -564,9 +596,7 @@ function renderUser() {
   if (menuAvatar) {
     menuAvatar.textContent =
       userName
-        ? userName
-            .charAt(0)
-            .toUpperCase()
+        ? userName.charAt(0).toUpperCase()
         : "♥";
   }
 }
@@ -585,9 +615,7 @@ function openPremiumModal() {
 
   premiumModal.hidden = false;
 
-  body.classList.add(
-    "modal-open"
-  );
+  body.classList.add("modal-open");
 }
 
 
@@ -598,9 +626,7 @@ function closePremiumModal() {
 
   premiumModal.hidden = true;
 
-  body.classList.remove(
-    "modal-open"
-  );
+  body.classList.remove("modal-open");
 }
 
 
@@ -649,9 +675,7 @@ function openShareModal() {
 
   shareModal.hidden = false;
 
-  body.classList.add(
-    "modal-open"
-  );
+  body.classList.add("modal-open");
 
   if (shareMessage) {
     shareMessage.textContent = "";
@@ -666,9 +690,7 @@ function closeShareModal() {
 
   shareModal.hidden = true;
 
-  body.classList.remove(
-    "modal-open"
-  );
+  body.classList.remove("modal-open");
 }
 
 
@@ -715,14 +737,10 @@ function getShareData() {
     ).href;
 
   return {
-    title:
-      "Mein Fortschritt",
-
+    title: "Mein Fortschritt",
     text:
       "Zusammen ist es leichter. Starte deinen Weg mit mir bei Mein Fortschritt.",
-
-    url:
-      appURL
+    url: appURL
   };
 }
 
@@ -740,9 +758,7 @@ if (nativeShareButton) {
 
       if (navigator.share) {
         try {
-          await navigator.share(
-            shareData
-          );
+          await navigator.share(shareData);
 
           if (shareMessage) {
             shareMessage.textContent =
@@ -750,9 +766,7 @@ if (nativeShareButton) {
           }
 
         } catch (error) {
-          console.log(
-            "Teilen abgebrochen."
-          );
+          console.log("Teilen abgebrochen.");
         }
 
       } else {
@@ -872,11 +886,7 @@ if (logoutButton) {
 function ensureInitialWeightHistory() {
   user = getUser();
 
-  if (
-    !hasValidNumber(
-      user.startWeight
-    )
-  ) {
+  if (!hasValidNumber(user.startWeight)) {
     return;
   }
 
@@ -885,36 +895,26 @@ function ensureInitialWeightHistory() {
   }
 
   const startWeight =
-    Number(
-      user.startWeight
-    );
+    Number(user.startWeight);
 
   let startDate =
     getLocalToday();
 
   if (user.createdAt) {
     const createdDate =
-      new Date(
-        user.createdAt
-      );
+      new Date(user.createdAt);
 
-    if (
-      !Number.isNaN(
-        createdDate.getTime()
-      )
-    ) {
+    if (!Number.isNaN(createdDate.getTime())) {
       const year =
         createdDate.getFullYear();
 
       const month =
-        String(
-          createdDate.getMonth() + 1
-        ).padStart(2, "0");
+        String(createdDate.getMonth() + 1)
+          .padStart(2, "0");
 
       const day =
-        String(
-          createdDate.getDate()
-        ).padStart(2, "0");
+        String(createdDate.getDate())
+          .padStart(2, "0");
 
       startDate =
         `${year}-${month}-${day}`;
@@ -942,71 +942,46 @@ function renderWeight() {
 
   if (currentWeightMain) {
     currentWeightMain.textContent =
-      formatWeight(
-        user.currentWeight
-      );
+      formatWeight(user.currentWeight);
   }
 
   if (goalWeightMain) {
     goalWeightMain.textContent =
-      formatWeight(
-        user.goalWeight
-      );
+      formatWeight(user.goalWeight);
   }
 
   if (startWeightText) {
     startWeightText.textContent =
-      hasValidNumber(
-        user.startWeight
-      )
+      hasValidNumber(user.startWeight)
         ? `Start ${Number(user.startWeight).toFixed(1)} kg`
         : "Start —";
   }
 
   if (currentWeightText) {
     currentWeightText.textContent =
-      hasValidNumber(
-        user.currentWeight
-      )
+      hasValidNumber(user.currentWeight)
         ? `Aktuell ${Number(user.currentWeight).toFixed(1)} kg`
         : "Aktuell —";
   }
 
   if (goalWeightText) {
     goalWeightText.textContent =
-      hasValidNumber(
-        user.goalWeight
-      )
+      hasValidNumber(user.goalWeight)
         ? `Ziel ${Number(user.goalWeight).toFixed(1)} kg`
         : "Ziel —";
   }
 
-  if (
-    currentBMI &&
-    hasValidNumber(
-      user.bmi
-    )
-  ) {
+  if (currentBMI && hasValidNumber(user.bmi)) {
     currentBMI.textContent =
-      Number(
-        user.bmi
-      ).toFixed(1);
+      Number(user.bmi).toFixed(1);
 
   } else if (currentBMI) {
-    currentBMI.textContent =
-      "—";
+    currentBMI.textContent = "—";
   }
 
-  if (
-    bmiStatus &&
-    hasValidNumber(
-      user.bmi
-    )
-  ) {
+  if (bmiStatus && hasValidNumber(user.bmi)) {
     bmiStatus.textContent =
-      getBMICategory(
-        Number(user.bmi)
-      );
+      getBMICategory(Number(user.bmi));
 
   } else if (bmiStatus) {
     bmiStatus.textContent =
@@ -1029,40 +1004,28 @@ function renderWeight() {
    22. WEIGHT - SAVE CURRENT WEIGHT
 ========================================================= */
 
-if (
-  weightForm &&
-  newWeightInput
-) {
+if (weightForm && newWeightInput) {
   weightForm.addEventListener(
     "submit",
     function (event) {
       event.preventDefault();
 
       const newWeight =
-        Number(
-          newWeightInput.value
-        );
+        Number(newWeightInput.value);
 
       if (
         !Number.isFinite(newWeight) ||
         newWeight < 30 ||
         newWeight > 300
       ) {
-        alert(
-          "Bitte gib ein gültiges Gewicht ein."
-        );
-
+        alert("Bitte gib ein gültiges Gewicht ein.");
         return;
       }
 
       user =
-        setCurrentWeight(
-          newWeight
-        );
+        setCurrentWeight(newWeight);
 
-      saveWeightHistory(
-        newWeight
-      );
+      saveWeightHistory(newWeight);
 
       newWeightInput.value = "";
 
@@ -1082,11 +1045,7 @@ function saveWeightHistory(weight) {
   const numericWeight =
     Number(weight);
 
-  if (
-    !Number.isFinite(
-      numericWeight
-    )
-  ) {
+  if (!Number.isFinite(numericWeight)) {
     return;
   }
 
@@ -1113,9 +1072,7 @@ function saveWeightHistory(weight) {
 
   weightHistory.sort(
     (a, b) =>
-      String(a.date).localeCompare(
-        String(b.date)
-      )
+      String(a.date).localeCompare(String(b.date))
   );
 
   saveStorageData(
@@ -1130,9 +1087,7 @@ function saveWeightHistory(weight) {
 ========================================================= */
 
 function getValidWeightHistory() {
-  if (
-    !Array.isArray(weightHistory)
-  ) {
+  if (!Array.isArray(weightHistory)) {
     return [];
   }
 
@@ -1141,24 +1096,17 @@ function getValidWeightHistory() {
       entry =>
         entry &&
         entry.date &&
-        hasValidNumber(
-          entry.weight
-        )
+        hasValidNumber(entry.weight)
     )
     .map(
       entry => ({
-        date:
-          String(entry.date),
-
-        weight:
-          Number(entry.weight)
+        date: String(entry.date),
+        weight: Number(entry.weight)
       })
     )
     .sort(
       (a, b) =>
-        a.date.localeCompare(
-          b.date
-        )
+        a.date.localeCompare(b.date)
     );
 }
 
@@ -1175,18 +1123,11 @@ function renderWeightHistory() {
   const validHistory =
     getValidWeightHistory();
 
-  if (
-    validHistory.length === 0
-  ) {
+  if (validHistory.length === 0) {
     weightChart.innerHTML = `
       <div class="empty-state">
-        <strong>
-          Dein Verlauf beginnt hier.
-        </strong>
-
-        <span>
-          Trage dein Gewicht regelmässig ein.
-        </span>
+        <strong>Dein Verlauf beginnt hier.</strong>
+        <span>Trage dein Gewicht regelmässig ein.</span>
       </div>
     `;
 
@@ -1202,19 +1143,12 @@ function renderWeightHistory() {
     );
 
   let minimumWeight =
-    Math.min(
-      ...weights
-    );
+    Math.min(...weights);
 
   let maximumWeight =
-    Math.max(
-      ...weights
-    );
+    Math.max(...weights);
 
-  if (
-    minimumWeight ===
-    maximumWeight
-  ) {
+  if (minimumWeight === maximumWeight) {
     minimumWeight -= 1;
     maximumWeight += 1;
   }
@@ -1242,14 +1176,11 @@ function renderWeightHistory() {
       (entry, index) => {
         const x =
           recentHistory.length === 1
-            ? paddingLeft +
-              usableWidth / 2
+            ? paddingLeft + usableWidth / 2
             : paddingLeft +
               (
                 index /
-                (
-                  recentHistory.length - 1
-                )
+                (recentHistory.length - 1)
               ) *
               usableWidth;
 
@@ -1266,10 +1197,7 @@ function renderWeightHistory() {
         const y =
           paddingTop +
           usableHeight -
-          (
-            normalizedWeight *
-            usableHeight
-          );
+          normalizedWeight * usableHeight;
 
         return {
           x,
@@ -1282,10 +1210,7 @@ function renderWeightHistory() {
 
   const polylinePoints =
     points
-      .map(
-        point =>
-          `${point.x},${point.y}`
-      )
+      .map(point => `${point.x},${point.y}`)
       .join(" ");
 
   const pointElements =
@@ -1307,13 +1232,8 @@ function renderWeightHistory() {
       .map(
         point => `
           <div class="weight-chart-label">
-            <strong>
-              ${point.weight.toFixed(1)}
-            </strong>
-
-            <span>
-              ${formatShortDate(point.date)}
-            </span>
+            <strong>${point.weight.toFixed(1)}</strong>
+            <span>${formatShortDate(point.date)}</span>
           </div>
         `
       )
@@ -1323,16 +1243,12 @@ function renderWeightHistory() {
     recentHistory[0].weight;
 
   const lastWeight =
-    recentHistory[
-      recentHistory.length - 1
-    ].weight;
+    recentHistory[recentHistory.length - 1].weight;
 
   const periodDifference =
-    lastWeight -
-    firstWeight;
+    lastWeight - firstWeight;
 
-  let periodDifferenceText =
-    "±0.0 kg";
+  let periodDifferenceText = "±0.0 kg";
 
   if (periodDifference < 0) {
     periodDifferenceText =
@@ -1344,32 +1260,20 @@ function renderWeightHistory() {
       `+${periodDifference.toFixed(1)} kg`;
   }
 
-  let totalDifferenceText =
-    "—";
+  let totalDifferenceText = "—";
 
   if (
-    hasValidNumber(
-      user.startWeight
-    ) &&
-    hasValidNumber(
-      user.currentWeight
-    )
+    hasValidNumber(user.startWeight) &&
+    hasValidNumber(user.currentWeight)
   ) {
     const totalDifference =
-      Number(
-        user.currentWeight
-      ) -
-      Number(
-        user.startWeight
-      );
+      Number(user.currentWeight) -
+      Number(user.startWeight);
 
     if (totalDifference === 0) {
-      totalDifferenceText =
-        "±0.0 kg";
+      totalDifferenceText = "±0.0 kg";
 
-    } else if (
-      totalDifference > 0
-    ) {
+    } else if (totalDifference > 0) {
       totalDifferenceText =
         `+${totalDifference.toFixed(1)} kg`;
 
@@ -1381,12 +1285,8 @@ function renderWeightHistory() {
 
   weightChart.innerHTML = `
     <div class="weight-chart-header">
-
       <div>
-        <span>
-          Gewichtsverlauf
-        </span>
-
+        <span>Gewichtsverlauf</span>
         <strong>
           ${recentHistory.length}
           ${
@@ -1398,15 +1298,9 @@ function renderWeightHistory() {
       </div>
 
       <div class="weight-chart-change">
-        <span>
-          Seit dem Start
-        </span>
-
-        <strong>
-          ${totalDifferenceText}
-        </strong>
+        <span>Seit dem Start</span>
+        <strong>${totalDifferenceText}</strong>
       </div>
-
     </div>
 
     <div
@@ -1417,7 +1311,6 @@ function renderWeightHistory() {
         margin-top: 20px;
       "
     >
-
       <svg
         viewBox="0 0 ${chartWidth} ${chartHeight}"
         width="100%"
@@ -1429,7 +1322,6 @@ function renderWeightHistory() {
           overflow: visible;
         "
       >
-
         <line
           x1="${paddingLeft}"
           y1="${paddingTop + usableHeight}"
@@ -1455,9 +1347,7 @@ function renderWeightHistory() {
         }
 
         ${pointElements}
-
       </svg>
-
     </div>
 
     <div
@@ -1470,9 +1360,7 @@ function renderWeightHistory() {
         margin-top: -24px;
       "
     >
-
       ${chartLabels}
-
     </div>
 
     ${
@@ -1487,9 +1375,7 @@ function renderWeightHistory() {
             "
           >
             Veränderung in diesem Verlauf:
-            <strong>
-              ${periodDifferenceText}
-            </strong>
+            <strong>${periodDifferenceText}</strong>
           </div>
         `
         : ""
@@ -1508,18 +1394,12 @@ function renderWater() {
   }
 
   const amount =
-    hasValidNumber(
-      waterData.amount
-    )
-      ? Number(
-          waterData.amount
-        )
+    hasValidNumber(waterData.amount)
+      ? Number(waterData.amount)
       : 0;
 
   waterCurrent.textContent =
-    (
-      amount / 1000
-    ).toFixed(2);
+    (amount / 1000).toFixed(2);
 }
 
 
@@ -1534,12 +1414,8 @@ if (addWaterButton) {
       checkNewDay();
 
       const currentAmount =
-        hasValidNumber(
-          waterData.amount
-        )
-          ? Number(
-              waterData.amount
-            )
+        hasValidNumber(waterData.amount)
+          ? Number(waterData.amount)
           : 0;
 
       waterData.amount =
@@ -1670,32 +1546,14 @@ function calculateFoodValues(food, amountGrams) {
 
 
 function getFoodPlanLevel() {
-  const currentUser =
-    getUser();
-
-  const planName =
-    String(
-      currentUser.plan ||
-      currentUser.planId ||
-      currentUser.subscriptionPlan ||
-      currentUser.membershipPlan ||
-      ""
-    )
-      .trim()
-      .toLocaleLowerCase("de-CH");
+  const level =
+    getUser().subscriptionLevel;
 
   if (
-    currentUser.premiumPlus === true ||
-    planName.includes("plus")
+    level === "premium" ||
+    level === "premium-plus"
   ) {
-    return "premium-plus";
-  }
-
-  if (
-    currentUser.premium === true ||
-    planName.includes("premium")
-  ) {
-    return "premium";
+    return level;
   }
 
   return "free";
@@ -1782,7 +1640,10 @@ function renderFoodNutrients(food, amountGrams) {
       highlights.length === 0;
   }
 
-  if (!showPremiumPlus || !foodCompleteNutrients) {
+  if (
+    !showPremiumPlus ||
+    !foodCompleteNutrients
+  ) {
     return;
   }
 
@@ -1850,9 +1711,7 @@ function updateFoodSelection() {
   }
 
   const food =
-    findFoodByName(
-      foodNameInput.value
-    );
+    findFoodByName(foodNameInput.value);
 
   const amountGrams =
     Number(foodAmountInput.value);
@@ -1907,6 +1766,7 @@ if (foodNameInput) {
   );
 }
 
+
 if (foodAmountInput) {
   foodAmountInput.addEventListener(
     "input",
@@ -1951,10 +1811,24 @@ function renderCalories() {
       consumed.toLocaleString("de-CH");
   }
 
-  if (
-    !hasValidNumber(user.calorieGoal) ||
-    Number(user.calorieGoal) <= 0
-  ) {
+  const dailyGoals =
+    getActiveDailyNutritionGoals();
+
+  const goal =
+    dailyGoals
+      ? Number(dailyGoals.calories)
+      : null;
+
+  const hasGoal =
+    Number.isFinite(goal) &&
+    goal > 0;
+
+  if (professionalCalorieGoals) {
+    professionalCalorieGoals.hidden =
+      !hasGoal;
+  }
+
+  if (!hasGoal) {
     if (calorieGoalElement) {
       calorieGoalElement.textContent = "—";
     }
@@ -1966,9 +1840,6 @@ function renderCalories() {
     renderFoodList();
     return;
   }
-
-  const goal =
-    Number(user.calorieGoal);
 
   const remaining =
     Math.max(0, goal - consumed);
@@ -2005,9 +1876,7 @@ if (
       checkNewDay();
 
       const food =
-        findFoodByName(
-          foodNameInput.value
-        );
+        findFoodByName(foodNameInput.value);
 
       const amountGrams =
         Number(foodAmountInput.value);
@@ -2159,7 +2028,7 @@ function renderFoodList() {
 }
 
 
-/*  =========================================================
+/* =========================================================
    35. MOVEMENT - CALCULATE TOTAL MINUTES
 ========================================================= */
 
@@ -2167,13 +2036,9 @@ function getMovementMinutes() {
   return movementData.items.reduce(
     (total, item) => {
       const minutes =
-        Number(
-          item.minutes
-        );
+        Number(item.minutes);
 
-      if (
-        !Number.isFinite(minutes)
-      ) {
+      if (!Number.isFinite(minutes)) {
         return total;
       }
 
@@ -2201,20 +2066,11 @@ function renderMovement() {
     return;
   }
 
-  if (
-    movementData.items.length === 0
-  ) {
+  if (movementData.items.length === 0) {
     activityList.innerHTML = `
       <div class="empty-state">
-
-        <strong>
-          Noch keine Aktivität.
-        </strong>
-
-        <span>
-          Auch kleine Bewegungen zählen.
-        </span>
-
+        <strong>Noch keine Aktivität.</strong>
+        <span>Auch kleine Bewegungen zählen.</span>
       </div>
     `;
 
@@ -2223,57 +2079,39 @@ function renderMovement() {
 
   activityList.innerHTML = "";
 
-  movementData.items.forEach(
-    item => {
-      const row =
-        document.createElement(
-          "div"
-        );
+  movementData.items.forEach(item => {
+    const row =
+      document.createElement("div");
 
-      row.className =
-        "activity-item";
+    row.className = "activity-item";
 
-      row.innerHTML = `
-        <div>
+    row.innerHTML = `
+      <div>
+        <strong>${escapeHTML(item.name)}</strong>
+        <span>${Number(item.minutes)} Min.</span>
+      </div>
 
-          <strong>
-            ${escapeHTML(item.name)}
-          </strong>
+      <button
+        type="button"
+        class="delete-item"
+        data-activity-id="${item.id}"
+        aria-label="Aktivität löschen"
+      >
+        ×
+      </button>
+    `;
 
-          <span>
-            ${Number(item.minutes)} Min.
-          </span>
-
-        </div>
-
-        <button
-          type="button"
-          class="delete-item"
-          data-activity-id="${item.id}"
-          aria-label="Aktivität löschen"
-        >
-          ×
-        </button>
-      `;
-
-      activityList.appendChild(
-        row
-      );
-    }
-  );
+    activityList.appendChild(row);
+  });
 
   activityList
-    .querySelectorAll(
-      "[data-activity-id]"
-    )
+    .querySelectorAll("[data-activity-id]")
     .forEach(button => {
       button.addEventListener(
         "click",
         function () {
           const id =
-            Number(
-              button.dataset.activityId
-            );
+            Number(button.dataset.activityId);
 
           movementData.items =
             movementData.items.filter(
@@ -2310,14 +2148,10 @@ if (
       checkNewDay();
 
       const name =
-        activityNameInput
-          .value
-          .trim();
+        activityNameInput.value.trim();
 
       const minutes =
-        Number(
-          activityMinutesInput.value
-        );
+        Number(activityMinutesInput.value);
 
       if (
         !name ||
@@ -2358,9 +2192,7 @@ if (
 document.addEventListener(
   "keydown",
   function (event) {
-    if (
-      event.key !== "Escape"
-    ) {
+    if (event.key !== "Escape") {
       return;
     }
 
