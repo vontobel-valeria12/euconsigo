@@ -1,0 +1,105 @@
+/* =========================================================
+   ESTILOS DAS PÁGINAS PREMIUM E PREMIUM+
+========================================================= */
+
+.offer-page {
+  width: min(900px, calc(100% - 34px));
+  margin: 0 auto;
+  padding: clamp(28px, 6vw, 64px) 0 70px;
+}
+
+.offer-card {
+  padding: clamp(22px, 5vw, 46px);
+  border: 1px solid var(--line, #ece7df);
+  border-radius: var(--radius-large, 28px);
+  background: var(--cream, #fffdf9);
+  box-shadow: var(--shadow, 0 12px 35px rgba(67, 55, 38, 0.08));
+}
+
+.offer-kicker {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: var(--green-dark, #69845d);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.offer-card h1 {
+  max-width: 720px;
+  margin: 0;
+  color: var(--brown-dark, #765c3d);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(32px, 6vw, 54px);
+  line-height: 1.08;
+}
+
+.offer-intro {
+  max-width: 650px;
+  margin: 14px 0 0;
+  color: var(--muted, #827c72);
+  font-size: clamp(15px, 2vw, 18px);
+  line-height: 1.6;
+}
+
+.offer-feature-list {
+  display: grid;
+  gap: 12px;
+  margin: 28px 0;
+}
+
+.offer-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--line, #ece7df);
+  border-radius: 16px;
+  background: var(--white, #ffffff);
+}
+
+.offer-feature-item > span {
+  flex: 0 0 34px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.offer-feature-item strong {
+  display: block;
+  color: var(--brown-dark, #765c3d);
+  font-size: 14px;
+}
+
+.offer-feature-item small {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted, #827c72);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.offer-top-link {
+  color: var(--green-dark, #69845d);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.offer-top-link:hover {
+  text-decoration: underline;
+}
+
+.offer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.offer-action {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 18
