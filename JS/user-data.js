@@ -2117,4 +2117,69 @@ function calculateWeightProgress(
 
 function getUserWeightProgress() {
 
-  const user
+  const user =
+    getUser();
+
+
+  return calculateWeightProgress(
+    user.startWeight,
+    user.currentWeight,
+    user.goalWeight
+  );
+
+}
+
+
+/* =========================================================
+   39. BASIC USER DATA VALIDATION
+   A altura e o peso inicial são coletados no Index.
+========================================================= */
+
+function hasBasicUserData() {
+
+  const user =
+    getUser();
+
+
+  const height =
+    toNumber(
+      user.height
+    );
+
+
+  const startWeight =
+    toNumber(
+      user.startWeight
+    );
+
+
+  return (
+    height !== null &&
+    height > 0 &&
+    startWeight !== null &&
+    startWeight > 0
+  );
+
+}
+
+
+/* =========================================================
+   40. WEIGHT GOAL VALIDATION
+========================================================= */
+
+function hasWeightGoal() {
+
+  const goalWeight =
+    toNumber(
+      getUser().goalWeight
+    );
+
+
+  return (
+    goalWeight !== null &&
+    goalWeight > 0
+  );
+
+}
+
+
