@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+
+
+<!-- =========================================================
+   DASHBOARD.HTML
+   Mein Fortschritt
+
+   Estrutura principal do Dashboard:
+
+   Dados reais:
+   - user-data.js
+   - dashboard.js
+========================================================= -->
+
+
+<!-- =========================================================
+   01. DOCUMENT HEAD
+========================================================= -->
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Mein Fortschritt – Gewicht, Ernährung, Bewegung, Wasser und persönliche Begleitung."
+  >
+
+  <title>
+    Mein Fortschritt
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="dashboard.css"
+  >
+
+</head>
+
+
+<!-- =========================================================
+   02. DOCUMENT BODY
+========================================================= -->
+
+<body>
+
+
+  <!-- =======================================================
+       03. APP HEADER
+  ======================================================== -->
+
+  <header class="app-header">
+
+    <div class="top-header">
+
+      <a
+        href="dashboard.html"
+        class="brand"
+        aria-label="Mein Fortschritt Startseite"
+      >
+
+        <span
+          class="brand-mark"
+          aria-hidden="true"
+        >
+          ♥
+        </span>
+
+        <span class="brand-name">
+          Mein Fortschritt
+        </span>
+
+      </a>
+
+
+      <button
+        type="button"
+        class="menu-button"
+        id="menu-button"
+        aria-label="Menü öffnen"
+        aria-expanded="false"
+        aria-controls="side-menu"
+      >
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- =======================================================
+       04. SIDE MENU
+  ======================================================== -->
+
+  <div
+    class="side-menu-wrapper"
+    id="side-menu-wrapper"
+    hidden
+  >
+
+    <div
+      class="side-menu-backdrop"
+      id="side-menu-backdrop"
+    ></div>
+
+
+    <aside
+      class="side-menu"
+      id="side-menu"
+      aria-label="Hauptmenü"
+    >
+
+
+      <!-- ===================================================
+           05. SIDE MENU HEADER
+      ==================================================== -->
+
+      <div class="side-menu-header">
+
+        <div>
+
+          <span class="section-kicker">
+            Menü
+          </span>
+
+          <h2>
+            Mein Bereich
+          </h2>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="side-menu-close"
+          id="side-menu-close"
+          aria-label="Menü schliessen"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <!-- ===================================================
+           06. SIDE MENU ACCOUNT
+      ==================================================== -->
+
+      <div class="menu-account-card">
+
+        <div
+          class="menu-avatar"
+          aria-hidden="true"
+        >
+          ♥
+        </div>
+
+
+        <div>
+
+          <strong id="menu-user-name">
+            Mein Konto
+          </strong>
+
+          <span id="menu-account-plan">
+            Basis-Konto
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================================
+           07. SIDE MENU NAVIGATION
+      ==================================================== -->
+
+      <nav
+        class="side-menu-navigation"
+        aria-label="Dashboard Navigation"
+      >
+
+
+        <!-- BASIS -->
+
+        <a
+          href="#fortschritt"
+          class="side-menu-link"
+        >
+
+          <span aria-hidden="true">
+            ♥
+          </span>
+
+          Basis
+
+        </a>
+
+
+        <!-- PREMIUM -->
+
+        <button
+          type="button"
+          class="side-menu-link"
+          id="menu-premium-button"
+        >
+
+          <span
+            class="side-menu-image"
+            aria-hidden="true"
+          >
+
+            <img
+              src="icone/miau-normal.png"
+              alt=""
+              class="miau-icon"
+              draggable="false"
+            >
+
+          </span>
+
+          Premium
+
+        </button>
+
+
+        <!-- PREMIUM PLUS -->
+
+        <button
+          type="button"
+          class="side-menu-link"
+          id="menu-premium-plus-button"
+        >
+
+          <span aria-hidden="true">
+            🧑‍⚕️
+          </span>
+
+          Premium+
+
+        </button>
+
+
+        <!-- SHOP
