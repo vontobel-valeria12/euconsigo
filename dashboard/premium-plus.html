@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="description"
+    content="Deine persönliche Ernährungsberatung bei Mein Fortschritt."
+  >
+  <title>Premium+ | Mein Fortschritt</title>
+
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="offers.css">
+
+  <style>
+    .appointment-card {
+      margin: 30px 0;
+      padding: 22px;
+      border: 1px solid var(--line, #ece7df);
+      border-radius: 20px;
+      background: var(--white, #fff);
+    }
+
+    .appointment-status {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 7px 12px;
+      border-radius: 20px;
+      background: #eaf2e6;
+      color: var(--green-dark, #69845d);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .appointment-card h2 {
+      margin: 0 0 18px;
+      color: var(--brown-dark, #765c3d);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(22px, 4vw, 30px);
+    }
+
+    .appointment-details {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .appointment-detail {
+      padding: 14px;
+      border-radius: 14px;
+      background: var(--cream, #fffdf9);
+    }
+
+    .appointment-detail span {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--muted, #827c72);
+      font-size: 12px;
+    }
+
+    .appointment-detail strong {
+      color: var(--brown-dark, #765c3d);
+      font-size: 15px;
+    }
+
+    .appointment-note {
+      margin: 16px 0;
+      color: var(--muted, #827c72);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .appointment-join {
+      width: 100%;
+      min-height: 48px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--green-dark, #69845d);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .appointment-join:disabled {
+      background: #d8ddd5;
+      color: #70766d;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 560px) {
+      .appointment-card {
+        padding: 17px;
+      }
+
+      .appointment-details {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="top-header">
+      <a
+        href="dashboard.html"
+        class="brand"
+        aria-label="Zurück zu Mein Fortschritt"
+      >
+        <span class="brand-mark" aria-hidden="true">♥</span>
+        <span class="brand-name">Mein Fortschritt</span>
+      </a>
+
+      <a
+        class="offer-top-link"
+        href="https://www.valeriavontobel.ch/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Mein Shop
+      </a>
+    </div>
+  </header>
+
+  <main class="offer-page">
+    <article class="offer-card">
+      <span class="offer-kicker">Mein Fortschritt · Premium+</span>
+
+      <h1>Persönliche Ernährungsberatung</h1>
+
+      <p class="offer-intro">
+        Premium+ verbindet die Funktionen des Programms mit einer persönlichen
+        Ernährungsfachperson.
+      </p>
+
+      <section class="appointment-card" aria-labelledby="appointment-title">
+        <span class="appointment-status">Termin geplant</span>
+
+        <h2 id="appointment-title">Deine nächste Beratung</h2>
+
+        <div class="appointment-details">
+          <div class="appointment-detail">
+            <span>Datum</span>
+            <strong id="appointment-date">Mittwoch, 18. November 2026</strong>
+          </div>
+
+          <div class="appointment-detail">
+            <span>Uhrzeit</span>
+            <strong id="appointment-time">14:30 Uhr</strong>
+          </div>
+
+          <div class="appointment-detail">
+            <span>Deine Fachperson</span>
+            <strong>Deine Ernährungsberaterin</strong>
+          </div>
+
+          <div class="appointment-detail">
+            <span>Gespräch</span>
+            <strong>Online-Beratung</strong>
+          </div>
+        </div>
+
+        <p class="appointment-note" id="appointment-message" aria-live="polite">
+          Der Link zur Online-Beratung wird hier kurz vor deinem Termin angezeigt.
+        </p>
+
+        <button
+          type="button"
+          class="appointment-join"
+          id="appointment-join"
+          disabled
+        >
+          Der Online-Link wird zum Termin freigeschaltet
+        </button>
+      </section>
+
+      <div class="premium-feature-list offer-feature-list">
+        <div class="premium-feature-item offer-feature-item">
+          <span aria-hidden="true">✓</span>
+          <div>
+            <strong>Alle Premium-Funktionen</strong>
+            <small>
+              Nutze deinen Begleiter und alle erweiterten Funktionen.
+            </small>
+          </div>
+        </div>
+
+        <div class="premium-feature-item offer-feature-item">
+          <span aria-hidden="true">🧑‍⚕️</span>
+          <div>
+            <strong>Persönliche Fachperson</strong>
+            <small>
+              Deine Ernährungsfachperson begleitet dich professionell.
+            </small>
+          </div>
+        </div>
+
+        <div class="premium-feature-item offer-feature-item">
+          <span aria-hidden="true">💬</span>
+          <div>
+            <strong>Geschützter Chat</strong>
+            <small>
+              Tausche dich direkt mit deiner Ernährungsfachperson aus.
+            </small>
+          </div>
+        </div>
+
+        <div class="premium-feature-item offer-feature-item">
+          <span aria-hidden="true">🍲</span>
+          <div>
+            <strong>Professioneller Ernährungsplan</strong>
+            <small>
+              Ziele und Pläne werden von deiner Fachperson festgelegt.
+            </small>
+          </div>
+        </div>
+
+        <div class="premium-feature-item offer-feature-item">
+          <span aria-hidden="true">📋</span>
+          <div>
+            <strong>Persönliche Rückmeldungen</strong>
+            <small>
+              Erhalte professionelle Rückmeldungen zu deiner Entwicklung.
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <div class="offer-actions">
+        <a
+          class="offer-action offer-action-primary"
+          href="dashboard.html"
+        >
+          Zurück zum Dashboard
+        </a>
+
+        <a
+          class="offer-action"
+          href="https://www.valeriavontobel.ch/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Mein Shop
+        </a>
+      </div>
+
+      <p class="offer-switch">
+        Möchtest du zuerst den Begleiter kennenlernen?
+        <a href="premium.html">Premium ansehen</a>
+      </p>
+    </article>
+  </main>
+
+  <script>
+    /*
+      Exemplo de data e horário.
+      Depois, estes valores serão substituídos pelos dados do agendamento.
+    */
+    const appointmentDateTime =
+      new Date("2026-11-18T14:30:00+01:00");
+
+    /*
+      O link verdadeiro da consulta será colocado aqui depois.
+      Enquanto estiver vazio, o botão permanece desativado.
+    */
+    const onlineMeetingLink = "";
+
+    const appointmentButton =
+      document.getElementById("appointment-join");
+
+    const appointmentMessage =
+      document.getElementById("appointment-message");
+
+    function updateAppointmentButton() {
+      const now = new Date();
+
+      const opensAt =
+        new Date(appointmentDateTime.getTime() - 15 * 60 * 1000);
+
+      const closesAt =
+        new Date(appointmentDateTime.getTime() + 60 * 60 * 1000);
+
+      const isConsultationTime =
+        now >= opensAt && now <= closesAt;
+
+      if (!onlineMeetingLink) {
+        appointmentButton.disabled = true;
+        appointmentButton.textContent =
+          "Der Online-Link wird zum Termin freigeschaltet";
+
+        appointmentMessage.textContent =
+          "Der Link zur Online-Beratung wird hier kurz vor deinem Termin angezeigt.";
+
+        return;
+      }
+
+      if (isConsultationTime) {
+        appointmentButton.disabled = false;
+        appointmentButton.textContent =
+          "Zur Online-Beratung";
+
+        appointmentMessage.textContent =
+          "Dein Termin beginnt um 14:30 Uhr. Du kannst jetzt beitreten.";
+
+        appointmentButton.onclick = function () {
+          window.open(
+            onlineMeetingLink,
+            "_blank",
+            "noopener,noreferrer"
+          );
+        };
+
+        return;
+      }
+
+      appointmentButton.disabled = true;
+      appointmentButton.textContent =
+        "Der Online-Link wird zum Termin freigeschaltet";
+    }
+
+    updateAppointmentButton();
+    setInterval(updateAppointmentButton, 60000);
+  </script>
+</body>
+</html>
